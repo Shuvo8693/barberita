@@ -2,6 +2,9 @@ import 'package:get/get.dart';
 
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/onboaring/bindings/onboaring_binding.dart';
+import '../modules/onboaring/views/onboaring_view.dart';
+import '../modules/onboaring/views/role_selection_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 
@@ -22,6 +25,16 @@ class AppPages {
       name: _Paths.SPLASH,
       page: () => const SplashView(),
       binding: SplashBinding(),
+    ),
+    GetPage(
+      name: _Paths.ONBOARING,
+      page: () =>  OnboardingView(),
+      binding: OnboaringBinding(),
+    ),
+    GetPage(
+      name: _Paths.ROLESELECTION,
+      page: () =>  RoleSelectionView(),
+      binding: OnboaringBinding(),
     ),
   ];
 }
