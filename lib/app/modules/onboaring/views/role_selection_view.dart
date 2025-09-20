@@ -1,4 +1,5 @@
 import 'package:barberita/common/app_color/app_colors.dart';
+import 'package:barberita/common/app_logo/app_logo.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -26,37 +27,7 @@ class _RoleSelectionViewState extends State<RoleSelectionView> {
             children: [
               SizedBox(height: 60.h),
               // Logo Placeholder
-              Center(
-                child: Container(
-                  width: 120.w,
-                  height: 120.h,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF5F1E8),
-                    borderRadius: BorderRadius.circular(24.r),
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.content_cut,
-                          size: 40.sp,
-                          color: const Color(0xFF8B4513),
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          'LOGO',
-                          style: GoogleFontStyles.h6(
-                            color: const Color(0xFF8B4513),
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1.2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              AppLogo(height: 200.h,),
 
               SizedBox(height: 80.h),
 

@@ -1,11 +1,13 @@
 import 'package:barberita/app/modules/onboaring/widgets/onboarding_page.dart';
 import 'package:barberita/app/routes/app_pages.dart';
+import 'package:barberita/common/app_images/app_images.dart';
+import 'package:barberita/common/app_images/app_svg.dart';
+import 'package:barberita/common/svg_base64/ExtractionBase64Image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -22,19 +24,19 @@ class _OnboardingViewState extends State<OnboardingView> {
     OnboardingData(
       title: 'Appointment',
       description: 'Find the top Hairdresser near you in seconds, book an appointment, and enjoy a best grooming experience.',
-      imagePath: 'assets/images/appointment.png', // Replace with your image path
+      imagePath: AppImage.appointmentImg, // Replace with your image path
       backgroundColor: const Color(0xFF2C2C3A),
     ),
     OnboardingData(
       title: 'Explore',
       description: 'With the app, you can easily schedule your grooming, ensuring a smooth and efficient experience. No more waiting in line - just book and relax!',
-      imagePath: 'assets/images/explore.png', // Replace with your image path
+      imagePath:   AppImage.exploreImg, // Replace with your image path
       backgroundColor: const Color(0xFF2C2C3A),
     ),
     OnboardingData(
       title: 'Enjoy',
       description: 'Enjoy convenience, quality, and a stylish grooming experience without having to travel far! Grooming helps boost your confidence and overall appearance.',
-      imagePath: 'assets/images/enjoy.png', // Replace with your image path
+      imagePath:  AppImage.enjoyImg, // Replace with your image path
       backgroundColor: const Color(0xFF2C2C3A),
     ),
   ];
