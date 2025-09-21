@@ -1,3 +1,4 @@
+import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -22,9 +23,9 @@ class DontHaveAnAccount extends StatelessWidget {
             TextSpan(text: "Don't have an account? "),
             TextSpan(
               text: 'Sign up',
-              style: GoogleFontStyles.h5(
+              style: GoogleFontStyles.h4(
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF4CAF50),
+                color: AppColors.secondaryAppColor,
               ),
               recognizer: TapGestureRecognizer()
                 ..onTap = onTap,

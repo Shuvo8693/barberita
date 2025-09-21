@@ -1,4 +1,5 @@
 import 'package:barberita/app/modules/authentication/views/otp_view.dart';
+import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_logo/app_logo.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/widgets/have_an_account.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:barberita/common/widgets/custom_text_field.dart';
+import 'package:get/get.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -111,7 +113,7 @@ class _SignUpViewState extends State<SignUpView> {
                     SizedBox(height: 8.h),
                     CustomTextField(
                       controller: _passwordController,
-                      hintText: '••••••••••',
+                      hintText: '***********',
                       isPassword: true,
                       hintStyle: GoogleFontStyles.h5(
                         color: Colors.white.withOpacity(0.5),
@@ -132,7 +134,7 @@ class _SignUpViewState extends State<SignUpView> {
                     SizedBox(height: 8.h),
                     CustomTextField(
                       controller: _confirmPasswordController,
-                      hintText: '••••••••••',
+                      hintText: '***********',
                       isPassword: true,
                       hintStyle: GoogleFontStyles.h5(
                         color: Colors.white.withOpacity(0.5),
@@ -162,7 +164,10 @@ class _SignUpViewState extends State<SignUpView> {
                     // Already have account
                     Align(
                       alignment: Alignment.center,
-                        child: HaveAnAccountText(onTap: (){},
+                        child: HaveAnAccountText(
+                          onTap: (){
+                          Get.offAllNamed(Routes.SIGNIN);
+                          },
                         )
                     ),
 

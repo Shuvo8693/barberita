@@ -13,7 +13,7 @@ class GoogleFontStyles {
     double? fontSize,
     TextStyle? textStyle
   }) {
-    return GoogleFonts.inter(
+    return GoogleFonts.roboto(
       fontWeight: fontWeight ?? FontWeight.w400,
       fontSize: fontSize ?? 24.sp,
       color: color,
@@ -30,7 +30,7 @@ class GoogleFontStyles {
     double? height,
     TextStyle? textStyle
   }) {
-    return GoogleFonts.inter(
+    return GoogleFonts.roboto(
       fontWeight: fontWeight ?? FontWeight.w400,
       fontSize: 20.sp,
       color: color,
@@ -47,7 +47,7 @@ class GoogleFontStyles {
     double? letterSpacing,
     TextStyle? textStyle
   }) {
-    return GoogleFonts.inter(
+    return GoogleFonts.roboto(
       fontWeight: fontWeight ?? FontWeight.w400,
       fontSize: 18.sp,
       color: color,
@@ -64,7 +64,7 @@ class GoogleFontStyles {
     double? height,
     TextStyle? textStyle
   }) {
-    return GoogleFonts.inter(
+    return GoogleFonts.roboto(
       fontWeight: fontWeight ?? FontWeight.w500,
       fontSize: 16.sp,
       color: color,
@@ -83,7 +83,7 @@ class GoogleFontStyles {
     double? height,
     TextStyle? textStyle,
   }) {
-    return GoogleFonts.inter(
+    return GoogleFonts.roboto(
       fontWeight: fontWeight ?? FontWeight.w400,
       fontSize: fontSize ?? 14.sp,
       color: color,
@@ -101,7 +101,7 @@ class GoogleFontStyles {
     double? height,
     TextStyle? textStyle
   }) {
-    return GoogleFonts.inter(
+    return GoogleFonts.roboto(
       fontWeight: fontWeight ?? FontWeight.w400,
       fontSize: 12.sp,
       color: color,
@@ -122,7 +122,7 @@ class GoogleFontStyles {
     FontWeight? fontWeight,
     TextStyle? textStyle
   }) {
-    return GoogleFonts.inter(
+    return GoogleFonts.roboto(
       fontWeight: fontWeight ?? FontWeight.w400,
       color: color,
       fontSize: size,
