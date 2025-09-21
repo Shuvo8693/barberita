@@ -93,16 +93,16 @@ class _CustomTextFieldState extends State<CustomTextField> {
       onEditingComplete: widget.onEditingComplete,
       onFieldSubmitted: widget.onFieldSubmitted,
       validator: widget.validator ?? _getDefaultValidator(),
-      cursorColor: AppColors.primaryColor,
+      cursorColor: AppColors.white,
       obscureText: _obscureText,
       style: TextStyle(
-        color: widget.textColor?? AppColors.black,
+        color: widget.textColor?? AppColors.white,
         fontSize: 16.sp,
       ),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(
-          horizontal: widget.contentPaddingHorizontal ?? 20.w,
-          vertical: widget.contentPaddingVertical ?? 20.w,
+          horizontal: widget.contentPaddingHorizontal ?? 18.w,
+          vertical: widget.contentPaddingVertical ?? 18.w,
         ),
         fillColor: widget.fillColor ?? AppColors.white,
         filled: true,

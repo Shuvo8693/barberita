@@ -19,7 +19,6 @@ class _RoleSelectionViewState extends State<RoleSelectionView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2C2C3A),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -29,28 +28,23 @@ class _RoleSelectionViewState extends State<RoleSelectionView> {
               // Logo Placeholder
               AppLogo(height: 200.h,),
 
-              SizedBox(height: 80.h),
+              SizedBox(height: 70.h),
 
               // Title
               Text(
                 'Choose Your Role to Get Started',
                 style: GoogleFontStyles.h3(
-                  color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
                 textAlign: TextAlign.center,
               ),
-
               SizedBox(height: 60.h),
-
               // Role Buttons
               _buildRoleButton(
                 role: 'User',
                 isSelected: _selectedRole == 'User',
               ),
-
               SizedBox(height: 16.h),
-
               _buildRoleButton(
                 role: 'Barber',
                 isSelected: _selectedRole == 'Barber',
@@ -60,11 +54,7 @@ class _RoleSelectionViewState extends State<RoleSelectionView> {
 
               CustomButton(
                   onTap: (){
-                    if (_selectedRole == 'User') {
-                      Navigator.pushReplacementNamed(context, '/home');
-                    } else {
-                      Navigator.pushReplacementNamed(context, '/home');
-                    }
+                    Navigator.pushReplacementNamed(context, '/signup',arguments: {'role':_selectedRole});
                   },
                   text: 'Confirm'
               ),

@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/authentication/bindings/authentication_binding.dart';
+import '../modules/authentication/views/signup_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/onboaring/bindings/onboaring_binding.dart';
@@ -28,13 +30,18 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ONBOARING,
-      page: () =>  OnboardingView(),
+      page: () => OnboardingView(),
       binding: OnboaringBinding(),
     ),
     GetPage(
       name: _Paths.ROLESELECTION,
-      page: () =>  RoleSelectionView(),
+      page: () => RoleSelectionView(),
       binding: OnboaringBinding(),
+    ),
+    GetPage(
+      name: _Paths.SIGNUP,
+      page: () =>  SignUpView(),
+      binding: AuthenticationBinding(),
     ),
   ];
 }
