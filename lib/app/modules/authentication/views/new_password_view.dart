@@ -1,22 +1,167 @@
+import 'package:barberita/common/app_images/app_svg.dart';
+import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:barberita/common/app_color/app_colors.dart';
+import 'package:barberita/common/widgets/custom_button.dart';
+import 'package:barberita/common/widgets/custom_text_field.dart';
+import 'package:flutter_svg/svg.dart';
 
-import 'package:get/get.dart';
-
-class NewPasswordView extends GetView {
+class NewPasswordView extends StatefulWidget {
   const NewPasswordView({super.key});
+
+  @override
+  State<NewPasswordView> createState() => _NewPasswordViewState();
+}
+
+class _NewPasswordViewState extends State<NewPasswordView> {
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('NewPasswordView'),
-        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+            size: 20.sp,
+          ),
+        ),
       ),
-      body: const Center(
-        child: Text(
-          'NewPasswordView is working',
-          style: TextStyle(fontSize: 20),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 40.h),
+
+                // Lock Icon with Stars
+                SvgPicture.asset(AppSvg.unlockSvg,height: 125.h,),
+
+                SizedBox(height: 40.h),
+
+                // Title
+                Text(
+                  'New Password',
+                  style: GoogleFontStyles.h2(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+
+                SizedBox(height: 16.h),
+
+                // Subtitle
+                Text(
+                  'For Security Enter Your New 8 Character Password.',
+                  textAlign: TextAlign.center,
+                  style: GoogleFontStyles.h6(
+                    color: Colors.white.withOpacity(0.7),
+                    fontWeight: FontWeight.w400,
+                    height: 1.4,
+                  ),
+                ),
+
+                SizedBox(height: 40.h),
+
+                // Form Fields
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Password Field
+                    Text(
+                      'Password',
+                      style: GoogleFontStyles.h6(
+                        color: Colors.white.withOpacity(0.7),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    CustomTextField(
+                      controller: _passwordController,
+                      hintText: '••••••••••',
+                      isPassword: true,
+                      hintStyle: GoogleFontStyles.h6(
+                        color: Colors.white.withOpacity(0.5),
+                      ),
+                      fillColor: Colors.transparent,
+                    ),
+
+                    SizedBox(height: 24.h),
+
+                    // Confirm Password Field
+                    Text(
+                      'Confirm Password',
+                      style: GoogleFontStyles.h6(
+                        color: Colors.white.withOpacity(0.7),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    CustomTextField(
+                      controller: _confirmPasswordController,
+                      hintText: '••••••••••',
+                      isPassword: true,
+                      hintStyle: GoogleFontStyles.h6(
+                        color: Colors.white.withOpacity(0.5),
+                      ),
+                      fillColor: Colors.transparent,
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 40.h),
+
+                // Continue Button
+                CustomButton(
+                  onTap: () {
+                    if (_passwordController.text.isNotEmpty &&
+                        _confirmPasswordController.text.isNotEmpty) {
+                      if (_passwordController.text == _confirmPasswordController.text) {
+                        if (_passwordController.text.length >= 8) {
+                          // Navigate to success screen or login
+                          print('New password set successfully');
+                        } else {
+                          // Show error for password length
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Password must be at least 8 characters')),
+                          );
+                        }
+                      } else {
+                        // Show error for password mismatch
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Passwords do not match')),
+                        );
+                      }
+                    }
+                  },
+                  text: 'Continue',
+                  textStyle: GoogleFontStyles.h4(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+
+                SizedBox(height: 40.h),
+              ],
+            ),
+          ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
   }
 }

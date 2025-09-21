@@ -1,7 +1,13 @@
 
+import 'package:barberita/app/routes/app_pages.dart';
+import 'package:barberita/common/app_images/app_svg.dart';
+import 'package:barberita/common/app_logo/app_logo.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
@@ -68,30 +74,7 @@ class _OtpViewState extends State<OtpView> {
               children: [
                 SizedBox(height: 60.h),
                 // Lock Icon
-                Container(
-                  width: 120.w,
-                  height: 120.h,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Container(
-                      width: 60.w,
-                      height: 60.h,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF8B4513),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Icon(
-                        Icons.lock,
-                        color: Colors.white,
-                        size: 30.sp,
-                      ),
-                    ),
-                  ),
-                ),
-
+                SvgPicture.asset(AppSvg.unlockSvg,height: 125.h,),
                 SizedBox(height: 40.h),
 
                 Text(
@@ -182,6 +165,7 @@ class _OtpViewState extends State<OtpView> {
 
                 CustomButton(
                   onTap : () {
+                    Get.toNamed(Routes.NEWPASSWORD);
                     if (_otpController.text.length == 6) {
                       print('OTP: ${_otpController.text}');
                     }

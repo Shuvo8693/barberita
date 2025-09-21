@@ -1,3 +1,4 @@
+import 'package:barberita/app/modules/authentication/views/new_password_view.dart';
 import 'package:barberita/app/modules/authentication/views/signin_view.dart';
 import 'package:get/get.dart';
 
@@ -47,6 +48,11 @@ class AppPages {
     GetPage(
       name: _Paths.SIGNIN,
       page: () =>  SignInView(),
+      binding: AuthenticationBinding(),
+    ),
+    GetPage(
+      name: _Paths.NEWPASSWORD,
+      page: () =>  NewPasswordView(),
       binding: AuthenticationBinding(),
     ),
   ];
