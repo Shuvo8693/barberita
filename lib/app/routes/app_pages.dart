@@ -4,6 +4,8 @@ import '../modules/authentication/bindings/authentication_binding.dart';
 import '../modules/authentication/views/new_password_view.dart';
 import '../modules/authentication/views/signin_view.dart';
 import '../modules/authentication/views/signup_view.dart';
+import '../modules/book_appointment/bindings/book_appointment_binding.dart';
+import '../modules/book_appointment/views/book_appointment_view.dart';
 import '../modules/hairdresser_details/bindings/hairdresser_details_binding.dart';
 import '../modules/hairdresser_details/views/hairdresser_details_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -68,6 +70,11 @@ class AppPages {
       name: _Paths.SEARCH_HAIRDRESSER,
       page: () => const SearchHairdresserView(),
       binding: SearchHairdresserBinding(),
+    ),
+    GetPage(
+      name: _Paths.BOOK_APPOINTMENT,
+      page: () => const BookAppointmentView(),
+      binding: BookAppointmentBinding(),
     ),
   ];
 }

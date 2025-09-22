@@ -60,6 +60,7 @@ dependencies:
   url_launcher: ^6.3.1
   pin_code_fields: ^8.0.1
   flutter_polyline_points: ^3.0.0
+  flutter_datetime_picker_plus: ^2.1.0
   fvm:
 
 dev_dependencies:

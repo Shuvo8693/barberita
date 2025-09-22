@@ -1,6 +1,7 @@
 import 'package:barberita/app/modules/hairdresser_details/widgets/about_tab.dart';
 import 'package:barberita/app/modules/hairdresser_details/widgets/review_tab.dart';
 import 'package:barberita/app/modules/hairdresser_details/widgets/service_tab.dart';
+import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_images/network_image%20.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/widgets/casess_network_image.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class HairdresserDetailsView extends StatefulWidget {
   const HairdresserDetailsView({super.key});
@@ -158,6 +161,7 @@ class _HairdresserDetailsViewState extends State<HairdresserDetailsView>
               child: CustomButton(
                 onTap: () {
                   // Handle booking
+                  Get.toNamed(Routes.BOOK_APPOINTMENT);
                 },
                 text: 'Book Appointment',
               ),
