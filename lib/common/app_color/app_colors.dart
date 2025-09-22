@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors{
 
   static const primaryColor= Color(0xFF373A40);
-  static const secondaryAppColor= Color(0xFF70665E);
+  static const secondaryAppColor= Color(0xFF55493E); //====
   static const darkJungleGreenBGColor= Color(0xFF1E2023);
   static const almondColor= Color(0xFFEBDFCE);
   static final scaffoldBgColor= Colors.grey[50];

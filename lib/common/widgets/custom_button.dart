@@ -34,12 +34,15 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: loading ? () {} : onTap,
       style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(borderRadius??12.r)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(borderRadius??4.r)),
         backgroundColor: color ?? AppColors.secondaryAppColor,
         minimumSize: Size(width ?? Get.width, height ?? 48.h),
+          maximumSize: Size(width ?? Get.width, height ?? 48.h),
         padding: paddingInner,
         splashFactory: InkSplash.splashFactory,
-          foregroundColor: AppColors.primaryColor
+          foregroundColor: AppColors.primaryColor,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap, // its give 0 for all extra space Outside of button
+        // visualDensity: VisualDensity.compact,  // its give 0 for all extra space inside button
       ),
       child: loading
           ? SizedBox(

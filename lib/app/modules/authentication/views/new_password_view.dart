@@ -1,3 +1,4 @@
+import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_images/app_svg.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,8 @@ import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:barberita/common/widgets/custom_text_field.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class NewPasswordView extends StatefulWidget {
   const NewPasswordView({super.key});
@@ -122,12 +125,14 @@ class _NewPasswordViewState extends State<NewPasswordView> {
                 // Continue Button
                 CustomButton(
                   onTap: () {
+
                     if (_passwordController.text.isNotEmpty &&
                         _confirmPasswordController.text.isNotEmpty) {
                       if (_passwordController.text == _confirmPasswordController.text) {
                         if (_passwordController.text.length >= 8) {
                           // Navigate to success screen or login
                           print('New password set successfully');
+                          Get.offAllNamed(Routes.SIGNIN);
                         } else {
                           // Show error for password length
                           ScaffoldMessenger.of(context).showSnackBar(

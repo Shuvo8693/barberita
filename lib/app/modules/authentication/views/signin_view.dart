@@ -120,6 +120,7 @@ class _SignInViewState extends State<SignInView> {
                 CustomButton(
                   onTap: () {
                     // Add login logic here
+                    Get.toNamed(Routes.HOME);
                     if (_phoneController.text.isNotEmpty &&
                         _passwordController.text.isNotEmpty) {
                       // Navigate to home or show success
@@ -128,10 +129,6 @@ class _SignInViewState extends State<SignInView> {
                     }
                   },
                   text: 'Log In',
-                  textStyle: GoogleFontStyles.h4(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
                 ),
 
                 SizedBox(height: 32.h),

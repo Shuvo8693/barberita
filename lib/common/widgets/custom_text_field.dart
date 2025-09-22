@@ -121,11 +121,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
         hintText: widget.hintText,
         hintStyle: widget.hintStyle?? GoogleFontStyles.h5(color: AppColors.greyColor),
         labelStyle: widget.labelTextStyle,
-        // border: _getDefaultBorder(),
-        // enabledBorder: _getDefaultBorder(),
-        // focusedBorder: _getDefaultBorder(),
-        // errorBorder: _getDefaultBorder(isError: true),
-        // focusedErrorBorder: _getDefaultBorder(isError: true),
+        border: _getDefaultBorder(),
+        enabledBorder: _getDefaultBorder(),
+        focusedBorder: _getDefaultBorder(),
+        errorBorder: _getDefaultBorder(isError: true),
+        focusedErrorBorder: _getDefaultBorder(isError: true),
       ),
     );
   }
