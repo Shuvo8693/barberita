@@ -1,9 +1,11 @@
-import 'package:barberita/app/modules/authentication/views/new_password_view.dart';
-import 'package:barberita/app/modules/authentication/views/signin_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
+import '../modules/authentication/views/new_password_view.dart';
+import '../modules/authentication/views/signin_view.dart';
 import '../modules/authentication/views/signup_view.dart';
+import '../modules/hairdresser_details/bindings/hairdresser_details_binding.dart';
+import '../modules/hairdresser_details/views/hairdresser_details_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/onboaring/bindings/onboaring_binding.dart';
@@ -42,18 +44,23 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.SIGNUP,
-      page: () =>  SignUpView(),
+      page: () => SignUpView(),
       binding: AuthenticationBinding(),
     ),
     GetPage(
       name: _Paths.SIGNIN,
-      page: () =>  SignInView(),
+      page: () => SignInView(),
       binding: AuthenticationBinding(),
     ),
     GetPage(
       name: _Paths.NEWPASSWORD,
-      page: () =>  NewPasswordView(),
+      page: () => NewPasswordView(),
       binding: AuthenticationBinding(),
+    ),
+    GetPage(
+      name: _Paths.HAIRDRESSER_DETAILS,
+      page: () => const HairdresserDetailsView(),
+      binding: HairdresserDetailsBinding(),
     ),
   ];
 }

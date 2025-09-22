@@ -1,11 +1,12 @@
+import 'package:barberita/app/modules/home/widgets/top_rated_card.dart';
 import 'package:barberita/common/app_images/network_image%20.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/widgets/casess_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:barberita/common/app_color/app_colors.dart';
-import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:barberita/common/widgets/custom_text_field.dart';
+
+import '../widgets/favourite_hairdresser_card.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -144,17 +145,6 @@ class _HomeViewState extends State<HomeView> {
             Expanded(
               child: ListView(
                 children: [
-                  // Filters
-                  // Padding(
-                  //   padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  //   child: Row(
-                  //     children: [
-                  //       _buildFilterButton('All', 0),
-                  //       SizedBox(width: 12.w),
-                  //       _buildFilterButton('Nearby Hairdresser', 1),
-                  //     ],
-                  //   ),
-                  // ),
                   SizedBox(height: 20.h),
 
                   // Favourite Section
@@ -174,7 +164,18 @@ class _HomeViewState extends State<HomeView> {
                   // Favourite Card
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: _buildFavouriteCard(),
+                    child: FavouriteHairdresserCard(
+                      imageUrl: AppNetworkImage.saloonHairMen2Img,
+                      name: 'Marty\'s Hairdresser',
+                      type: 'Braided',
+                      status: 'Open now',
+                      rating: '4.5',
+                      price: '\$2.99-\$100',
+                      onTap: () {
+                        // Handle booking action
+                      },
+                    )
+                    ,
                   ),
 
                   SizedBox(height: 20.h),
@@ -199,9 +200,9 @@ class _HomeViewState extends State<HomeView> {
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
                       child: Row(
                         children: [
-                          Expanded(child: _buildTopRatedCard(0)),
+                          Expanded(child: TopRatedCard(index: 0)),
                           SizedBox(width: 12.w),
-                          Expanded(child: _buildTopRatedCard(1)),
+                          Expanded(child: TopRatedCard(index:1)),
                         ],
                       ),
                     ),
@@ -255,198 +256,8 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget _buildFavouriteCard() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-      decoration: BoxDecoration(
-        color: AppColors.primaryColor,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Row(
-        children: [
-          CustomNetworkImage(
-            width: 80.w,
-            height: 80.h,
-            boxFit: BoxFit.cover,
-            borderRadius: BorderRadius.all(Radius.circular(12.r)),
-            imageUrl: AppNetworkImage.saloonHairMen2Img,
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Marty\'s Hairdresser',
-                        style: GoogleFontStyles.h5(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    Icon(Icons.favorite, color: Colors.red, size: 20.sp),
-                  ],
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  'Braided',
-                  style: GoogleFontStyles.h6(color: const Color(0xFFE6C4A3)),
-                ),
-                SizedBox(height: 4.h),
-                Row(
-                  children: [
-                    Text(
-                      'Open now',
-                      style: GoogleFontStyles.h6(color: Colors.green),
-                    ),
-                    SizedBox(width: 8.w),
-                    Icon(Icons.star, color: Colors.amber, size: 14.sp),
-                    SizedBox(width: 2.w),
-                    Text(
-                      '4.5',
-                      style: GoogleFontStyles.h6(
-                        color: Colors.white.withOpacity(0.7),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8.h),
-                Row(
-                  children: [
-                    Text(
-                      'Price Range: \$2.99-\$100',
-                      style: GoogleFontStyles.h6(
-                        color: Colors.white.withOpacity(0.7),
-                      ),
-                    ),
-                    const Spacer(),
-                    CustomButton(
-                      onTap: () {},
-                      text: 'Book now',
-                      height: 25.h,
-                      width: 70.w,
-                      textStyle: GoogleFontStyles.h6(color: Colors.white),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildTopRatedCard(int index) {
-    List<Map<String, dynamic>> hairdressers = [
-      {
-        'name': 'Marty\'s Hairdresser',
-        'image': AppNetworkImage.saloonHairMen3Img,
-        'rating': '4.5',
-        'type': 'Braided',
-        'status': 'Open Now',
-        'price': '\$2.99-\$100',
-      },
-      {
-        'name': 'Marty\'s Hairdresser',
-        'image': AppNetworkImage.saloonHairMen4Img,
-        'rating': '4.5',
-        'type': 'Flathead',
-        'status': 'Open Now',
-        'price': '\$2.99-\$100',
-      },
-    ];
 
-    var data = hairdressers[index];
-
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.primaryColor,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              CustomNetworkImage(
-                imageUrl: data['image'],
-                height: 120.h,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12.r),
-                  topRight: Radius.circular(12.r),
-                ),
-              ),
-              Positioned(
-                top: 8.h,
-                left: 8.w,
-                child: Icon(Icons.favorite, color: Colors.red, size: 20.sp),
-              ),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.all(12.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        data['name'],
-                        style: GoogleFontStyles.h6(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    Icon(Icons.star, color: Colors.amber, size: 14.sp),
-                    SizedBox(width: 2.w),
-                    Text(
-                      data['rating'],
-                      style: GoogleFontStyles.customSize(
-                        size: 10.sp,
-                        color: Colors.white.withOpacity(0.7),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  data['type'],
-                  style: GoogleFontStyles.customSize(
-                    size: 10.sp,
-                    color: const Color(0xFFE6C4A3),
-                  ),
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  data['status'],
-                  style: GoogleFontStyles.customSize(
-                    size: 10.sp,
-                    color: Colors.green,
-                  ),
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  'Price Range: ${data['price']}',
-                  style: GoogleFontStyles.customSize(
-                    size: 9.sp,
-                    color: Colors.white.withOpacity(0.7),
-                  ),
-                ),
-                SizedBox(height: 8.h),
-                CustomButton(onTap: () {}, text: 'Book now', height: 30.h),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   void dispose() {

@@ -10,6 +10,7 @@ abstract class Routes {
   static const SIGNUP = _Paths.SIGNUP;
   static const SIGNIN = _Paths.SIGNIN;
   static const NEWPASSWORD = _Paths.NEWPASSWORD;
+  static const HAIRDRESSER_DETAILS = _Paths.HAIRDRESSER_DETAILS;
 }
 
 abstract class _Paths {
@@ -21,4 +22,5 @@ abstract class _Paths {
   static const SIGNUP = '/signup';
   static const SIGNIN = '/signin';
   static const NEWPASSWORD = '/new_password_view';
+  static const HAIRDRESSER_DETAILS = '/hairdresser-details';
 }
