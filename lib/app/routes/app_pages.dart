@@ -11,6 +11,8 @@ import '../modules/home/views/home_view.dart';
 import '../modules/onboaring/bindings/onboaring_binding.dart';
 import '../modules/onboaring/views/onboaring_view.dart';
 import '../modules/onboaring/views/role_selection_view.dart';
+import '../modules/search_hairdresser/bindings/search_hairdresser_binding.dart';
+import '../modules/search_hairdresser/views/search_hairdresser_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 
@@ -61,6 +63,11 @@ class AppPages {
       name: _Paths.HAIRDRESSER_DETAILS,
       page: () => const HairdresserDetailsView(),
       binding: HairdresserDetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.SEARCH_HAIRDRESSER,
+      page: () => const SearchHairdresserView(),
+      binding: SearchHairdresserBinding(),
     ),
   ];
 }

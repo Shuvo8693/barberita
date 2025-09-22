@@ -1,10 +1,13 @@
 import 'package:barberita/app/modules/home/widgets/top_rated_card.dart';
+import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_images/network_image%20.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/widgets/casess_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/widgets/custom_text_field.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../widgets/favourite_hairdresser_card.dart';
 
@@ -94,6 +97,7 @@ class _HomeViewState extends State<HomeView> {
                   GestureDetector(
                     onTap: (){
                       //==== Nav to search screen ===
+                      Get.toNamed(Routes.SEARCH_HAIRDRESSER);
                     },
                     child: AbsorbPointer(
                       child: CustomTextField(
