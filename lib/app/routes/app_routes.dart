@@ -13,6 +13,7 @@ abstract class Routes {
   static const HAIRDRESSER_DETAILS = _Paths.HAIRDRESSER_DETAILS;
   static const SEARCH_HAIRDRESSER = _Paths.SEARCH_HAIRDRESSER;
   static const BOOK_APPOINTMENT = _Paths.BOOK_APPOINTMENT;
+  static const LOCATIONSELECTORMAP = _Paths.LOCATIONSELECTORMAP;
 }
 
 abstract class _Paths {
@@ -27,4 +28,5 @@ abstract class _Paths {
   static const HAIRDRESSER_DETAILS = '/hairdresser-details';
   static const SEARCH_HAIRDRESSER = '/search-hairdresser';
   static const BOOK_APPOINTMENT = '/book-appointment';
+  static const LOCATIONSELECTORMAP = '/location-selector-map';
 }

@@ -1,3 +1,4 @@
+import 'package:barberita/app/modules/book_appointment/views/location_selection_map_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
@@ -74,6 +75,11 @@ class AppPages {
     GetPage(
       name: _Paths.BOOK_APPOINTMENT,
       page: () => const BookAppointmentView(),
+      binding: BookAppointmentBinding(),
+    ),
+    GetPage(
+      name: _Paths.LOCATIONSELECTORMAP,
+      page: () => const LocationSelectionMapView(),
       binding: BookAppointmentBinding(),
     ),
   ];

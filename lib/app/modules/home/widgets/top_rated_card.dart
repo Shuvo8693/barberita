@@ -38,93 +38,90 @@ class TopRatedCard extends StatelessWidget {
 
     var data = hairdressers[index];
 
-    return GestureDetector(
-      onTap: (){
-        Get.toNamed(Routes.HAIRDRESSER_DETAILS);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.primaryColor,
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.primaryColor,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              CustomNetworkImage(
+                imageUrl: data['image'],
+                height: 120.h,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12.r),
+                  topRight: Radius.circular(12.r),
+                ),
+              ),
+              Positioned(
+                top: 8.h,
+                left: 8.w,
+                child: Icon(Icons.favorite, color: Colors.red, size: 20.sp),
+              ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.all(12.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomNetworkImage(
-                  imageUrl: data['image'],
-                  height: 120.h,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12.r),
-                    topRight: Radius.circular(12.r),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        data['name'],
+                        style: GoogleFontStyles.h6(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Icon(Icons.star, color: Colors.amber, size: 14.sp),
+                    SizedBox(width: 2.w),
+                    Text(
+                      data['rating'],
+                      style: GoogleFontStyles.customSize(
+                        size: 10.sp,
+                        color: Colors.white.withOpacity(0.7),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  data['type'],
+                  style: GoogleFontStyles.customSize(
+                    size: 10.sp,
+                    color: const Color(0xFFE6C4A3),
                   ),
                 ),
-                Positioned(
-                  top: 8.h,
-                  left: 8.w,
-                  child: Icon(Icons.favorite, color: Colors.red, size: 20.sp),
+                SizedBox(height: 4.h),
+                Text(
+                  data['status'],
+                  style: GoogleFontStyles.customSize(
+                    size: 10.sp,
+                    color: Colors.green,
+                  ),
                 ),
+                SizedBox(height: 8.h),
+                Text(
+                  'Price Range: ${data['price']}',
+                  style: GoogleFontStyles.customSize(
+                    size: 9.sp,
+                    color: Colors.white.withOpacity(0.7),
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                CustomButton(onTap: () {
+                  Get.toNamed(Routes.HAIRDRESSER_DETAILS);
+                }, text: 'Book now', height: 30.h),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.all(12.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          data['name'],
-                          style: GoogleFontStyles.h6(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Icon(Icons.star, color: Colors.amber, size: 14.sp),
-                      SizedBox(width: 2.w),
-                      Text(
-                        data['rating'],
-                        style: GoogleFontStyles.customSize(
-                          size: 10.sp,
-                          color: Colors.white.withOpacity(0.7),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    data['type'],
-                    style: GoogleFontStyles.customSize(
-                      size: 10.sp,
-                      color: const Color(0xFFE6C4A3),
-                    ),
-                  ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    data['status'],
-                    style: GoogleFontStyles.customSize(
-                      size: 10.sp,
-                      color: Colors.green,
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    'Price Range: ${data['price']}',
-                    style: GoogleFontStyles.customSize(
-                      size: 9.sp,
-                      color: Colors.white.withOpacity(0.7),
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  CustomButton(onTap: () {}, text: 'Book now', height: 30.h),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

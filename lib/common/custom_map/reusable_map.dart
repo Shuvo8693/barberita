@@ -42,19 +42,15 @@ class ReusableMap extends StatefulWidget {
 }
 
 class ReusableMapState extends State<ReusableMap> {
-  GoogleMapController? _controller;
+  GoogleMapController? _mapController;
 
   @override
   Widget build(BuildContext context) {
-
     return Stack(
       children: [
         GoogleMap(
           onMapCreated: (GoogleMapController controller) {
-            _controller = controller;
-            if (widget.darkMode) {
-              _setDarkMapStyle();
-            }
+            _mapController = controller;
             widget.onMapCreated?.call(controller);
           },
           initialCameraPosition: CameraPosition(
@@ -64,6 +60,7 @@ class ReusableMapState extends State<ReusableMap> {
           markers: widget.markers ?? {},
           polylines: widget.polylines ?? {},
           circles: widget.circles ?? {},
+          style: _setDarkMapStyle(),
           myLocationEnabled: widget.showMyLocation,
           myLocationButtonEnabled: widget.showMyLocationButton,
           zoomControlsEnabled: false,
@@ -82,38 +79,113 @@ class ReusableMapState extends State<ReusableMap> {
     );
   }
 
-  void _setDarkMapStyle() {
-    _controller?.setMapStyle('''
-    [
-      {
-        "elementType": "geometry",
-        "stylers": [{"color": "#1d2c4d"}]
-      },
-      {
-        "elementType": "labels.text.fill",
-        "stylers": [{"color": "#8ec3b9"}]
-      },
-      {
-        "elementType": "labels.text.stroke",
-        "stylers": [{"color": "#1a3646"}]
-      },
-      {
-        "featureType": "road",
-        "elementType": "geometry",
-        "stylers": [{"color": "#304a7d"}]
-      },
-      {
-        "featureType": "road",
-        "elementType": "labels.text.fill",
-        "stylers": [{"color": "#98a5be"}]
-      }
-    ]
-    ''');
+  //  _setDarkMapStyle() {
+  //   _mapController?.setMapStyle('''
+  //   [
+  //     {
+  //       "elementType": "geometry",
+  //       "stylers": [{"color": "#1d2c4d"}]
+  //     },
+  //     {
+  //       "elementType": "labels.text.fill",
+  //       "stylers": [{"color": "#8ec3b9"}]
+  //     },
+  //     {
+  //       "elementType": "labels.text.stroke",
+  //       "stylers": [{"color": "#1a3646"}]
+  //     },
+  //     {
+  //       "featureType": "road",
+  //       "elementType": "geometry",
+  //       "stylers": [{"color": "#304a7d"}]
+  //     },
+  //     {
+  //       "featureType": "road",
+  //       "elementType": "labels.text.fill",
+  //       "stylers": [{"color": "#98a5be"}]
+  //     }
+  //   ]
+  //   ''');
+  // }
+  //
+  //
+  String _setDarkMapStyle() {
+    return '''
+ [
+  {
+    "elementType": "geometry",
+    "stylers": [{"color": "#1a1715"}]
+  },
+  {
+    "elementType": "labels.text.fill",
+    "stylers": [{"color": "#d4b59a"}]
+  },
+  {
+    "elementType": "labels.text.stroke",
+    "stylers": [{"color": "#2a221d"}]
+  },
+  {
+    "featureType": "administrative",
+    "elementType": "geometry.stroke",
+    "stylers": [{"color": "#7a6a5a"}]
+  },
+  {
+    "featureType": "landscape",
+    "elementType": "geometry",
+    "stylers": [{"color": "#2a221d"}]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "geometry",
+    "stylers": [{"color": "#3d342b"}]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "geometry",
+    "stylers": [{"color": "#55493E"}]
+  },
+  {
+    "featureType": "road",
+    "elementType": "geometry",
+    "stylers": [{"color": "#6b5e4f"}]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "geometry",
+    "stylers": [{"color": "#8a7660"}]
+  },
+  {
+    "featureType": "road.arterial",
+    "elementType": "geometry",
+    "stylers": [{"color": "#5f5243"}]
+  },
+  {
+    "featureType": "road",
+    "elementType": "labels.text.fill",
+    "stylers": [{"color": "#a38d75"}]
+  },
+  {
+    "featureType": "transit",
+    "elementType": "geometry",
+    "stylers": [{"color": "#4a3f35"}]
+  },
+  {
+    "featureType": "water",
+    "elementType": "geometry",
+    "stylers": [{"color": "#332e26"}]
+  },
+  {
+    "featureType": "water",
+    "elementType": "labels.text.fill",
+    "stylers": [{"color": "#6b5e4f"}]
+  }
+]
+    ''';
   }
 
   // Public methods to control the map
   void animateToLocation(LatLng location, {double zoom = 15.0}) {
-    _controller?.animateCamera(
+    _mapController?.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(target: location, zoom: zoom),
       ),
@@ -121,12 +193,12 @@ class ReusableMapState extends State<ReusableMap> {
   }
 
   void zoomIn() {
-    _controller?.animateCamera(CameraUpdate.zoomIn());
+    _mapController?.animateCamera(CameraUpdate.zoomIn());
   }
 
   void zoomOut() {
-    _controller?.animateCamera(CameraUpdate.zoomOut());
+    _mapController?.animateCamera(CameraUpdate.zoomOut());
   }
 
-  GoogleMapController? get controller => _controller;
+  GoogleMapController? get controller => _mapController;
 }

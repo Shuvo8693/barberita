@@ -1,8 +1,11 @@
+import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:flutter/material.dart' hide DatePickerTheme;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 
@@ -266,57 +269,61 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (context) {
-        return Container(
-          padding: EdgeInsets.all(20.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Select Location',
-                style: GoogleFontStyles.h4(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
+        return SafeArea(
+          child: Container(
+            padding: EdgeInsets.all(20.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Select Location',
+                  style: GoogleFontStyles.h4(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              SizedBox(height: 20.h),
+                SizedBox(height: 20.h),
 
-              ListTile(
-                leading: Icon(
-                  Icons.my_location,
-                  color: const Color(0xFFE6C4A3),
+                ListTile(
+                  leading: Icon(
+                    Icons.my_location,
+                    color: const Color(0xFFE6C4A3),
+                  ),
+                  title: Text(
+                    'Use Current Location',
+                    style: GoogleFontStyles.h5(color: Colors.white),
+                  ),
+                  onTap: () {
+                    // setState(() {
+                    //   selectedAddress = 'Current Location';
+                    // });
+                    // Navigator.pop(context);
+                    Get.toNamed(Routes.LOCATIONSELECTORMAP);
+                  },
                 ),
-                title: Text(
-                  'Use Current Location',
-                  style: GoogleFontStyles.h5(color: Colors.white),
-                ),
-                onTap: () {
-                  setState(() {
-                    selectedAddress = 'Current Location';
-                  });
-                  Navigator.pop(context);
-                },
-              ),
 
-              ListTile(
-                leading: Icon(
-                  Icons.location_on,
-                  color: const Color(0xFFE6C4A3),
+                ListTile(
+                  leading: Icon(
+                    Icons.location_on,
+                    color: const Color(0xFFE6C4A3),
+                  ),
+                  title: Text(
+                    'Choose on Map',
+                    style: GoogleFontStyles.h5(color: Colors.white),
+                  ),
+                  onTap: () {
+                    // setState(() {
+                    //   selectedAddress = '123 Main Street, City';
+                    // });
+                    // Navigator.pop(context);
+                    Get.toNamed(Routes.LOCATIONSELECTORMAP);
+                  },
                 ),
-                title: Text(
-                  'Choose on Map',
-                  style: GoogleFontStyles.h5(color: Colors.white),
-                ),
-                onTap: () {
-                  setState(() {
-                    selectedAddress = '123 Main Street, City';
-                  });
-                  Navigator.pop(context);
-                },
-              ),
 
-              SizedBox(height: 20.h),
-            ],
+                SizedBox(height: 20.h),
+              ],
+            ),
           ),
         );
       },

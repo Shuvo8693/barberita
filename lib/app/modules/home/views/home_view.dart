@@ -34,119 +34,123 @@ class _HomeViewState extends State<HomeView> {
         child: Column(
           children: [
             //  ============== Header Section ====================
-            Padding(
-              padding: EdgeInsets.all(12.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Profile Header
-                  Row(
-                    children: [
-                      CustomNetworkImage(
-                        imageUrl: AppNetworkImage.saloonHairMenImg,
-                        boxShape: BoxShape.circle,
-                        height: 38.h,
-                        width: 38.w,
-                      ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Albert Flores',
-                              style: GoogleFontStyles.h5(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
+            Flexible(
+              flex: 1,
+              child: Padding(
+                padding: EdgeInsets.all(12.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Profile Header
+                    Row(
+                      children: [
+                        CustomNetworkImage(
+                          imageUrl: AppNetworkImage.saloonHairMenImg,
+                          boxShape: BoxShape.circle,
+                          height: 38.h,
+                          width: 38.w,
+                        ),
+                        SizedBox(width: 12.w),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Albert Flores',
+                                style: GoogleFontStyles.h5(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
+                              Text(
+                                '112/23 Park Street',
+                                style: GoogleFontStyles.h6(
+                                  color: Colors.white.withOpacity(0.7),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Stack(
+                          children: [
+                            Icon(
+                              Icons.notifications_outlined,
+                              color: Colors.white,
+                              size: 24.sp,
                             ),
-                            Text(
-                              '112/23 Park Street',
-                              style: GoogleFontStyles.h6(
-                                color: Colors.white.withOpacity(0.7),
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              child: Container(
+                                width: 8.w,
+                                height: 8.h,
+                                decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      Stack(
-                        children: [
-                          Icon(
-                            Icons.notifications_outlined,
-                            color: Colors.white,
-                            size: 24.sp,
+                      ],
+                    ),
+                    SizedBox(height: 20.h),
+                    // Search Bar ===================
+                    GestureDetector(
+                      onTap: (){
+                        //==== Nav to search screen ===
+                        Get.toNamed(Routes.SEARCH_HAIRDRESSER);
+                      },
+                      child: AbsorbPointer(
+                        child: CustomTextField(
+                          controller: _searchController,
+                          hintText: 'Search',
+                          hintStyle: GoogleFontStyles.h5(
+                            color: Colors.white.withOpacity(0.5),
                           ),
-                          Positioned(
-                            right: 0,
-                            top: 0,
-                            child: Container(
-                              width: 8.w,
-                              height: 8.h,
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
+                          fillColor: const Color(0xFF2C2C2E),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: Colors.white.withOpacity(0.5),
+                            size: 20.sp,
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20.h),
-                  // Search Bar ===================
-                  GestureDetector(
-                    onTap: (){
-                      //==== Nav to search screen ===
-                      Get.toNamed(Routes.SEARCH_HAIRDRESSER);
-                    },
-                    child: AbsorbPointer(
-                      child: CustomTextField(
-                        controller: _searchController,
-                        hintText: 'Search',
-                        hintStyle: GoogleFontStyles.h5(
-                          color: Colors.white.withOpacity(0.5),
-                        ),
-                        fillColor: const Color(0xFF2C2C2E),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.white.withOpacity(0.5),
-                          size: 20.sp,
-                        ),
-                        suffixIcon: Icon(
-                          Icons.tune,
-                          color: Colors.white.withOpacity(0.5),
-                          size: 20.sp,
+                          suffixIcon: Icon(
+                            Icons.tune,
+                            color: Colors.white.withOpacity(0.5),
+                            size: 20.sp,
+                          ),
                         ),
                       ),
                     ),
-                  ),
 
-                  SizedBox(height: 20.h),
+                    SizedBox(height: 20.h),
 
-                  // Recent Search Section
-                  Text(
-                    'Recent Search Hairdresser',
-                    style: GoogleFontStyles.h5(fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(height: 12.h),
-                  // Recent Search Tags
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: recentSearch.map((value) {
-                        return Padding(
-                          padding: EdgeInsets.only(right: 8.w),
-                          child: _buildSearchTag(value),
-                        );
-                      }).toList(),
+                    // Recent Search Section
+                    Text(
+                      'Recent Search Hairdresser',
+                      style: GoogleFontStyles.h5(fontWeight: FontWeight.w600),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 12.h),
+                    // Recent Search Tags
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: recentSearch.map((value) {
+                          return Padding(
+                            padding: EdgeInsets.only(right: 8.w),
+                            child: _buildSearchTag(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
 
             // ================= Content Section ===================
-            Expanded(
+            Flexible(
+              flex: 2,
               child: ListView(
                 children: [
                   SizedBox(height: 20.h),
@@ -199,16 +203,14 @@ class _HomeViewState extends State<HomeView> {
                   SizedBox(height: 12.h),
 
                   // Top Rated Grid
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      child: Row(
-                        children: [
-                          Expanded(child: TopRatedCard(index: 0)),
-                          SizedBox(width: 12.w),
-                          Expanded(child: TopRatedCard(index:1)),
-                        ],
-                      ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w),
+                    child: Row(
+                      children: [
+                        Expanded(child: TopRatedCard(index: 0)),
+                        SizedBox(width: 12.w),
+                        Expanded(child: TopRatedCard(index:1)),
+                      ],
                     ),
                   ),
                   SizedBox(height: 20.h),
