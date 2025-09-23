@@ -1,4 +1,3 @@
-import 'package:barberita/app/modules/book_appointment/views/location_selection_map_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
@@ -7,6 +6,9 @@ import '../modules/authentication/views/signin_view.dart';
 import '../modules/authentication/views/signup_view.dart';
 import '../modules/book_appointment/bindings/book_appointment_binding.dart';
 import '../modules/book_appointment/views/book_appointment_view.dart';
+import '../modules/book_appointment/views/location_selection_map_view.dart';
+import '../modules/booking_management/bindings/booking_management_binding.dart';
+import '../modules/booking_management/views/booking_management_view.dart';
 import '../modules/hairdresser_details/bindings/hairdresser_details_binding.dart';
 import '../modules/hairdresser_details/views/hairdresser_details_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -81,6 +83,11 @@ class AppPages {
       name: _Paths.LOCATIONSELECTORMAP,
       page: () => const LocationSelectionMapView(),
       binding: BookAppointmentBinding(),
+    ),
+    GetPage(
+      name: _Paths.BOOKING_MANAGEMENT,
+      page: () =>  BookingManagementView(),
+      binding: BookingManagementBinding(),
     ),
   ];
 }

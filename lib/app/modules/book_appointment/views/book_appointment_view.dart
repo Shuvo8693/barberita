@@ -1,6 +1,7 @@
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
+import 'package:barberita/common/custom_appbar/custom_appbar.dart';
 import 'package:flutter/material.dart' hide DatePickerTheme;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
@@ -24,25 +25,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.darkJungleGreenBGColor,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-            size: 20.sp,
-          ),
-        ),
-        title: Text(
-          'Book Appointment',
-          style: GoogleFontStyles.h4(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
+        appBar: CustomAppBar(title: 'Book Appointment',),
       body: Padding(
         padding: EdgeInsets.all(20.w),
         child: Column(
@@ -238,6 +221,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
             // Continue Button
             CustomButton(
               onTap: () {
+                Get.toNamed(Routes.BOOKING_MANAGEMENT);
                 if (selectedDate != null && selectedTime != null) {
                   // Handle appointment booking
                   _bookAppointment();
@@ -347,8 +331,9 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
+              Get.toNamed(Routes.BOOKING_MANAGEMENT);
+              Navigator.pop(context);
+
             },
             child: Text(
               'OK',

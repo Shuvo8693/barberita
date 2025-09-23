@@ -1,3 +1,4 @@
+import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
@@ -58,14 +59,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: _buildLeading(context),
       backgroundColor: transparent
           ? Colors.transparent
-          : (backgroundColor ?? AppColors.primaryColor),
+          : (backgroundColor ?? AppColors.darkJungleGreenBGColor),
       foregroundColor: foregroundColor,
       elevation: transparent ? 0 : elevation,
       centerTitle: centerTitle,
       automaticallyImplyLeading: automaticallyImplyLeading,
       titleSpacing: titleSpacing,
       leadingWidth: leadingWidth,
-      titleTextStyle: titleTextStyle,
+      titleTextStyle: titleTextStyle?? GoogleFontStyles.h4(),
       toolbarHeight: toolbarHeight,
       shape: shape,
       shadowColor: transparent ? Colors.transparent : shadowColor,
