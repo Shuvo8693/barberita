@@ -15,6 +15,8 @@ abstract class Routes {
   static const BOOK_APPOINTMENT = _Paths.BOOK_APPOINTMENT;
   static const LOCATIONSELECTORMAP = _Paths.LOCATIONSELECTORMAP;
   static const BOOKING_MANAGEMENT = _Paths.BOOKING_MANAGEMENT;
+  static const BOOKING = _Paths.BOOKING;
+  static const CUSTOMER_PROFILE = _Paths.CUSTOMER_PROFILE;
 }
 
 abstract class _Paths {
@@ -31,4 +33,6 @@ abstract class _Paths {
   static const BOOK_APPOINTMENT = '/book-appointment';
   static const LOCATIONSELECTORMAP = '/location-selector-map';
   static const BOOKING_MANAGEMENT = '/booking-management';
+  static const BOOKING = '/booking';
+  static const CUSTOMER_PROFILE = '/customer-profile';
 }

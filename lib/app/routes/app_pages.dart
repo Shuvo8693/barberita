@@ -7,8 +7,12 @@ import '../modules/authentication/views/signup_view.dart';
 import '../modules/book_appointment/bindings/book_appointment_binding.dart';
 import '../modules/book_appointment/views/book_appointment_view.dart';
 import '../modules/book_appointment/views/location_selection_map_view.dart';
+import '../modules/booking/bindings/booking_binding.dart';
+import '../modules/booking/views/booking_view.dart';
 import '../modules/booking_management/bindings/booking_management_binding.dart';
 import '../modules/booking_management/views/booking_management_view.dart';
+import '../modules/customer_profile/bindings/customer_profile_binding.dart';
+import '../modules/customer_profile/views/customer_profile_view.dart';
 import '../modules/hairdresser_details/bindings/hairdresser_details_binding.dart';
 import '../modules/hairdresser_details/views/hairdresser_details_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -86,8 +90,20 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.BOOKING_MANAGEMENT,
-      page: () =>  BookingManagementView(),
+      page: () => BookingManagementView(),
       binding: BookingManagementBinding(),
+    ),
+    GetPage(
+      name: _Paths.BOOKING,
+      page: () => const BookingView(),
+      binding: BookingBinding(),
+      transition: Transition.noTransition
+    ),
+    GetPage(
+      name: _Paths.CUSTOMER_PROFILE,
+      page: () => const CustomerProfileView(),
+      binding: CustomerProfileBinding(),
+        transition: Transition.noTransition
     ),
   ];
 }

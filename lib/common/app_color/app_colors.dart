@@ -6,6 +6,7 @@ class AppColors{
   static const secondaryAppColor= Color(0xFF55493E); //====
   static const darkJungleGreenBGColor= Color(0xFF1E2023);
   static const almondColor= Color(0xFFEBDFCE);
+  static const snowDriftColor= Color(0xFFF9F9F9);
   static final scaffoldBgColor= Colors.grey[50];
 
 
