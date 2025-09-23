@@ -1,4 +1,5 @@
 import 'package:barberita/app/modules/booking_management/widgets/BookingManagementWidget.dart';
+import 'package:barberita/app/modules/booking_management/model/booking_management_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
