@@ -6,6 +6,7 @@ class AppSvg{
   static String explore_viewSvg="$baseUrl/explore_view.svg";
   static String lockSvg="$baseUrl/lock.svg";
   static String unlockSvg="$baseUrl/unlock.svg";
+  static String navPinSvg = "$baseUrl/nav_pin.svg";
 
 
 

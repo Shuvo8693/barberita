@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 
+import 'package:barberita/app/modules/book_appointment/widgets/location_selection_bottomsheet.dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
 import 'package:barberita/common/custom_map/reusable_map.dart';
 import 'package:flutter/material.dart';
@@ -104,13 +105,20 @@ class _LocationSelectionMapViewState extends State<LocationSelectionMapView> {
               ),
             ),
 
-            /// Language Selector Popup
-            /// Bottom Sheet with TabBarView
+            /// Bottom Sheet
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: LocationSelectionBottomSheet(
+                currentAddress: ' Dhaka,uttara',
+              ),
+            ),
+
           ],
         ),
       ),
     );
   }
+
 
   /// convert svg to bitmap
   Future<BitmapDescriptor> bitmapDescriptorFromSvgAsset([Size size = const Size(60, 60),]) async {

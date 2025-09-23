@@ -1,9 +1,11 @@
+import 'package:barberita/common/app_images/app_svg.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:barberita/common/widgets/custom_text_field.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LocationSelectionBottomSheet extends StatefulWidget {
   final String? currentAddress;
@@ -63,15 +65,10 @@ class _LocationSelectionBottomSheetState extends State<LocationSelectionBottomSh
           CustomTextField(
             controller: _addressController,
             hintText: 'Enter your address',
-            fillColor: Colors.white.withOpacity(0.9),
-            prefixIcon: Container(
-              width: 8.w,
-              height: 8.h,
-              margin: EdgeInsets.all(16.w),
-              decoration: const BoxDecoration(
-                color: Colors.red,
-                shape: BoxShape.circle,
-              ),
+            fillColor: AppColors.darkJungleGreenBGColor,
+            prefixIcon: Padding(
+              padding:  EdgeInsets.all(8.0.sp),
+              child: SvgPicture.asset(AppSvg.navPinSvg,height: 20.h,),
             ),
           ),
 
@@ -101,7 +98,7 @@ class _LocationSelectionBottomSheetState extends State<LocationSelectionBottomSh
 }
 
 // Usage Example
-void showHomeLocationBottomSheet(BuildContext context, {String? currentAddress}) {
+void showLocationSelectionBottomSheet(BuildContext context, {String? currentAddress}) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
