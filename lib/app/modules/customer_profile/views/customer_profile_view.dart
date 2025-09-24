@@ -2,6 +2,7 @@ import 'package:barberita/app/modules/customer_profile/views/settings/settings_s
 import 'package:barberita/app/modules/customer_profile/views/support_view.dart';
 import 'package:barberita/common/app_images/network_image%20.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
+import 'package:barberita/common/bottom_menu/bottom_menu..dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -14,6 +15,7 @@ class CustomerProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: SafeArea(child: BottomMenu(2)),
       body: SafeArea(
         child: Column(
           children: [
