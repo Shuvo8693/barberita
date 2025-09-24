@@ -1,5 +1,3 @@
-import 'package:barberita/app/modules/booking/views/feedback_view.dart';
-import 'package:barberita/app/modules/booking/views/history_details_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
@@ -11,6 +9,8 @@ import '../modules/book_appointment/views/book_appointment_view.dart';
 import '../modules/book_appointment/views/location_selection_map_view.dart';
 import '../modules/booking/bindings/booking_binding.dart';
 import '../modules/booking/views/booking_view.dart';
+import '../modules/booking/views/feedback_view.dart';
+import '../modules/booking/views/history_details_view.dart';
 import '../modules/booking_management/bindings/booking_management_binding.dart';
 import '../modules/booking_management/views/booking_management_view.dart';
 import '../modules/customer_profile/bindings/customer_profile_binding.dart';
@@ -19,6 +19,8 @@ import '../modules/hairdresser_details/bindings/hairdresser_details_binding.dart
 import '../modules/hairdresser_details/views/hairdresser_details_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/notification/bindings/notification_binding.dart';
+import '../modules/notification/views/notification_view.dart';
 import '../modules/onboaring/bindings/onboaring_binding.dart';
 import '../modules/onboaring/views/onboaring_view.dart';
 import '../modules/onboaring/views/role_selection_view.dart';
@@ -96,28 +98,29 @@ class AppPages {
       binding: BookingManagementBinding(),
     ),
     GetPage(
-      name: _Paths.BOOKING,
-      page: () => const BookingView(),
-      binding: BookingBinding(),
-      transition: Transition.noTransition
-    ),
+        name: _Paths.BOOKING,
+        page: () => const BookingView(),
+        binding: BookingBinding(),
+        transition: Transition.noTransition),
     GetPage(
-      name: _Paths.FEEDBACK,
-      page: () => const FeedbackView(),
-      binding: BookingBinding(),
-      transition: Transition.noTransition
-    ),
+        name: _Paths.FEEDBACK,
+        page: () => const FeedbackView(),
+        binding: BookingBinding(),
+        transition: Transition.noTransition),
     GetPage(
-      name: _Paths.HISTORYDETAILS,
-      page: () => const HistoryDetailsView(),
-      binding: BookingBinding(),
-      transition: Transition.noTransition
-    ),
+        name: _Paths.HISTORYDETAILS,
+        page: () => const HistoryDetailsView(),
+        binding: BookingBinding(),
+        transition: Transition.noTransition),
     GetPage(
-      name: _Paths.CUSTOMER_PROFILE,
-      page: () => const CustomerProfileView(),
-      binding: CustomerProfileBinding(),
-        transition: Transition.noTransition
+        name: _Paths.CUSTOMER_PROFILE,
+        page: () => const CustomerProfileView(),
+        binding: CustomerProfileBinding(),
+        transition: Transition.noTransition),
+    GetPage(
+      name: _Paths.NOTIFICATION,
+      page: () => const NotificationView(),
+      binding: NotificationBinding(),
     ),
   ];
 }

@@ -1,5 +1,3 @@
-import 'package:barberita/app/modules/customer_profile/views/settings/privacy_policy_screen.dart';
-import 'package:barberita/app/modules/customer_profile/views/settings/terms_service_screen.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
 import 'package:barberita/common/widgets/custom_button.dart';

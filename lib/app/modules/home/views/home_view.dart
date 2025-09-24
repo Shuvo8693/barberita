@@ -71,33 +71,25 @@ class _HomeViewState extends State<HomeView> {
                           ],
                         ),
                       ),
-                      Stack(
-                        children: [
-                          Icon(
+                      GestureDetector(
+                        onTap: (){
+                          Get.toNamed(Routes.NOTIFICATION);
+                        },
+                        child: Badge.count(
+                          count: 4,
+                          child: Icon(
                             Icons.notifications_outlined,
                             color: Colors.white,
                             size: 24.sp,
                           ),
-                          Positioned(
-                            right: 0,
-                            top: 0,
-                            child: Container(
-                              width: 8.w,
-                              height: 8.h,
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
                   SizedBox(height: 20.h),
                   // Search Bar ===================
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       //==== Nav to search screen ===
                       Get.toNamed(Routes.SEARCH_HAIRDRESSER);
                     },
@@ -180,8 +172,7 @@ class _HomeViewState extends State<HomeView> {
                       onTap: () {
                         // Handle booking action
                       },
-                    )
-                    ,
+                    ),
                   ),
 
                   SizedBox(height: 20.h),
@@ -207,7 +198,7 @@ class _HomeViewState extends State<HomeView> {
                       children: [
                         Expanded(child: TopRatedCard(index: 0)),
                         SizedBox(width: 12.w),
-                        Expanded(child: TopRatedCard(index:1)),
+                        Expanded(child: TopRatedCard(index: 1)),
                       ],
                     ),
                   ),
@@ -259,9 +250,6 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
-
-
-
 
   @override
   void dispose() {
