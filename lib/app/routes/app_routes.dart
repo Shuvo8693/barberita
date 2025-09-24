@@ -17,6 +17,7 @@ abstract class Routes {
   static const BOOKING_MANAGEMENT = _Paths.BOOKING_MANAGEMENT;
   static const BOOKING = _Paths.BOOKING;
   static const CUSTOMER_PROFILE = _Paths.CUSTOMER_PROFILE;
+  static const FEEDBACK = _Paths.FEEDBACK;
 }
 
 abstract class _Paths {
@@ -34,5 +35,6 @@ abstract class _Paths {
   static const LOCATIONSELECTORMAP = '/location-selector-map';
   static const BOOKING_MANAGEMENT = '/booking-management';
   static const BOOKING = '/booking';
+  static const FEEDBACK = '/feedback';
   static const CUSTOMER_PROFILE = '/customer-profile';
 }

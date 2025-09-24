@@ -1,4 +1,5 @@
 import 'package:barberita/common/app_text_style/google_app_style.dart';
+import 'package:barberita/common/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
@@ -35,7 +36,6 @@ class _FeedbackViewState extends State<FeedbackView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1C1C1E),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(24.w),
@@ -123,13 +123,10 @@ class _FeedbackViewState extends State<FeedbackView> {
                     Text(
                       'Tell us your feedback',
                       style: GoogleFontStyles.h4(
-                        color: Colors.white,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-
                     SizedBox(height: 20.h),
-
                     // Star Rating
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -153,9 +150,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                         );
                       }),
                     ),
-
                     SizedBox(height: 20.h),
-
                     // Description
                     Text(
                       'Let us know how you feel about the Barber\'s\nHair cut and service',
@@ -169,34 +164,12 @@ class _FeedbackViewState extends State<FeedbackView> {
                     SizedBox(height: 24.h),
 
                     // Feedback Text Field
-                    Container(
-                      height: 120.h,
-                      padding: EdgeInsets.all(16.w),
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(12.r),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.3),
-                          width: 1,
-                        ),
-                      ),
-                      child: TextField(
+                    CustomTextField(
                         controller: _feedbackController,
-                        maxLines: null,
-                        expands: true,
-                        style: GoogleFontStyles.h6(
-                          color: Colors.white.withOpacity(0.8),
-                          height: 1.4,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Write your feedback here...',
-                          hintStyle: GoogleFontStyles.h6(
-                            color: Colors.white.withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-                    ),
+                      maxLines: 5,
+                      hintText: 'comments here ...',
+                      fillColor: Colors.transparent,
+                    )
                   ],
                 ),
               ),
@@ -218,13 +191,6 @@ class _FeedbackViewState extends State<FeedbackView> {
                   }
                 },
                 text: 'Submit',
-                textStyle: GoogleFontStyles.h4(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-                color: const Color(0xFF55493E),
-                borderRadius: 12.r,
-                height: 56.h,
               ),
 
               SizedBox(height: 16.h),
@@ -276,7 +242,7 @@ class _FeedbackViewState extends State<FeedbackView> {
             child: Text(
               'OK',
               style: GoogleFontStyles.h5(
-                color: const Color(0xFF55493E),
+                color: Colors.white,
                 fontWeight: FontWeight.w600,
               ),
             ),

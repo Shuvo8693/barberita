@@ -1,3 +1,4 @@
+import 'package:barberita/app/modules/booking/views/feedback_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
@@ -96,6 +97,12 @@ class AppPages {
     GetPage(
       name: _Paths.BOOKING,
       page: () => const BookingView(),
+      binding: BookingBinding(),
+      transition: Transition.noTransition
+    ),
+    GetPage(
+      name: _Paths.FEEDBACK,
+      page: () => const FeedbackView(),
       binding: BookingBinding(),
       transition: Transition.noTransition
     ),
