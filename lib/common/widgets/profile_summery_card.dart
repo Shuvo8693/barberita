@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:barberita/common/app_images/network_image%20.dart';
 import 'package:barberita/common/app_text_style/style.dart';
-import 'package:barberita/common/widgets/spacing.dart';
 
 import 'casess_network_image.dart';
-import 'icon_and_text.dart';
 
 class ProfileSummeryCard extends StatelessWidget {
   const ProfileSummeryCard({

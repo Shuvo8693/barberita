@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:barberita/app/routes/app_pages.dart';
-import 'package:barberita/common/app_icons/app_icons.dart';
 import 'package:barberita/common/app_string/app_string.dart';
 import 'package:barberita/common/app_text_style/style.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
-import 'package:barberita/common/url_luncher/externer_url_luncher.dart';
-import 'package:barberita/common/widgets/app_logo.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:barberita/common/widgets/custom_outlinebutton.dart';
 

@@ -1,8 +1,6 @@
 import 'package:barberita/app/modules/onboaring/widgets/onboarding_page.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_images/app_images.dart';
-import 'package:barberita/common/app_images/app_svg.dart';
-import 'package:barberita/common/svg_base64/ExtractionBase64Image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/app_color/app_colors.dart';

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
-import 'package:image_picker/image_picker.dart';
 
 
 

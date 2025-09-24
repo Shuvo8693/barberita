@@ -3,7 +3,6 @@ import 'package:barberita/app/modules/booking_management/model/booking_managemen
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'BookingManagementWidget.dart';
 
 class OrderDetailsCard extends StatelessWidget {
   final BookingData booking;

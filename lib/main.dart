@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:barberita/common/themes/light_theme.dart';
 
 import 'app/routes/app_pages.dart';
 import 'common/app_constant/app_constant.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:barberita/common/app_images/app_images.dart';
 
 import 'app_logo.dart';
 import 'notification_icon.dart';

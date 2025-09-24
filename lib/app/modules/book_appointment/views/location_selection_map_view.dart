@@ -2,7 +2,6 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:barberita/app/modules/book_appointment/widgets/location_selection_bottomsheet.dart';
-import 'package:barberita/common/custom_appbar/custom_appbar.dart';
 import 'package:barberita/common/custom_map/reusable_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

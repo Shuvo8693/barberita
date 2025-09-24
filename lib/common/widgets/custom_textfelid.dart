@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 
 import '../app_color/app_colors.dart';
-import '../app_text_style/google_styles.dart';
 
 class CustomSimpleTextField extends StatelessWidget {
   final double? horizontalPadding;

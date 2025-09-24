@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:barberita/common/app_images/app_images.dart';
 
 
 class BackgroundImage extends StatefulWidget {

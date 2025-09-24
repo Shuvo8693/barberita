@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/app_string/app_string.dart';
 import 'package:barberita/common/app_text_style/style.dart';
 

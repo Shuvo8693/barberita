@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 
 class TermsPrivacyWidget extends StatelessWidget {

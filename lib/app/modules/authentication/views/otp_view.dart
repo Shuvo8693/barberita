@@ -1,7 +1,6 @@
 
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_images/app_svg.dart';
-import 'package:barberita/common/app_logo/app_logo.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

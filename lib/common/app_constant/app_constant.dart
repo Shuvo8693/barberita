@@ -1,6 +1,5 @@
 
 
-import 'package:barberita/common/app_icons/app_icons.dart';
 import 'package:barberita/common/model/language_model.dart';
 
 class AppConstants {

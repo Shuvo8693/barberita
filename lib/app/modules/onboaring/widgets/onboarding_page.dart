@@ -1,9 +1,5 @@
 import 'package:barberita/app/modules/onboaring/views/onboaring_view.dart';
-import 'package:barberita/common/app_color/app_colors.dart';
-import 'package:barberita/common/app_images/app_images.dart';
-import 'package:barberita/common/app_images/app_svg.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
-import 'package:barberita/common/svg_base64/ExtractionBase64Image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

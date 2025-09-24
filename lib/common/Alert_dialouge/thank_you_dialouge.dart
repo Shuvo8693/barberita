@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
-import 'package:barberita/common/app_icons/app_icons.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:barberita/common/widgets/custom_outlinebutton.dart';
 

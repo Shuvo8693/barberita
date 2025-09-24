@@ -1,5 +1,4 @@
 import 'package:barberita/app/routes/app_pages.dart';
-import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
 import 'package:flutter/material.dart' hide DatePickerTheme;

@@ -11,6 +11,7 @@ class AppSvg{
   static String homeSvg = "$baseUrl/home.svg";
   static String bookingSvg = "$baseUrl/booking.svg";
   static String add_servicSvg = "$baseUrl/add_service.svg";
+  static String supportFemaleSvg = "$baseUrl/support_female.svg";
 
 
 
