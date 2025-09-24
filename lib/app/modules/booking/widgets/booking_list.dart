@@ -50,7 +50,7 @@ class BookingList extends StatelessWidget {
                   imageUrl: 'assets/images/hairdresser${index + 1}.jpg',
                   onDetailsTap: () {
                     // Navigate to booking details
-                    Get.toNamed(Routes.BOOKING_MANAGEMENT);
+                    _getView(statusType);
                   },
                 ),
               );
@@ -60,6 +60,7 @@ class BookingList extends StatelessWidget {
       ],
     );
   }
+
   String _getListTitle(BookingStatusType statusType) {
     switch (statusType) {
       case BookingStatusType.active:
@@ -68,6 +69,16 @@ class BookingList extends StatelessWidget {
         return 'Your Pending Requests';
       case BookingStatusType.history:
         return 'Booking History';
+    }
+  }
+   _getView(BookingStatusType statusType) {
+    switch (statusType) {
+      case BookingStatusType.active:
+        return Get.toNamed(Routes.BOOKING_MANAGEMENT);
+      case BookingStatusType.request:
+        return Get.toNamed(Routes.BOOKING_MANAGEMENT);
+      case BookingStatusType.history:
+        return Get.toNamed(Routes.HISTORYDETAILS);
     }
   }
 

@@ -18,6 +18,7 @@ abstract class Routes {
   static const BOOKING = _Paths.BOOKING;
   static const CUSTOMER_PROFILE = _Paths.CUSTOMER_PROFILE;
   static const FEEDBACK = _Paths.FEEDBACK;
+  static const HISTORYDETAILS = _Paths.HISTORYDETAILS;
 }
 
 abstract class _Paths {
@@ -37,4 +38,5 @@ abstract class _Paths {
   static const BOOKING = '/booking';
   static const FEEDBACK = '/feedback';
   static const CUSTOMER_PROFILE = '/customer-profile';
+  static const HISTORYDETAILS = '/history-details';
 }
