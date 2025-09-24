@@ -42,7 +42,7 @@ class BookingManagementWidget extends StatelessWidget {
               padding: EdgeInsets.all(12),
               child: CustomButton(
                 onTap: () => Navigator.pop(context),
-                text: 'Back to Home',
+                text: 'Done',
               ),
             ),
           ],
