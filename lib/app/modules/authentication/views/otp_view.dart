@@ -49,7 +49,6 @@ class _OtpViewState extends State<OtpView> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,9 +145,7 @@ class _OtpViewState extends State<OtpView> {
                     ),
                   ],
                 ),
-
                 SizedBox(height: 20.h),
-
                 GestureDetector(
                   onTap: _canResend ? _startCountdown : null,
                   child: Text(
@@ -159,12 +156,11 @@ class _OtpViewState extends State<OtpView> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 40.h),
-
                 CustomButton(
                   onTap : () {
-                    Get.toNamed(Routes.NEWPASSWORD);
+                   // Get.toNamed(Routes.NEWPASSWORD);
+                    Get.toNamed(Routes.BARBARVERIFICATION);
                     if (_otpController.text.length == 6) {
                       print('OTP: ${_otpController.text}');
                     }

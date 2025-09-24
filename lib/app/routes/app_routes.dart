@@ -20,6 +20,7 @@ abstract class Routes {
   static const FEEDBACK = _Paths.FEEDBACK;
   static const HISTORYDETAILS = _Paths.HISTORYDETAILS;
   static const NOTIFICATION = _Paths.NOTIFICATION;
+  static const BARBARVERIFICATION = _Paths.BARBARVERIFICATION;
 }
 
 abstract class _Paths {
@@ -41,4 +42,5 @@ abstract class _Paths {
   static const CUSTOMER_PROFILE = '/customer-profile';
   static const HISTORYDETAILS = '/history-details';
   static const NOTIFICATION = '/notification';
+  static const BARBARVERIFICATION = '/barbar_verification';
 }

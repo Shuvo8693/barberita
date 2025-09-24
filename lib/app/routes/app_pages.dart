@@ -1,3 +1,4 @@
+import 'package:barberita/app/modules/authentication/views/barbar_verification_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
@@ -73,6 +74,11 @@ class AppPages {
       binding: AuthenticationBinding(),
     ),
     GetPage(
+      name: _Paths.BARBARVERIFICATION,
+      page: () => BarberVerificationView(),
+      binding: AuthenticationBinding(),
+    ),
+    GetPage(
       name: _Paths.HAIRDRESSER_DETAILS,
       page: () => const HairdresserDetailsView(),
       binding: HairdresserDetailsBinding(),
@@ -119,7 +125,7 @@ class AppPages {
         transition: Transition.noTransition),
     GetPage(
       name: _Paths.NOTIFICATION,
-      page: () => const NotificationView(),
+      page: () =>  NotificationView(),
       binding: NotificationBinding(),
     ),
   ];
