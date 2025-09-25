@@ -1,3 +1,4 @@
+import 'package:barberita/app/modules/barber_home/views/review_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
@@ -135,6 +136,11 @@ class AppPages {
     GetPage(
       name: _Paths.BARBER_HOME,
       page: () => const BarberHomeView(),
+      binding: BarberHomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.REVIEW,
+      page: () => const ReviewsScreen(),
       binding: BarberHomeBinding(),
     ),
     GetPage(
