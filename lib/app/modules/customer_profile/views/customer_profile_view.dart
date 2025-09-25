@@ -1,10 +1,14 @@
 import 'package:barberita/app/modules/customer_profile/views/settings/settings_screen.dart';
 import 'package:barberita/app/modules/customer_profile/views/support_view.dart';
+import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_images/network_image%20.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/bottom_menu/bottom_menu..dart';
+import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import 'edit_profile_view.dart';
 
@@ -203,8 +207,11 @@ class CustomerProfileView extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {
-              Navigator.pop(context);
+            onPressed: () async {
+              await PrefsHelper.remove('role').then((v){
+                Get.offAllNamed(Routes.ONBOARING);
+              });
+
               // Handle logout
             },
             child: Container(

@@ -1,5 +1,7 @@
 import 'package:barberita/app/modules/booking_management/widgets/BookingManagementWidget.dart';
 import 'package:barberita/app/modules/booking_management/model/booking_management_models.dart';
+import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
+import 'package:barberita/common/widgets/custom_page_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -11,9 +13,38 @@ class BookingManagementView extends StatefulWidget {
 }
 
 class _BookingManagementViewState extends State<BookingManagementView> {
+
+  String _userRole = '';
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserRole();
+  }
+
+  Future<void> _loadUserRole() async {
+    try {
+      final role = await PrefsHelper.getString('role');
+      setState(() {
+        _userRole = role ?? '';
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _userRole = '';
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(child: CustomPageLoading());
+    }
     return BookingManagementWidget(
+      userRole: _userRole,
       booking: BookingData(
         name: 'Darlene Robertson',
         service: 'Hair Cut',

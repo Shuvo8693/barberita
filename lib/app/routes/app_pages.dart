@@ -5,6 +5,8 @@ import '../modules/authentication/views/barbar_verification_view.dart';
 import '../modules/authentication/views/new_password_view.dart';
 import '../modules/authentication/views/signin_view.dart';
 import '../modules/authentication/views/signup_view.dart';
+import '../modules/barber_add_service/bindings/barber_add_service_binding.dart';
+import '../modules/barber_add_service/views/barber_add_service_view.dart';
 import '../modules/barber_home/bindings/barber_home_binding.dart';
 import '../modules/barber_home/views/barber_home_view.dart';
 import '../modules/book_appointment/bindings/book_appointment_binding.dart';
@@ -134,6 +136,11 @@ class AppPages {
       name: _Paths.BARBER_HOME,
       page: () => const BarberHomeView(),
       binding: BarberHomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.BARBER_ADD_SERVICE,
+      page: () => const BarberAddServiceView(),
+      binding: BarberAddServiceBinding(),
     ),
   ];
 }

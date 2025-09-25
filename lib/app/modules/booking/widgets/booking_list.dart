@@ -22,14 +22,12 @@ class BookingList extends StatefulWidget {
 class _BookingListState extends State<BookingList> {
 
 
-
-
-
   @override
   void initState() {
     super.initState();
     role();
   }
+
   String? _userRole;
   role()async{
     final role = await PrefsHelper.getString('role');
@@ -37,6 +35,7 @@ class _BookingListState extends State<BookingList> {
       _userRole = role;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -67,6 +66,7 @@ class _BookingListState extends State<BookingList> {
                   price: '\$ 17.84',
                   time: '4:00 PM - 5:00 PM',
                   date: '12.12.25',
+                  role: _userRole??'',
                   status: _getStatus(widget.statusType),
                   imageUrl: 'assets/images/hairdresser${index + 1}.jpg',
                   onDetailsTap: () {
@@ -120,9 +120,17 @@ class _BookingListState extends State<BookingList> {
   String _getStatus(BookingStatusType statusType) {
     switch (statusType) {
       case BookingStatusType.active:
-        return 'Confirmed';
+        if(_userRole=='User'){
+          return 'Confirmed';
+        }else{
+          return 'In-Progress';
+        }
       case BookingStatusType.request:
-        return 'Pending';
+        if(_userRole=='User'){
+          return 'Pending';
+        }else{
+          return 'Pending';
+        }
       case BookingStatusType.history:
         return 'Completed';
     }

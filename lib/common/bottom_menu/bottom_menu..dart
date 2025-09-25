@@ -52,7 +52,11 @@ class _BottomMenuState extends State<BottomMenu> {
         }
         break;
       case 1:
-        Get.offAllNamed(Routes.BOOKING);
+        if(userRole=='User'){
+          Get.offAllNamed(Routes.BOOKING);
+        }else if(userRole=='Barber'){
+          Get.offAllNamed(Routes.BARBER_ADD_SERVICE);
+        }
         break;
       case 2:
        Get.offAllNamed(Routes.CUSTOMER_PROFILE);
@@ -92,7 +96,7 @@ class _BottomMenuState extends State<BottomMenu> {
           unselectedFontSize: 12.sp,
             items: [
               _buildBottomNavItem(AppSvg.homeSvg, 'Home'),
-              _buildBottomNavItem(AppSvg.bookingSvg, 'Booking'),
+              _buildBottomNavItem(userRole=='User'?AppSvg.bookingSvg:AppSvg.add_servicSvg, userRole=='User'?'Booking':'Add Service'),
               _buildBottomNavItem(AppSvg.personSvg, 'Profile'),
             ],
           ),

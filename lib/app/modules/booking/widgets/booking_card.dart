@@ -11,6 +11,7 @@ class BookingCard extends StatelessWidget {
   final String date;
   final String status;
   final String imageUrl;
+  final String role;
   final VoidCallback onDetailsTap;
 
   const BookingCard({
@@ -24,6 +25,7 @@ class BookingCard extends StatelessWidget {
     required this.status,
     required this.imageUrl,
     required this.onDetailsTap,
+    required this.role,
   });
 
   @override
@@ -182,8 +184,8 @@ class BookingCard extends StatelessWidget {
         return Colors.orange;
       case 'completed':
         return Colors.blue;
-      case 'cancelled':
-        return Colors.red;
+      case 'in-progress':
+        return Colors.green;
       default:
         return Colors.white;
     }
