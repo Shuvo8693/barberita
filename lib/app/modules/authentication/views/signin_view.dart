@@ -3,6 +3,7 @@ import 'package:barberita/app/modules/authentication/views/verify_phone_view.dar
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_logo/app_logo.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
+import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:barberita/common/widgets/custom_textbutton_with_icon.dart';
 import 'package:barberita/common/widgets/dont_have_an_account.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,18 @@ class _SignInViewState extends State<SignInView> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-
+@override
+  void initState() {
+    super.initState();
+    role();
+  }
+  String? _userRole;
+  role()async{
+    final role = await PrefsHelper.getString('role');
+    setState(() {
+      _userRole = role;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,7 +132,12 @@ class _SignInViewState extends State<SignInView> {
                 CustomButton(
                   onTap: () {
                     // Add login logic here
-                    Get.toNamed(Routes.HOME);
+                    if(_userRole=='User'){
+                      Get.toNamed(Routes.HOME);
+                    }else if(_userRole=='Barber'){
+                      Get.toNamed(Routes.BARBER_HOME);
+                    }
+                   //----------------x------------------
                     if (_phoneController.text.isNotEmpty &&
                         _passwordController.text.isNotEmpty) {
                       // Navigate to home or show success

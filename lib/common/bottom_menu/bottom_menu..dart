@@ -1,4 +1,5 @@
 import 'package:barberita/common/app_text_style/google_app_style.dart';
+import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,10 +19,19 @@ class BottomMenu extends StatefulWidget {
 
 class _BottomMenuState extends State<BottomMenu> {
   late int _selectedIndex;
+  String? userRole;
   @override
   void initState() {
     super.initState();
+    role();
     _selectedIndex = widget.menuIndex; // Set initial index
+  }
+
+  role()async{
+    final role = await PrefsHelper.getString('role');
+    setState(() {
+      userRole = role;
+    });
   }
 
   void _onItemTapped(int index) {
@@ -35,7 +45,11 @@ class _BottomMenuState extends State<BottomMenu> {
     // Navigate to corresponding pages
     switch (index)  {
       case 0 :
-        Get.offAllNamed(Routes.HOME);
+        if(userRole=='User'){
+          Get.offAllNamed(Routes.HOME);
+        }else if(userRole=='Barber'){
+          Get.offAllNamed(Routes.BARBER_HOME);
+        }
         break;
       case 1:
         Get.offAllNamed(Routes.BOOKING);

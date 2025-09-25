@@ -21,6 +21,7 @@ abstract class Routes {
   static const HISTORYDETAILS = _Paths.HISTORYDETAILS;
   static const NOTIFICATION = _Paths.NOTIFICATION;
   static const BARBARVERIFICATION = _Paths.BARBARVERIFICATION;
+  static const BARBER_HOME = _Paths.BARBER_HOME;
 }
 
 abstract class _Paths {
@@ -43,4 +44,5 @@ abstract class _Paths {
   static const HISTORYDETAILS = '/history-details';
   static const NOTIFICATION = '/notification';
   static const BARBARVERIFICATION = '/barbar_verification';
+  static const BARBER_HOME = '/barber-home';
 }

@@ -1,10 +1,12 @@
-import 'package:barberita/app/modules/authentication/views/barbar_verification_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
+import '../modules/authentication/views/barbar_verification_view.dart';
 import '../modules/authentication/views/new_password_view.dart';
 import '../modules/authentication/views/signin_view.dart';
 import '../modules/authentication/views/signup_view.dart';
+import '../modules/barber_home/bindings/barber_home_binding.dart';
+import '../modules/barber_home/views/barber_home_view.dart';
 import '../modules/book_appointment/bindings/book_appointment_binding.dart';
 import '../modules/book_appointment/views/book_appointment_view.dart';
 import '../modules/book_appointment/views/location_selection_map_view.dart';
@@ -125,8 +127,13 @@ class AppPages {
         transition: Transition.noTransition),
     GetPage(
       name: _Paths.NOTIFICATION,
-      page: () =>  NotificationView(),
+      page: () => NotificationView(),
       binding: NotificationBinding(),
+    ),
+    GetPage(
+      name: _Paths.BARBER_HOME,
+      page: () => const BarberHomeView(),
+      binding: BarberHomeBinding(),
     ),
   ];
 }

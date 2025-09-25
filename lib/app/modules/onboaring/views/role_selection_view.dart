@@ -1,6 +1,7 @@
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/app_logo/app_logo.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
+import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -53,8 +54,13 @@ class _RoleSelectionViewState extends State<RoleSelectionView> {
               const Spacer(),
 
               CustomButton(
-                  onTap: (){
-                    Navigator.pushReplacementNamed(context, '/signup',arguments: {'role':_selectedRole});
+                  onTap: ()async{
+                    if(_selectedRole !=null ){
+                     await PrefsHelper.setString('role',_selectedRole);
+                     final role = await PrefsHelper.getString('role');
+                     print(role);
+                     Navigator.pushReplacementNamed(context, '/signup',arguments: {'role':_selectedRole});
+                    }
                   },
                   text: 'Confirm'
               ),
@@ -76,6 +82,7 @@ class _RoleSelectionViewState extends State<RoleSelectionView> {
         setState(() {
           _selectedRole = role;
         });
+
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
