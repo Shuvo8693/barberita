@@ -61,10 +61,10 @@ class ServiceItemCard extends StatelessWidget {
                 ),
               ),
               Text(
-                service.status,
+                service.isActive ?'Open Now':'Closed',
                 style: GoogleFontStyles.customSize(
                   size: 10.sp,
-                  color: service.status == 'Open Now' ? Colors.green : Colors.red,
+                  color: service.isActive ? Colors.green : Colors.red,
                 ),
               ),
               SizedBox(height: 4.h),
