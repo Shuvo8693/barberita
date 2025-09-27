@@ -55,7 +55,7 @@ class _BottomMenuState extends State<BottomMenu> {
         if(userRole=='User'){
           Get.offAllNamed(Routes.BOOKING);
         }else if(userRole=='Barber'){
-          Get.offAllNamed(Routes.BARBER_ADD_SERVICE);
+          Get.offAllNamed(Routes.SERVICEMANAGEMENT);
         }
         break;
       case 2:

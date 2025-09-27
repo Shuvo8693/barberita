@@ -1,3 +1,4 @@
+import 'package:barberita/app/modules/barber_add_service/views/service_management_view.dart';
 import 'package:barberita/app/modules/barber_home/views/review_view.dart';
 import 'package:get/get.dart';
 
@@ -146,6 +147,11 @@ class AppPages {
     GetPage(
       name: _Paths.BARBER_ADD_SERVICE,
       page: () => const BarberAddServiceView(),
+      binding: BarberAddServiceBinding(),
+    ),
+    GetPage(
+      name: _Paths.SERVICEMANAGEMENT,
+      page: () => const ServiceManagementView(),
       binding: BarberAddServiceBinding(),
     ),
   ];
