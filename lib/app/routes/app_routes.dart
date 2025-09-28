@@ -25,6 +25,7 @@ abstract class Routes {
   static const BARBER_ADD_SERVICE = _Paths.BARBER_ADD_SERVICE;
   static const REVIEW = _Paths.REVIEW;
   static const SERVICEMANAGEMENT = _Paths.SERVICEMANAGEMENT;
+  static const FAVOURITE = _Paths.FAVOURITE;
 }
 
 abstract class _Paths {
@@ -51,4 +52,5 @@ abstract class _Paths {
   static const BARBER_ADD_SERVICE = '/barber-add-service';
   static const SERVICEMANAGEMENT = '/service_management';
   static const REVIEW = '/review';
+  static const FAVOURITE = '/favourite';
 }

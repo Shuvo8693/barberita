@@ -1,5 +1,3 @@
-import 'package:barberita/app/modules/barber_add_service/views/service_management_view.dart';
-import 'package:barberita/app/modules/barber_home/views/review_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
@@ -9,8 +7,10 @@ import '../modules/authentication/views/signin_view.dart';
 import '../modules/authentication/views/signup_view.dart';
 import '../modules/barber_add_service/bindings/barber_add_service_binding.dart';
 import '../modules/barber_add_service/views/barber_add_service_view.dart';
+import '../modules/barber_add_service/views/service_management_view.dart';
 import '../modules/barber_home/bindings/barber_home_binding.dart';
 import '../modules/barber_home/views/barber_home_view.dart';
+import '../modules/barber_home/views/review_view.dart';
 import '../modules/book_appointment/bindings/book_appointment_binding.dart';
 import '../modules/book_appointment/views/book_appointment_view.dart';
 import '../modules/book_appointment/views/location_selection_map_view.dart';
@@ -22,6 +22,8 @@ import '../modules/booking_management/bindings/booking_management_binding.dart';
 import '../modules/booking_management/views/booking_management_view.dart';
 import '../modules/customer_profile/bindings/customer_profile_binding.dart';
 import '../modules/customer_profile/views/customer_profile_view.dart';
+import '../modules/favourite/bindings/favourite_binding.dart';
+import '../modules/favourite/views/favourite_view.dart';
 import '../modules/hairdresser_details/bindings/hairdresser_details_binding.dart';
 import '../modules/hairdresser_details/views/hairdresser_details_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -153,6 +155,11 @@ class AppPages {
       name: _Paths.SERVICEMANAGEMENT,
       page: () => const ServiceManagementView(),
       binding: BarberAddServiceBinding(),
+    ),
+    GetPage(
+      name: _Paths.FAVOURITE,
+      page: () => const FavouriteView(),
+      binding: FavouriteBinding(),
     ),
   ];
 }

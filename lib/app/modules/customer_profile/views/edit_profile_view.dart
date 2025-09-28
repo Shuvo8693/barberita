@@ -20,6 +20,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController _genderController = TextEditingController(text: 'emilytarsai@gmail.com');
   final TextEditingController _phoneController = TextEditingController(text: '+1234 5678 0874');
   final TextEditingController _addressController = TextEditingController(text: '112/23 Park Street');
+  final TextEditingController _experiencesController = TextEditingController(text: '3 years');
+  final TextEditingController _aboutSkillsController = TextEditingController(text: 'about my skill iam lks hkld');
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +83,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 _buildFormField('Mobile Number', _phoneController),
                 SizedBox(height: 16.h),
                 _buildFormField('Address', _addressController),
+                SizedBox(height: 16.h),
+                _buildFormField('Experience', _experiencesController),
+                SizedBox(height: 16.h),
+                _buildFormField('About your skill', _aboutSkillsController,maxLine: 4),
 
                 SizedBox(height: 40.h),
 
@@ -104,7 +110,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  Widget _buildFormField(String label, TextEditingController controller) {
+  Widget _buildFormField(String label, TextEditingController controller, {int? maxLine}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -116,6 +122,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         CustomTextField(
           controller: controller,
           fillColor: const Color(0xFF2C2C2E),
+          maxLines: maxLine??1,
         ),
       ],
     );

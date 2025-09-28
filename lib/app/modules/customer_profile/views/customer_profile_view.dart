@@ -5,6 +5,7 @@ import 'package:barberita/common/app_images/network_image%20.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/bottom_menu/bottom_menu..dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
+import 'package:barberita/common/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -13,9 +14,19 @@ import 'package:get/get_core/src/get_main.dart';
 import 'edit_profile_view.dart';
 
 // Profile Screen (Main)
-class CustomerProfileView extends StatelessWidget {
+class CustomerProfileView extends StatefulWidget {
   const CustomerProfileView({super.key});
 
+  @override
+  State<CustomerProfileView> createState() => _CustomerProfileViewState();
+}
+
+class _CustomerProfileViewState extends State<CustomerProfileView> {
+  @override
+  void initState() {
+    super.initState();
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +44,9 @@ class CustomerProfileView extends StatelessWidget {
                   // Profile Image
                   CircleAvatar(
                     radius: 60.r,
-                    backgroundImage:  NetworkImage(AppNetworkImage.saloonHairMen2Img),
+                    backgroundImage: NetworkImage(
+                      AppNetworkImage.saloonHairMen2Img,
+                    ),
                     backgroundColor: Colors.grey[600],
                   ),
                   SizedBox(height: 16.h),
@@ -59,87 +72,131 @@ class CustomerProfileView extends StatelessWidget {
 
             // Menu Options
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Column(
-                  children: [
-                    _buildMenuItem(
-                      icon: Icons.person_outline,
-                      title: 'Edit Profile',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const EditProfileScreen()),
-                        );
-                      },
-                    ),
-
-                    SizedBox(height: 16.h),
-
-                    _buildMenuItem(
-                      icon: Icons.settings_outlined,
-                      title: 'Settings',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const SettingsScreen()),
-                        );
-                      },
-                    ),
-
-                    SizedBox(height: 16.h),
-
-                    _buildMenuItem(
-                      icon: Icons.support_agent_outlined,
-                      title: 'Support',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const SupportScreen()),
-                        );
-                      },
-                    ),
-
-                    const Spacer(),
-
-                    // Log Out Button
-                    GestureDetector(
-                      onTap: () => _showLogoutDialog(context),
-                      child: Container(
-                        padding: EdgeInsets.all(16.w),
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(12.r),
-                          border: Border.all(color: Colors.red.withOpacity(0.3), width: 1),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.logout,
-                              color: Colors.red,
-                              size: 24.sp,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: Column(
+                    children: [
+                      _buildMenuItem(
+                        icon: Icons.person_outline,
+                        title: 'Edit Profile',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const EditProfileScreen(),
                             ),
-                            SizedBox(width: 16.w),
-                            Text(
-                              'Log Out',
-                              style: GoogleFontStyles.h5(
+                          );
+                        },
+                      ),
+
+                      SizedBox(height: 16.h),
+
+                      _buildMenuItem(
+                        icon: Icons.settings_outlined,
+                        title: 'Settings',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SettingsScreen(),
+                            ),
+                          );
+                        },
+                      ),
+
+                      SizedBox(height: 16.h),
+
+                      _buildMenuItem(
+                        icon: Icons.support_agent_outlined,
+                        title: 'Support',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SupportScreen(),
+                            ),
+                          );
+                        },
+                      ),
+
+                      SizedBox(height: 16.h),
+
+                      _buildMenuItem(
+                        icon: Icons.reviews,
+                        title: 'Review',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SupportScreen(),
+                            ),
+                          );
+                        },
+                      ),
+
+                      SizedBox(height: 16.h),
+
+                      _buildMenuItem(
+                        icon: Icons.switch_right,
+                        title: 'Active Status',
+                        value: true,
+                        isActiveSwitch: true,
+                        onChanged: (value) {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SupportScreen(),
+                            ),
+                          );
+                        },
+                      ),
+
+                      verticalSpacing(40.h),
+
+                      // Log Out Button
+                      GestureDetector(
+                        onTap: () => _showLogoutDialog(context),
+                        child: Container(
+                          padding: EdgeInsets.all(16.w),
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(12.r),
+                            border: Border.all(
+                              color: Colors.red.withOpacity(0.3),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.logout,
                                 color: Colors.red,
-                                fontWeight: FontWeight.w500,
+                                size: 24.sp,
                               ),
-                            ),
-                            const Spacer(),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              color: Colors.red,
-                              size: 16.sp,
-                            ),
-                          ],
+                              SizedBox(width: 16.w),
+                              Text(
+                                'Log Out',
+                                style: GoogleFontStyles.h5(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const Spacer(),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.red,
+                                size: 16.sp,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
 
-                    SizedBox(height: 100.h), // Space for bottom nav
-                  ],
+                      SizedBox(height: 50.h), // Space for bottom nav
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -149,7 +206,14 @@ class CustomerProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuItem({required IconData icon, required String title, required VoidCallback onTap}) {
+  Widget _buildMenuItem({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+    bool isActiveSwitch = false,
+    bool value = true,
+    Function(bool value)? onChanged,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -160,11 +224,7 @@ class CustomerProfileView extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(
-              icon,
-              color: Colors.white,
-              size: 24.sp,
-            ),
+            Icon(icon, color: Colors.white, size: 24.sp),
             SizedBox(width: 16.w),
             Text(
               title,
@@ -174,10 +234,17 @@ class CustomerProfileView extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            Icon(
+            isActiveSwitch
+                ? Switch(
+                value: value,
+                onChanged: onChanged,
+              padding: EdgeInsets.all(0),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              activeColor: Colors.green,
+            ):Icon(
               Icons.arrow_forward_ios,
               color: Colors.white.withOpacity(0.5),
-              size: 16.sp,
+              size: 16.sp
             ),
           ],
         ),
@@ -192,7 +259,10 @@ class CustomerProfileView extends StatelessWidget {
         backgroundColor: const Color(0xFF2C2C2E),
         title: Text(
           'Log out Account',
-          style: GoogleFontStyles.h4(color: Colors.white, fontWeight: FontWeight.w600),
+          style: GoogleFontStyles.h4(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         content: Text(
           'Do you want to log out your profile?',
@@ -208,7 +278,7 @@ class CustomerProfileView extends StatelessWidget {
           ),
           TextButton(
             onPressed: () async {
-              await PrefsHelper.remove('role').then((v){
+              await PrefsHelper.remove('role').then((v) {
                 Get.offAllNamed(Routes.ONBOARING);
               });
 
@@ -222,7 +292,10 @@ class CustomerProfileView extends StatelessWidget {
               ),
               child: Text(
                 'Log Out',
-                style: GoogleFontStyles.h5(color: Colors.white, fontWeight: FontWeight.w600),
+                style: GoogleFontStyles.h5(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),
@@ -231,6 +304,3 @@ class CustomerProfileView extends StatelessWidget {
     );
   }
 }
-
-
-
