@@ -1,3 +1,4 @@
+import 'package:barberita/app/modules/barber_home/views/review_view.dart';
 import 'package:barberita/app/modules/customer_profile/views/settings/settings_screen.dart';
 import 'package:barberita/app/modules/customer_profile/views/support_view.dart';
 import 'package:barberita/app/routes/app_pages.dart';
@@ -129,7 +130,7 @@ class _CustomerProfileViewState extends State<CustomerProfileView> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const SupportScreen(),
+                              builder: (context) => const ReviewsScreen(),
                             ),
                           );
                         },

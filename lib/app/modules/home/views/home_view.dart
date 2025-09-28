@@ -144,17 +144,36 @@ class _HomeViewState extends State<HomeView> {
               child: ListView(
                 children: [
                   SizedBox(height: 20.h),
-
                   // Favourite Section
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: Text(
-                      'Favourite',
-                      style: GoogleFontStyles.h5(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                        child: Text(
+                          'Favourite',
+                          style: GoogleFontStyles.h5(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-                    ),
+                      GestureDetector(
+                        onTap: (){
+                          Get.toNamed(Routes.FAVOURITE);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.w),
+                          child: Text(
+                            'See All',
+                            style: GoogleFontStyles.h5(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
 
                   SizedBox(height: 12.h),
