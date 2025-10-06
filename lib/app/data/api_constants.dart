@@ -4,14 +4,14 @@ class ApiConstants{
   static String googleBaseUrl="https://maps.googleapis.com/maps/api/place/autocomplete/json";
   static String estimatedTimeUrl="https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&";
    /// App Url
-    static String baseUrl="https://radwan5000.sobhoy.com";
-    static String  imageBaseUrl="http://10.0.80.205:9090";
-    static String socketUrl="http://radwan5000.sobhoy.com";
+    static String baseUrl="https://faisal8083.merinasib.shop";
+    static String imageBaseUrl="https://faisal8083.merinasib.shop";
+    static String socketUrl="https://faisal8083.merinasib.shop";
 
 
 ///>>>>>>>>>>>>>>>>>>>>>>>>>>> Api End point >>>>>>>>>>>>>>>>>>>
 
-static String registerUrl= '/api/v1/user/register';
+static String registerUrl= '/api/v1/auth/register';
 static String verifyOtpUrl= '/api/v1/user/verify-otp';
 static String verifyForgotOtpUrl(String userMail) =>  '/api/v1/user/verify-forget-otp?email=$userMail';
 static String searchMechanicUrl(String service) =>  '/api/v1/mechanic/all?serviceName=$service';

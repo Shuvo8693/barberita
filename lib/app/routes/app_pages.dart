@@ -1,3 +1,4 @@
+import 'package:barberita/app/modules/authentication/views/otp_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
@@ -69,6 +70,11 @@ class AppPages {
     GetPage(
       name: _Paths.SIGNUP,
       page: () => SignUpView(),
+      binding: AuthenticationBinding(),
+    ),
+    GetPage(
+      name: _Paths.SIGNUP,
+      page: () => OtpView(),
       binding: AuthenticationBinding(),
     ),
     GetPage(

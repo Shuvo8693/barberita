@@ -42,8 +42,8 @@ class _RoleSelectionViewState extends State<RoleSelectionView> {
               SizedBox(height: 60.h),
               // Role Buttons
               _buildRoleButton(
-                role: 'User',
-                isSelected: _selectedRole == 'User',
+                role: 'Customer',
+                isSelected: _selectedRole == 'Customer',
               ),
               SizedBox(height: 16.h),
               _buildRoleButton(
@@ -56,7 +56,7 @@ class _RoleSelectionViewState extends State<RoleSelectionView> {
               CustomButton(
                   onTap: ()async{
                     if(_selectedRole !=null ){
-                     await PrefsHelper.setString('role',_selectedRole);
+                     await PrefsHelper.setString('role',_selectedRole?.toLowerCase());
                      final role = await PrefsHelper.getString('role');
                      print(role);
                      Navigator.pushReplacementNamed(context, '/signup',arguments: {'role':_selectedRole});
@@ -79,10 +79,9 @@ class _RoleSelectionViewState extends State<RoleSelectionView> {
 
     return GestureDetector(
       onTap: () {
-        setState(() {
+        setState((){
           _selectedRole = role;
         });
-
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),

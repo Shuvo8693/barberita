@@ -1,23 +1,66 @@
+import 'package:barberita/app/data/api_constants.dart';
+import 'package:barberita/app/data/network_caller.dart';
+import 'package:barberita/app/routes/app_pages.dart';
+import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AuthenticationController extends GetxController {
-  //TODO: Implement AuthenticationController
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+
+  final NetworkCaller _networkCaller = NetworkCaller.instance;
+  RxBool isLoading = false.obs;
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+
+  createUser() async {
+    final role = await PrefsHelper.getString('role');
+    final body = {
+      "name" : nameController.text,
+      "phone" : phoneController.text,
+      "password" : confirmPasswordController.text
+    };
+
+    _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
+    _networkCaller.addResponseInterceptor(LoggingInterceptor());
+
+    try {
+      isLoading.value = true;
+      final response = await _networkCaller.post<Map<String, dynamic>>(
+        endpoint: ApiConstants.registerUrl,
+        body: body,
+        timeout: Duration(seconds: 10),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+      if (response.isSuccess && response.data != null) {
+        Get.snackbar('Success', response.message ?? 'User creation successfully done ',);
+        String token = response.data!['data']['token'];
+        String role = response.data!['data']['role'];
+        await PrefsHelper.setString('role', role);
+        await PrefsHelper.setString('token', token).then((value){
+           Get.toNamed(Routes.OTP);
+        });
+
+      } else {
+        Get.snackbar('Failed', response.message ?? 'User creation failed ');
+        //throw NetworkException(response.message ?? 'User creation failed ');
+      }
+    } catch (e) {
+      print(e);
+      rethrow;
+    } finally {
+      isLoading.value = false;
+    }
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  /// ====================== OTP =================================
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
-  void increment() => count.value++;
+
 }
+
+
+

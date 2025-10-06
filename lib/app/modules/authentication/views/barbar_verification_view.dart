@@ -12,8 +12,7 @@ class BarberVerificationView extends StatefulWidget {
   State<BarberVerificationView> createState() => _BarberVerificationViewState();
 }
 
-class _BarberVerificationViewState extends State<BarberVerificationView>
-    with SingleTickerProviderStateMixin {
+class _BarberVerificationViewState extends State<BarberVerificationView> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override

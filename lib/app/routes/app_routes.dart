@@ -26,6 +26,7 @@ abstract class Routes {
   static const REVIEW = _Paths.REVIEW;
   static const SERVICEMANAGEMENT = _Paths.SERVICEMANAGEMENT;
   static const FAVOURITE = _Paths.FAVOURITE;
+  static const OTP = _Paths.OTP;
 }
 
 abstract class _Paths {
@@ -35,6 +36,7 @@ abstract class _Paths {
   static const ONBOARING = '/onboaring';
   static const ROLESELECTION = '/role_selection';
   static const SIGNUP = '/signup';
+  static const OTP = '/otp';
   static const SIGNIN = '/signin';
   static const NEWPASSWORD = '/new_password_view';
   static const HAIRDRESSER_DETAILS = '/hairdresser-details';
