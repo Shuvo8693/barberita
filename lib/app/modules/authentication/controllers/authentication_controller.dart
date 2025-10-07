@@ -56,7 +56,7 @@ class AuthenticationController extends GetxController {
     }
   }
 
-  /// ====================== OTP =================================
+  /// ====================== Verify phone =================================
 
   TextEditingController emailCtrl = TextEditingController();
 
@@ -106,9 +106,111 @@ class AuthenticationController extends GetxController {
 
   }
 
+
+ /// ================================== Sign in ================================
+
+  TextEditingController phoneCtrl = TextEditingController();
+  TextEditingController passCtrl = TextEditingController();
+  RxBool isLoadingSignIn = false.obs;
+
+  Future<void> signIn() async {
+
+    final body = {
+      "phone": phoneCtrl.text.trim(),
+      "password": passCtrl.text.trim()
+    };
+
+    _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
+    _networkCaller.addResponseInterceptor(LoggingInterceptor());
+
+    try {
+      isLoadingSignIn.value = true;
+      final response = await _networkCaller.post<Map<String, dynamic>>(
+        endpoint: ApiConstants.logInUrl,
+        body: body,
+        timeout: Duration(seconds: 10),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+      if (response.isSuccess && response.data != null) {
+        String token = response.data!['data']['token'];
+        String role = response.data!['data']['user']['role'];
+        String userId = response.data!['data']['user']['id'];
+        print('role: $role , token : $token , userId : $userId');
+        await PrefsHelper.setString('role', role);
+        await PrefsHelper.setString('userId', userId);
+        await PrefsHelper.setString('token', token).then((value)async{
+          String? userRole =await PrefsHelper.getString('role');
+          if(userRole =='user'){
+            // Get.toNamed(Routes.HOME);
+          } else if(userRole =='mechanic'){
+            // Get.toNamed(Routes.MECHANIC_HOME);
+          }else{
+            Get.snackbar('Failed to route', ' Login again or create account');
+          }
+        });
+      } else {
+        Get.snackbar('Failed', response.message ?? 'User login failed ');
+      }
+    } catch (e) {
+      print(e);
+      throw NetworkException('$e');
+    } finally {
+      isLoadingSignIn.value = false;
+    }
+
+  }
+
+  /// ================================== Reset password ================================
+
+
+  TextEditingController newPassCtrl = TextEditingController();
+  TextEditingController confirmPassCtrl = TextEditingController();
+  var isLoadingResetPass = false.obs;
+
+  Future<void> resetPassword({bool isResetPass = false, Function( String)? responseMessage}) async {
+    String token = await PrefsHelper.getString('token');
+    var body = {
+      if(isResetPass==false)  // "oldPassword": oldPassCtrl.text.trim(),
+      "newPassword": newPassCtrl.text.trim(),
+      "confirmPassword": confirmPassCtrl.text.trim()
+    };
+
+    _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
+    _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
+    _networkCaller.addResponseInterceptor(LoggingInterceptor());
+
+    try {
+      isLoadingResetPass.value = true;
+      final response = await _networkCaller.post<Map<String, dynamic>>(
+        endpoint: isResetPass?ApiConstants.resetPasswordUrl : ApiConstants.changePasswordUrl,
+        body: body,
+        timeout: Duration(seconds: 10),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+      if (response.isSuccess && response.data != null) {
+        String message = response.data!['message'];
+        if(isResetPass){
+          // Get.offAndToNamed(Routes.SIGN_IN);
+        }else{
+          responseMessage!(message);
+          Get.snackbar('Success', message);
+        }
+      } else {
+        Get.snackbar('Failed', response.message ?? 'Resend otp failed');
+      }
+    } catch (e) {
+      print(e);
+      throw NetworkException('$e');
+    } finally {
+      isLoadingResetPass.value = false;
+    }
+
+  }
+
   @override
   void onClose() {
     emailCtrl.dispose();
+    passCtrl.dispose();
     super.onClose();
   }
 

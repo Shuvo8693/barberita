@@ -148,23 +148,22 @@ class _SignUpViewState extends State<SignUpView> {
                       ),
                       SizedBox(height: 24.h),
                       // Sign Up Button
-                      CustomButton(
-                        onTap: () async {
-                          if(_formKey.currentState!.validate()){
-                            await _authenticationController.createUser();
-                          }
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) =>  OtpView(),
-                          //   ),
-                          // );
-                        },
-                        text: 'Sign Up',
-                        textStyle: GoogleFontStyles.h4(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      Obx((){
+                        return CustomButton(
+                          loading: _authenticationController.isLoading.value,
+                          onTap: () async {
+                            if(_formKey.currentState!.validate()){
+                              await _authenticationController.createUser();
+                            }
+                          },
+                          text: 'Sign Up',
+                          textStyle: GoogleFontStyles.h4(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        );
+                      }
+
                       ),
 
                       SizedBox(height: 24.h),

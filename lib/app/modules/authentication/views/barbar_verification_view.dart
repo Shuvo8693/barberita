@@ -1,3 +1,4 @@
+import 'package:barberita/app/modules/authentication/widgets/file_upload_section.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
@@ -87,7 +88,7 @@ class _BarberVerificationViewState extends State<BarberVerificationView> with Si
                 controller: _tabController,
                 children: [
                   // Iqama/Residence Permit Tab
-                  _buildFileUploadSection(
+                  FileUploadSection(
                     title: 'Upload Iqama/Residence Permit',
                     subtitle: 'JPEG, PNG, PDF Formats Up to 25MB',
                     uploadedFiles: [
@@ -107,7 +108,7 @@ class _BarberVerificationViewState extends State<BarberVerificationView> with Si
                   ),
 
                   // Health Certificate Tab
-                  _buildFileUploadSection(
+                  FileUploadSection(
                     title: 'Health Certificate',
                     subtitle: 'JPEG, PNG, PDF Formats Up to 25MB',
                     uploadedFiles: [
@@ -144,149 +145,4 @@ class _BarberVerificationViewState extends State<BarberVerificationView> with Si
       ),
     );
   }
-
-  Widget _buildFileUploadSection({
-    required String title,
-    required String subtitle,
-    required List<UploadedFile> uploadedFiles,
-  }) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: Column(
-        children: [
-          // Dashed Border Upload Area
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(24.w),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.grey[600]!,
-                width: 2,
-                style: BorderStyle.solid,
-              ),
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: Column(
-              children: [
-                Text(
-                  title,
-                  style: GoogleFontStyles.h4(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  subtitle,
-                  style: GoogleFontStyles.h6(
-                    color: Colors.grey[400],
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 20.h),
-                CustomButton(
-                  text: 'Choose File',
-                  onTap: () {
-                    // Handle file selection
-                  },
-                ),
-              ],
-            ),
-          ),
-
-          SizedBox(height: 20.h),
-
-          // Uploaded Files List
-          ...uploadedFiles.map((file) => _buildUploadedFileItem(file)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildUploadedFileItem(UploadedFile file) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: Colors.grey[800]!,
-          width: 1,
-        ),
-      ),
-      child: Row(
-        children: [
-          // File Icon
-          Container(
-            width: 40.w,
-            height: 40.h,
-            decoration: BoxDecoration(
-              color: Colors.grey[800],
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Icon(
-              file.name.contains('.pdf') ? Icons.picture_as_pdf : Icons.image,
-              color: Colors.white70,
-              size: 20.sp,
-            ),
-          ),
-          SizedBox(width: 12.w),
-
-          // File Details
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  file.name,
-                  style: GoogleFontStyles.h5(
-                    color: Colors.white,
-                    fontSize: 14.sp,
-                  ),
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  file.size,
-                  style: GoogleFontStyles.h6(
-                    color: Colors.grey[400],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Status Icon
-          Container(
-            width: 20.w,
-            height: 20.h,
-            decoration: BoxDecoration(
-              color: file.isComplete ? Colors.green : (file.hasError ? Colors.red : Colors.blue),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              file.isComplete ? Icons.check : (file.hasError ? Icons.close : Icons.more_horiz),
-              color: Colors.white,
-              size: 12.sp,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class UploadedFile {
-  final String name;
-  final String size;
-  final bool isComplete;
-  final bool hasError;
-
-  UploadedFile({
-    required this.name,
-    required this.size,
-    required this.isComplete,
-    required this.hasError,
-  });
 }
