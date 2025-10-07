@@ -1,12 +1,16 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 
+import 'package:barberita/app/data/google_api_service.dart';
 import 'package:barberita/app/modules/book_appointment/widgets/location_selection_bottomsheet.dart';
 import 'package:barberita/common/custom_map/reusable_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationSelectionMapView extends StatefulWidget {
@@ -20,6 +24,8 @@ class LocationSelectionMapView extends StatefulWidget {
 class _LocationSelectionMapViewState extends State<LocationSelectionMapView> {
   final GlobalKey<ReusableMapState> _mapKey = GlobalKey();
   BitmapDescriptor? customIcon;
+  LatLng? selectedLocation;
+  Placemark? placemark;
 
   // Sample map position (Hamilton, ON area)
   static const LatLng _center = LatLng(43.2557, -79.8711);
@@ -67,8 +73,15 @@ class _LocationSelectionMapViewState extends State<LocationSelectionMapView> {
                   position: LatLng(43.2567, -79.8721),
                   icon: customIcon??BitmapDescriptor.defaultMarker,
                   draggable: true,
-                  onDragEnd: (lastLocation){
+                  onDragEnd: (lastLocation) async{
                     print(lastLocation);
+                    setState(() {
+                      selectedLocation = lastLocation;
+                      print("LatLng:$selectedLocation ");
+                    });
+                    List<Placemark> result = await GoogleApiService.placeMarkFromCoordinate(selectedLocation!);
+                    placemark  =  result.first;
+                    placemark;
                   }
                 ),
               },
@@ -108,7 +121,18 @@ class _LocationSelectionMapViewState extends State<LocationSelectionMapView> {
             Align(
               alignment: Alignment.bottomCenter,
               child: LocationSelectionBottomSheet(
-                currentAddress: ' Dhaka,uttara',
+                currentAddress: '${placemark?.administrativeArea??''},${placemark?.locality??''},${placemark?.country??''}',
+                onTap: () {
+                  // Return the address when continue is pressed
+                  Get.back(result:  {
+                    'latLng': selectedLocation,
+                    'address' : '${placemark?.administrativeArea},${placemark?.locality},${placemark?.country}'
+                  });
+                  // Navigator.pop(context, {
+                  //   'latLng': selectedLocation,
+                  //   'address' : '${placemark?.administrativeArea},${placemark?.locality},${placemark?.country}'
+                  // });
+                },
               ),
             ),
 

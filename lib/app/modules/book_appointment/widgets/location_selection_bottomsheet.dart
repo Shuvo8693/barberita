@@ -6,13 +6,18 @@ import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:barberita/common/widgets/custom_text_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationSelectionBottomSheet extends StatefulWidget {
   final String? currentAddress;
+  final LatLng? selectedLocation;
+  final VoidCallback onTap;
 
   const LocationSelectionBottomSheet({
     super.key,
     this.currentAddress,
+    this.selectedLocation,
+    required this.onTap,
   });
 
   @override
@@ -76,10 +81,7 @@ class _LocationSelectionBottomSheetState extends State<LocationSelectionBottomSh
 
           // Continue Button
           CustomButton(
-            onTap: () {
-              // Return the address when continue is pressed
-              Navigator.pop(context, _addressController.text);
-            },
+            onTap: widget.onTap,
             text: 'Continue',
             textStyle: GoogleFontStyles.h4(
               color: Colors.white,
@@ -105,6 +107,7 @@ void showLocationSelectionBottomSheet(BuildContext context, {String? currentAddr
     backgroundColor: Colors.transparent,
     builder: (context) => LocationSelectionBottomSheet(
       currentAddress: currentAddress,
+      onTap: () {  },
     ),
   ).then((address) {
     if (address != null) {

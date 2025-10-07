@@ -4,12 +4,14 @@ import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class AuthenticationController extends GetxController {
 
 
   final NetworkCaller _networkCaller = NetworkCaller.instance;
   RxBool isLoading = false.obs;
+  LatLng? currentLocation;
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();

@@ -1,5 +1,6 @@
 import 'package:barberita/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:barberita/app/modules/authentication/views/otp_view.dart';
+import 'package:barberita/app/modules/authentication/widgets/location_button.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_logo/app_logo.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:barberita/common/widgets/custom_text_field.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -24,6 +26,7 @@ class _SignUpViewState extends State<SignUpView> {
  final AuthenticationController _authenticationController = Get.put(AuthenticationController());
 
   String? selectedAddress;
+
 
   @override
   Widget build(BuildContext context) {
@@ -172,9 +175,9 @@ class _SignUpViewState extends State<SignUpView> {
                               SizedBox(width: 12.w),
                               Expanded(
                                 child: Text(
-                                  selectedAddress ?? 'Set Your Current Location',
+                                 '${ _authenticationController.currentLocation?.longitude.toString()},${ _authenticationController.currentLocation?.longitude.toString()}' ?? 'Set Your Current Location',
                                   style: GoogleFontStyles.h5(
-                                    color: selectedAddress != null
+                                    color: _authenticationController.currentLocation != null
                                         ? Colors.white
                                         : Colors.white.withOpacity(0.5),
                                   ),
@@ -246,62 +249,27 @@ class _SignUpViewState extends State<SignUpView> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (context) {
-        return SafeArea(
-          child: Container(
-            padding: EdgeInsets.all(20.w),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Select Location',
-                  style: GoogleFontStyles.h4(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(height: 20.h),
-
-                ListTile(
-                  leading: Icon(
-                    Icons.my_location,
-                    color: const Color(0xFFE6C4A3),
-                  ),
-                  title: Text(
-                    'Use Current Location',
-                    style: GoogleFontStyles.h5(color: Colors.white),
-                  ),
-                  onTap: () {
-                    // setState(() {
-                    //   selectedAddress = 'Current Location';
-                    // });
-                    // Navigator.pop(context);
-                    Get.toNamed(Routes.LOCATIONSELECTORMAP);
-                  },
-                ),
-
-                ListTile(
-                  leading: Icon(
-                    Icons.location_on,
-                    color: const Color(0xFFE6C4A3),
-                  ),
-                  title: Text(
-                    'Choose on Map',
-                    style: GoogleFontStyles.h5(color: Colors.white),
-                  ),
-                  onTap: () {
-                    // setState(() {
-                    //   selectedAddress = '123 Main Street, City';
-                    // });
-                    // Navigator.pop(context);
-                    Get.toNamed(Routes.LOCATIONSELECTORMAP);
-                  },
-                ),
-
-                SizedBox(height: 20.h),
-              ],
+        return LocationSelectorBottomSheet(
+          buttons: [
+            ListTile(
+              leading: Icon(Icons.my_location, color: Color(0xFFE6C4A3)),
+              title: Text('Use Current Location', style: GoogleFontStyles.h5(color: Colors.white)),
+              onTap: () async{
+               final result = await Get.toNamed(Routes.LOCATIONSELECTORMAP);
+               print(result);
+              },
             ),
-          ),
+            ListTile(
+              leading: Icon(Icons.location_on, color: Color(0xFFE6C4A3)),
+              title: Text('Choose on Map', style: GoogleFontStyles.h5(color: Colors.white)),
+              onTap: ()async{
+                final result = await Get.toNamed(Routes.LOCATIONSELECTORMAP);
+                print(result);
+                _authenticationController.currentLocation = result['latLng'];
+                setState(() {});
+              },
+            ),
+          ],
         );
       },
     );
