@@ -73,7 +73,7 @@ class AppPages {
       binding: AuthenticationBinding(),
     ),
     GetPage(
-      name: _Paths.SIGNUP,
+      name: _Paths.OTP,
       page: () => OtpView(),
       binding: AuthenticationBinding(),
     ),

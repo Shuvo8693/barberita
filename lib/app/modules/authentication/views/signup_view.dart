@@ -23,6 +23,8 @@ class _SignUpViewState extends State<SignUpView> {
 
  final AuthenticationController _authenticationController = Get.put(AuthenticationController());
 
+  String? selectedAddress;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,6 +148,42 @@ class _SignUpViewState extends State<SignUpView> {
                           return null;
                         },
                       ),
+                      // Location selector
+                      SizedBox(height: 18.h),
+                      GestureDetector(
+                        onTap: () {
+                          // Handle location selection
+                          _showLocationBottomSheet();
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.all(16.w),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF2C2C2E),
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                color: Colors.white.withOpacity(0.7),
+                                size: 24.sp,
+                              ),
+                              SizedBox(width: 12.w),
+                              Expanded(
+                                child: Text(
+                                  selectedAddress ?? 'Set Your Current Location',
+                                  style: GoogleFontStyles.h5(
+                                    color: selectedAddress != null
+                                        ? Colors.white
+                                        : Colors.white.withOpacity(0.5),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                       SizedBox(height: 24.h),
                       // Sign Up Button
                       Obx((){
@@ -197,5 +235,75 @@ class _SignUpViewState extends State<SignUpView> {
     _authenticationController.passwordController.dispose();
     _authenticationController.confirmPasswordController.dispose();
     super.dispose();
+  }
+
+
+  void _showLocationBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF2C2C2E),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (context) {
+        return SafeArea(
+          child: Container(
+            padding: EdgeInsets.all(20.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Select Location',
+                  style: GoogleFontStyles.h4(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: 20.h),
+
+                ListTile(
+                  leading: Icon(
+                    Icons.my_location,
+                    color: const Color(0xFFE6C4A3),
+                  ),
+                  title: Text(
+                    'Use Current Location',
+                    style: GoogleFontStyles.h5(color: Colors.white),
+                  ),
+                  onTap: () {
+                    // setState(() {
+                    //   selectedAddress = 'Current Location';
+                    // });
+                    // Navigator.pop(context);
+                    Get.toNamed(Routes.LOCATIONSELECTORMAP);
+                  },
+                ),
+
+                ListTile(
+                  leading: Icon(
+                    Icons.location_on,
+                    color: const Color(0xFFE6C4A3),
+                  ),
+                  title: Text(
+                    'Choose on Map',
+                    style: GoogleFontStyles.h5(color: Colors.white),
+                  ),
+                  onTap: () {
+                    // setState(() {
+                    //   selectedAddress = '123 Main Street, City';
+                    // });
+                    // Navigator.pop(context);
+                    Get.toNamed(Routes.LOCATIONSELECTORMAP);
+                  },
+                ),
+
+                SizedBox(height: 20.h),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

@@ -1,6 +1,7 @@
 
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
+import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,9 +12,9 @@ class OtpController extends GetxController {
   RxString otpErrorMessage=''.obs;
   var isLoading2 = false.obs;
 
-  Future<void> sendOtp(bool? isResetPass) async {
+  Future<void> sendOtp({bool isResetPass = false}) async {
     String token = await PrefsHelper.getString('token');
-    String userMail = (Get.arguments != null && (Get.arguments['email'] as String).isNotEmpty) ? Get.arguments['email'] : '';
+     // String userMail = (Get.arguments != null && (Get.arguments['email'] as String).isNotEmpty) ? Get.arguments['email'] : '';
     final body = {
       "otp": otpCtrl.text.trim(),
     };
@@ -25,22 +26,24 @@ class OtpController extends GetxController {
     try {
       isLoading2.value = true;
       final response = await _networkCaller.post<Map<String, dynamic>>(
-        endpoint: isResetPass==true ? ApiConstants.verifyForgotOtpUrl(userMail) : ApiConstants.verifyOtpUrl,
+        endpoint: ApiConstants.verifyOtpUrl,
         body: body,
         timeout: Duration(seconds: 10),
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
-        String role = await PrefsHelper.getString('role');
-        String token = await PrefsHelper.getString('token');
-        print('role: $role , token : $token');
-        if(isResetPass==true){
+       String role = response.data!['data']['role'];
+       String token = response.data!['data']['token'];
+       print("Check ===== Role: $role Token: $token");
+       await PrefsHelper.setString('role',role);
+       await PrefsHelper.setString('token',token);
+        if(isResetPass){
           // Get.toNamed(Routes.CHANGE_PASSWORD,arguments: {'isResetPass': true});
         }else{
-          if(role =='user'){
-            //  Get.toNamed(Routes.SIGN_IN);
-          } else if(role =='mechanic'){
-            // Get.toNamed(Routes.SIGN_IN);
+          if(role =='customer'){
+             Get.toNamed(Routes.HOME);
+          } else if(role =='barber'){
+            Get.toNamed(Routes.BARBER_HOME);
           }else{
             Get.snackbar('Failed route', ' Select your role before route home');
           }

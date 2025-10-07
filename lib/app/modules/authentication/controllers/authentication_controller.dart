@@ -38,10 +38,8 @@ class AuthenticationController extends GetxController {
       if (response.isSuccess && response.data != null) {
         Get.snackbar('Success', response.message ?? 'User creation successfully done ',);
         String token = response.data!['data']['token'];
-        String role = response.data!['data']['role'];
-        await PrefsHelper.setString('role', role);
         await PrefsHelper.setString('token', token).then((value){
-           Get.toNamed(Routes.OTP);
+           return Get.toNamed(Routes.OTP);
         });
 
       } else {
