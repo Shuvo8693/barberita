@@ -21,7 +21,6 @@ static String phoneSendUrl= '/api/v1/auth/forget-password';
 static String verifyEmailWithOtpUrl= '/api/v1/auth/verify-email';
 static String resendOtpUrl= '/api/v1/auth/resend-otp';
 static String logInUrl= '/api/v1/auth/login';
-static String resetPasswordUrl= '/api/v1/user/reset-password';
-static String changePasswordUrl= '/api/v1/user/change-password';
+static String resetPasswordUrl= '/api/v1/auth/reset-password';
 
 }

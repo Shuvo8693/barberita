@@ -169,9 +169,7 @@ class AuthenticationController extends GetxController {
   Future<void> resetPassword({bool isResetPass = false, Function( String)? responseMessage}) async {
     String token = await PrefsHelper.getString('token');
     var body = {
-      if(isResetPass==false)  // "oldPassword": oldPassCtrl.text.trim(),
-      "newPassword": newPassCtrl.text.trim(),
-      "confirmPassword": confirmPassCtrl.text.trim()
+      "password": confirmPassCtrl.text.trim(),
     };
 
     _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
@@ -181,7 +179,7 @@ class AuthenticationController extends GetxController {
     try {
       isLoadingResetPass.value = true;
       final response = await _networkCaller.post<Map<String, dynamic>>(
-        endpoint: isResetPass?ApiConstants.resetPasswordUrl : ApiConstants.changePasswordUrl,
+        endpoint:ApiConstants.resetPasswordUrl,
         body: body,
         timeout: Duration(seconds: 10),
         fromJson: (json) => json as Map<String, dynamic>,
@@ -189,7 +187,7 @@ class AuthenticationController extends GetxController {
       if (response.isSuccess && response.data != null) {
         String message = response.data!['message'];
         if(isResetPass){
-          // Get.offAndToNamed(Routes.SIGN_IN);
+          Get.offAndToNamed(Routes.SIGNIN);
         }else{
           responseMessage!(message);
           Get.snackbar('Success', message);
