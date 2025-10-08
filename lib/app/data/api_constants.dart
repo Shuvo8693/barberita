@@ -17,7 +17,7 @@ static String verifyForgotOtpUrl(String userMail) =>  '/api/v1/user/verify-forge
 static String searchMechanicUrl(String service) =>  '/api/v1/mechanic/all?serviceName=$service';
 static String allMechanicUrl({int? currentPage, int? limit}) =>  '/api/v1/mechanic/all?currentPage=$currentPage&limit=$limit';
 
-static String emailSendUrl= '/api/v1/user/forget-password';
+static String phoneSendUrl= '/api/v1/auth/forget-password';
 static String verifyEmailWithOtpUrl= '/api/v1/auth/verify-email';
 static String resendOtpUrl= '/api/v1/auth/resend-otp';
 static String logInUrl= '/api/v1/auth/login';

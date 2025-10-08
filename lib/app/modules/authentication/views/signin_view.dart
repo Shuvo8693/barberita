@@ -116,12 +116,7 @@ class _SignInViewState extends State<SignInView> {
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => VerifyPhoneVIew(),
-                              ),
-                            );
+                          Get.toNamed(Routes.VERIFYPHONE);
                           },
                           child: Text(
                             'Forgot Password',

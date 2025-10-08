@@ -61,38 +61,36 @@ class AuthenticationController extends GetxController {
 
   /// ====================== Verify phone =================================
 
-  TextEditingController emailCtrl = TextEditingController();
+  TextEditingController verifyPhoneCtrl = TextEditingController();
 
-  RxBool isLoading2 = false.obs;
+  RxBool isLoadingVerifyPhone = false.obs;
   RxString errorMessage = ''.obs;
 
   Future<void> verifyPhone({bool? isResetPass}) async {
 
     final body = {
-      "email": emailCtrl.text.trim(),
+      "phone": verifyPhoneCtrl.text.trim(),
     };
 
     _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
     _networkCaller.addResponseInterceptor(LoggingInterceptor());
 
     try {
-      isLoading2.value = true;
+      isLoadingVerifyPhone.value = true;
       final response = await _networkCaller.post<Map<String, dynamic>>(
-        endpoint: ApiConstants.emailSendUrl,
+        endpoint: ApiConstants.phoneSendUrl,
         body: body,
         timeout: Duration(seconds: 10),
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
         String token = response.data!['data']['token'];
-        String role = response.data!['data']['role'];
-        print(" token : $token , role : $role");
-        await PrefsHelper.setString('role', role);
+        print(" token : $token ");
         await PrefsHelper.setString('token', token).then((value)async{
           Get.toNamed(
             Routes.OTP,
             arguments: {
-              'email': emailCtrl.text,
+              'email': verifyPhoneCtrl.text,
               'isResetPass': isResetPass ?? false,
             },
           );
@@ -104,7 +102,7 @@ class AuthenticationController extends GetxController {
       print(e);
       throw NetworkException('$e');
     } finally {
-      isLoading2.value = false;
+      isLoadingVerifyPhone.value = false;
     }
 
   }

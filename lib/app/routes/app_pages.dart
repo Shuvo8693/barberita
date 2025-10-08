@@ -1,4 +1,5 @@
 import 'package:barberita/app/modules/authentication/views/otp_view.dart';
+import 'package:barberita/app/modules/authentication/views/verify_phone_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
@@ -85,6 +86,11 @@ class AppPages {
     GetPage(
       name: _Paths.NEWPASSWORD,
       page: () => NewPasswordView(),
+      binding: AuthenticationBinding(),
+    ),
+    GetPage(
+      name: _Paths.VERIFYPHONE,
+      page: () => VerifyPhoneVIew(),
       binding: AuthenticationBinding(),
     ),
     GetPage(
