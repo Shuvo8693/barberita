@@ -175,9 +175,9 @@ class _SignUpViewState extends State<SignUpView> {
                               SizedBox(width: 12.w),
                               Expanded(
                                 child: Text(
-                                 '${ _authenticationController.currentLocation?.longitude.toString()},${ _authenticationController.currentLocation?.longitude.toString()}' ?? 'Set Your Current Location',
+                                 '${_authenticationController.currentAddress}',
                                   style: GoogleFontStyles.h5(
-                                    color: _authenticationController.currentLocation != null
+                                    color: _authenticationController.currentAddress != null
                                         ? Colors.white
                                         : Colors.white.withOpacity(0.5),
                                   ),
@@ -203,12 +203,9 @@ class _SignUpViewState extends State<SignUpView> {
                             fontWeight: FontWeight.w600,
                           ),
                         );
-                      }
-
+                       }
                       ),
-
                       SizedBox(height: 24.h),
-
                       // Already have account
                       Align(
                         alignment: Alignment.center,
@@ -257,6 +254,9 @@ class _SignUpViewState extends State<SignUpView> {
               onTap: () async{
                final result = await Get.toNamed(Routes.LOCATIONSELECTORMAP);
                print(result);
+               _authenticationController.currentLocation = result['latLng'];
+               _authenticationController.currentAddress = result['address'];
+               setState(() {});
               },
             ),
             ListTile(
@@ -266,6 +266,7 @@ class _SignUpViewState extends State<SignUpView> {
                 final result = await Get.toNamed(Routes.LOCATIONSELECTORMAP);
                 print(result);
                 _authenticationController.currentLocation = result['latLng'];
+                _authenticationController.currentAddress = result['address'];
                 setState(() {});
               },
             ),

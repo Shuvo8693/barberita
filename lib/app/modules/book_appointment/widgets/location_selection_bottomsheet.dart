@@ -34,6 +34,15 @@ class _LocationSelectionBottomSheetState extends State<LocationSelectionBottomSh
       text: widget.currentAddress ?? '112/2 Riyad',
     );
   }
+  @override
+  void didUpdateWidget(covariant LocationSelectionBottomSheet oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if(widget.currentAddress != oldWidget.currentAddress ){   // if new widgets have new value but not updated here then we have to update like this way
+      _addressController = TextEditingController(
+        text: widget.currentAddress ?? '112/2 Riyad',
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -69,8 +78,9 @@ class _LocationSelectionBottomSheetState extends State<LocationSelectionBottomSh
           // Address Input Field
           CustomTextField(
             controller: _addressController,
-            hintText: 'Enter your address',
+            hintText: 'Enter your address through drop your pin',
             fillColor: AppColors.darkJungleGreenBGColor,
+            readOnly: true,
             prefixIcon: Padding(
               padding:  EdgeInsets.all(8.0.sp),
               child: SvgPicture.asset(AppSvg.navPinSvg,height: 20.h,),

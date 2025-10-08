@@ -12,6 +12,7 @@ class AuthenticationController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller.instance;
   RxBool isLoading = false.obs;
   LatLng? currentLocation;
+  String? currentAddress;
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -23,7 +24,9 @@ class AuthenticationController extends GetxController {
     final body = {
       "name" : nameController.text,
       "phone" : phoneController.text,
-      "password" : confirmPasswordController.text
+      "password" : confirmPasswordController.text,
+      "longitude": currentLocation?.longitude,
+      "latitude" : currentLocation?.latitude
     };
 
     _networkCaller.addRequestInterceptor(ContentTypeInterceptor());

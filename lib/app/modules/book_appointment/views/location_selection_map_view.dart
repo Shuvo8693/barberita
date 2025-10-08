@@ -5,12 +5,10 @@ import 'package:barberita/app/data/google_api_service.dart';
 import 'package:barberita/app/modules/book_appointment/widgets/location_selection_bottomsheet.dart';
 import 'package:barberita/common/custom_map/reusable_map.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationSelectionMapView extends StatefulWidget {
@@ -30,28 +28,13 @@ class _LocationSelectionMapViewState extends State<LocationSelectionMapView> {
   // Sample map position (Hamilton, ON area)
   static const LatLng _center = LatLng(43.2557, -79.8711);
 
-  // Sample car positions
-  final Set<Marker> _carMarkers = {
-     Marker(
-      markerId: MarkerId('car1'),
-      position: LatLng(43.2567, -79.8721),
-      icon: BitmapDescriptor.defaultMarker,
-    ),
-    const Marker(
-      markerId: MarkerId('car2'),
-      position: LatLng(43.2547, -79.8701),
-      icon: BitmapDescriptor.defaultMarker,
-    ),
-  };
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       customIcon = await bitmapDescriptorFromSvgAsset();
       setState(() {});
-    }
-    );
+    });
   }
 
   @override
@@ -71,18 +54,18 @@ class _LocationSelectionMapViewState extends State<LocationSelectionMapView> {
                 Marker(
                   markerId: MarkerId('car1'),
                   position: LatLng(43.2567, -79.8721),
-                  icon: customIcon??BitmapDescriptor.defaultMarker,
+                  icon: customIcon ?? BitmapDescriptor.defaultMarker,
                   draggable: true,
                   onDragEnd: (lastLocation) async{
                     print(lastLocation);
-                    setState(() {
-                      selectedLocation = lastLocation;
-                      print("LatLng:$selectedLocation ");
-                    });
+                    selectedLocation = lastLocation;
+                    print("LatLng:$selectedLocation ");
                     List<Placemark> result = await GoogleApiService.placeMarkFromCoordinate(selectedLocation!);
-                    placemark  =  result.first;
+                    setState(()  {
+                      placemark = result.first;
+                    });
                     placemark;
-                  }
+                  },
                 ),
               },
               darkMode: true,
@@ -121,33 +104,35 @@ class _LocationSelectionMapViewState extends State<LocationSelectionMapView> {
             Align(
               alignment: Alignment.bottomCenter,
               child: LocationSelectionBottomSheet(
-                currentAddress: '${placemark?.administrativeArea??''},${placemark?.locality??''},${placemark?.country??''}',
+                currentAddress: placemark?.name ?? '',
                 onTap: () {
                   // Return the address when continue is pressed
-                  Get.back(result:  {
-                    'latLng': selectedLocation,
-                    'address' : '${placemark?.administrativeArea},${placemark?.locality},${placemark?.country}'
-                  });
-                  // Navigator.pop(context, {
-                  //   'latLng': selectedLocation,
-                  //   'address' : '${placemark?.administrativeArea},${placemark?.locality},${placemark?.country}'
-                  // });
+                  Get.back(
+                    result: {
+                      'latLng': selectedLocation,
+                      'address': placemark?.name ?? '',
+                    },
+                  );
                 },
               ),
             ),
-
           ],
         ),
       ),
     );
   }
 
-
   /// convert svg to bitmap
-  Future<BitmapDescriptor> bitmapDescriptorFromSvgAsset([Size size = const Size(60, 60),]) async {
-    final pictureInfo = await vg.loadPicture(SvgAssetLoader('assets/svg/nav_pin.svg'), null);
+  Future<BitmapDescriptor> bitmapDescriptorFromSvgAsset([
+    Size size = const Size(60, 60),
+  ]) async {
+    final pictureInfo = await vg.loadPicture(
+      SvgAssetLoader('assets/svg/nav_pin.svg'),
+      null,
+    );
 
-    double devicePixelRatio = ui.PlatformDispatcher.instance.views.first.devicePixelRatio;
+    double devicePixelRatio =
+        ui.PlatformDispatcher.instance.views.first.devicePixelRatio;
     int width = (size.width * devicePixelRatio * 3).toInt();
     int height = (size.height * devicePixelRatio * 3).toInt();
 
@@ -167,7 +152,7 @@ class _LocationSelectionMapViewState extends State<LocationSelectionMapView> {
     final image = rasterPicture.toImageSync(width, height);
     final bytes = (await image.toByteData(format: ui.ImageByteFormat.png))!;
 
-    return BitmapDescriptor.bytes(bytes.buffer.asUint8List(),height: 60.h);
+    return BitmapDescriptor.bytes(bytes.buffer.asUint8List(), height: 60.h);
   }
 }
 

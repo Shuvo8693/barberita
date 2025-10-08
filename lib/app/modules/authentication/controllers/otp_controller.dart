@@ -10,7 +10,7 @@ class OtpController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller.instance;
   TextEditingController otpCtrl = TextEditingController();
   RxString otpErrorMessage=''.obs;
-  var isLoading2 = false.obs;
+  var isLoadingOtp = false.obs;
 
   Future<void> sendOtp({bool isResetPass = false}) async {
     String token = await PrefsHelper.getString('token');
@@ -24,7 +24,7 @@ class OtpController extends GetxController {
     _networkCaller.addResponseInterceptor(LoggingInterceptor());
 
     try {
-      isLoading2.value = true;
+      isLoadingOtp.value = true;
       final response = await _networkCaller.post<Map<String, dynamic>>(
         endpoint: ApiConstants.verifyOtpUrl,
         body: body,
@@ -56,7 +56,7 @@ class OtpController extends GetxController {
       print(e);
       throw NetworkException('$e');
     } finally {
-      isLoading2.value = false;
+      isLoadingOtp.value = false;
     }
 
   }

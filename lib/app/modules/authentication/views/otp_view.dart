@@ -1,4 +1,5 @@
 
+import 'package:barberita/app/modules/authentication/controllers/otp_controller.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_images/app_svg.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
@@ -21,7 +22,7 @@ class OtpView extends StatefulWidget {
 }
 
 class _OtpViewState extends State<OtpView> {
-  final TextEditingController _otpController = TextEditingController();
+  final OtpController _otpController = Get.put(OtpController());
 
   int _resendCountdown = 30;
   Timer? _timer;
@@ -89,7 +90,7 @@ class _OtpViewState extends State<OtpView> {
                 PinCodeTextField(
                   cursorColor: Colors.white,
                   keyboardType: TextInputType.number,
-                  controller: _otpController,
+                  controller: _otpController.otpCtrl,
                   autoDisposeControllers: false,
                   enablePinAutofill: false,
                   appContext: context,
@@ -157,21 +158,22 @@ class _OtpViewState extends State<OtpView> {
                   ),
                 ),
                 SizedBox(height: 40.h),
-                CustomButton(
-                  onTap : () {
-                   // Get.toNamed(Routes.NEWPASSWORD);
-                    Get.toNamed(Routes.BARBARVERIFICATION);
-                    if (_otpController.text.length == 6) {
-                      print('OTP: ${_otpController.text}');
-                    }
-                  },
-                  text: 'Verify',
-                  textStyle: GoogleFontStyles.h4(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
+                Obx((){
+                  return CustomButton(
+                    loading: _otpController.isLoadingOtp.value,
+                    onTap : () async {
+                      if (_otpController.otpCtrl.text.length == 6) {
+                        await _otpController.sendOtp();
+                      }
+                    },
+                    text: 'Verify',
+                    textStyle: GoogleFontStyles.h4(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  );
+                }
                 ),
-
               ],
             ),
           ),
