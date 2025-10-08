@@ -38,7 +38,7 @@ Map<String,dynamic> decodeJWT(String token){
  }
 
 
- // Usage example
+ // ==== Usage example ==========
  void _jwtExample() {
    String token = 'your.jwt.token.here';
 

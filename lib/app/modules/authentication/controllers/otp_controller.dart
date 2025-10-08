@@ -2,6 +2,7 @@
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
 import 'package:barberita/app/routes/app_pages.dart';
+import 'package:barberita/common/jwt_decoder/jwt_decoder.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -69,19 +70,25 @@ class OtpController extends GetxController {
 
   /// ========================Resend Otp =======================
 
-  var isLoading3 = false.obs;
+  var isLoadingResendOtp = false.obs;
 
-  Future<void> reSendOtp(bool? isResetPass) async {
+  Future<void> reSendOtp({bool isResetPass = false}) async {
     String token = await PrefsHelper.getString('token');
+    final payload = decodeJWT(token);
+    print(payload);
+    String phone = payload['phone'];
 
     _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
     _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
     _networkCaller.addResponseInterceptor(LoggingInterceptor());
 
     try {
-      isLoading3.value = true;
+      isLoadingResendOtp.value = true;
       final response = await _networkCaller.post<Map<String, dynamic>>(
         endpoint: ApiConstants.resendOtpUrl,
+        body: {
+          "phone" : phone
+        },
         timeout: Duration(seconds: 10),
         fromJson: (json) => json as Map<String, dynamic>,
       );
@@ -95,7 +102,7 @@ class OtpController extends GetxController {
       print(e);
       throw NetworkException('$e');
     } finally {
-      isLoading3.value = false;
+      isLoadingResendOtp.value = false;
     }
 
   }

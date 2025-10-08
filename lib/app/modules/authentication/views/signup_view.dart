@@ -175,7 +175,7 @@ class _SignUpViewState extends State<SignUpView> {
                               SizedBox(width: 12.w),
                               Expanded(
                                 child: Text(
-                                 '${_authenticationController.currentAddress}',
+                                 _authenticationController.currentAddress??'Tap to select location',
                                   style: GoogleFontStyles.h5(
                                     color: _authenticationController.currentAddress != null
                                         ? Colors.white

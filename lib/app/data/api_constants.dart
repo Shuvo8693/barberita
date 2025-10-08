@@ -18,9 +18,9 @@ static String searchMechanicUrl(String service) =>  '/api/v1/mechanic/all?servic
 static String allMechanicUrl({int? currentPage, int? limit}) =>  '/api/v1/mechanic/all?currentPage=$currentPage&limit=$limit';
 
 static String emailSendUrl= '/api/v1/user/forget-password';
-static String verifyEmailWithOtpUrl= '$baseUrl/auth/verify-email';
-static String resendOtpUrl= '/api/v1/user/resend';
-static String logInUrl= '/api/v1/user/login';
+static String verifyEmailWithOtpUrl= '/api/v1/auth/verify-email';
+static String resendOtpUrl= '/api/v1/auth/resend-otp';
+static String logInUrl= '/api/v1/auth/login';
 static String resetPasswordUrl= '/api/v1/user/reset-password';
 static String changePasswordUrl= '/api/v1/user/change-password';
 

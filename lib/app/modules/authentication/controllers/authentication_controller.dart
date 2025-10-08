@@ -112,15 +112,15 @@ class AuthenticationController extends GetxController {
 
  /// ================================== Sign in ================================
 
-  TextEditingController phoneCtrl = TextEditingController();
-  TextEditingController passCtrl = TextEditingController();
+  TextEditingController phoneLoginCtrl = TextEditingController();
+  TextEditingController passLoginCtrl = TextEditingController();
   RxBool isLoadingSignIn = false.obs;
 
   Future<void> signIn() async {
 
     final body = {
-      "phone": phoneCtrl.text.trim(),
-      "password": passCtrl.text.trim()
+      "phone": phoneLoginCtrl.text.trim(),
+      "password": passLoginCtrl.text.trim()
     };
 
     _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
@@ -137,16 +137,14 @@ class AuthenticationController extends GetxController {
       if (response.isSuccess && response.data != null) {
         String token = response.data!['data']['token'];
         String role = response.data!['data']['user']['role'];
-        String userId = response.data!['data']['user']['id'];
-        print('role: $role , token : $token , userId : $userId');
+        print('role: $role , token : $token ');
         await PrefsHelper.setString('role', role);
-        await PrefsHelper.setString('userId', userId);
         await PrefsHelper.setString('token', token).then((value)async{
           String? userRole =await PrefsHelper.getString('role');
-          if(userRole =='user'){
-            // Get.toNamed(Routes.HOME);
-          } else if(userRole =='mechanic'){
-            // Get.toNamed(Routes.MECHANIC_HOME);
+          if(userRole =='customer'){
+            Get.toNamed(Routes.HOME);
+          } else if(userRole =='barber'){
+            Get.toNamed(Routes.BARBER_HOME);
           }else{
             Get.snackbar('Failed to route', ' Login again or create account');
           }
@@ -208,13 +206,6 @@ class AuthenticationController extends GetxController {
       isLoadingResetPass.value = false;
     }
 
-  }
-
-  @override
-  void onClose() {
-    emailCtrl.dispose();
-    passCtrl.dispose();
-    super.onClose();
   }
 
 }

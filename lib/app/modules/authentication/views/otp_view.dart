@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/routes/default_transitions.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
@@ -34,7 +34,7 @@ class _OtpViewState extends State<OtpView> {
     _startCountdown();
   }
 
-  void _startCountdown() {
+  void _startCountdown() async{
     _canResend = false;
     _resendCountdown = 30;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -147,16 +147,24 @@ class _OtpViewState extends State<OtpView> {
                   ],
                 ),
                 SizedBox(height: 20.h),
-                GestureDetector(
-                  onTap: _canResend ? _startCountdown : null,
-                  child: Text(
-                    'Resend Code',
-                    style: GoogleFontStyles.h5(
-                      color: _canResend ? const Color(0xFFE6C4A3) : Colors.white.withOpacity(0.5),
-                      fontWeight: FontWeight.w600,
+                Obx((){
+                return _otpController.isLoadingResendOtp.value==true?
+                  CircularProgressIndicator() : GestureDetector(
+                    onTap: _canResend ? ()async{
+                      await _otpController.reSendOtp().then((v){
+                        return _startCountdown();
+                      });
+                    }: null,
+                    child: Text(
+                      'Resend Code',
+                      style: GoogleFontStyles.h5(
+                        color: _canResend ? const Color(0xFFE6C4A3) : Colors.white.withOpacity(0.5),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                }),
+
                 SizedBox(height: 40.h),
                 Obx((){
                   return CustomButton(
