@@ -111,21 +111,23 @@ class _VerifyPhoneVIewState extends State<VerifyPhoneVIew> {
                           ),
                         ],
                       ),
-
                       const Spacer(flex: 3,),
-
                       // Send Code Button
-                      CustomButton(
-                        onTap: () async {
-                          if (_formKey.currentState!.validate()) {
-                           await _authenticationController.verifyPhone();
-                          }
-                        },
-                        text: 'Send Code',
-                        textStyle: GoogleFontStyles.h4(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      Obx((){
+                        return  CustomButton(
+                          loading: _authenticationController.isLoadingVerifyPhone.value,
+                          onTap: () async {
+                            if (_formKey.currentState!.validate()) {
+                              await _authenticationController.verifyPhone(isResetPass: true);
+                            }
+                          },
+                          text: 'Send Code',
+                          textStyle: GoogleFontStyles.h4(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        );
+                       }
                       ),
 
                       SizedBox(height: 24.h),

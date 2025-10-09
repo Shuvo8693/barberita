@@ -66,7 +66,7 @@ class AuthenticationController extends GetxController {
   RxBool isLoadingVerifyPhone = false.obs;
   RxString errorMessage = ''.obs;
 
-  Future<void> verifyPhone({bool? isResetPass}) async {
+  Future<void> verifyPhone({bool isResetPass=false}) async {
 
     final body = {
       "phone": verifyPhoneCtrl.text.trim(),
@@ -90,8 +90,8 @@ class AuthenticationController extends GetxController {
           Get.toNamed(
             Routes.OTP,
             arguments: {
-              'email': verifyPhoneCtrl.text,
-              'isResetPass': isResetPass ?? false,
+              'phone': verifyPhoneCtrl.text,
+              'isResetPass': isResetPass ,
             },
           );
         });
@@ -166,7 +166,7 @@ class AuthenticationController extends GetxController {
   TextEditingController confirmPassCtrl = TextEditingController();
   var isLoadingResetPass = false.obs;
 
-  Future<void> resetPassword({bool isResetPass = false, Function( String)? responseMessage}) async {
+  Future<void> resetPassword({ Function( String)? responseMessage}) async {
     String token = await PrefsHelper.getString('token');
     var body = {
       "password": confirmPassCtrl.text.trim(),
@@ -186,12 +186,8 @@ class AuthenticationController extends GetxController {
       );
       if (response.isSuccess && response.data != null) {
         String message = response.data!['message'];
-        if(isResetPass){
-          Get.offAndToNamed(Routes.SIGNIN);
-        }else{
-          responseMessage!(message);
-          Get.snackbar('Success', message);
-        }
+        Get.offAndToNamed(Routes.SIGNIN);
+        Get.snackbar('Successfully', message );
       } else {
         Get.snackbar('Failed', response.message ?? 'Resend otp failed');
       }

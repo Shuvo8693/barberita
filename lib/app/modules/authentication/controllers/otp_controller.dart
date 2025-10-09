@@ -13,9 +13,10 @@ class OtpController extends GetxController {
   RxString otpErrorMessage=''.obs;
   var isLoadingOtp = false.obs;
 
-  Future<void> sendOtp({bool isResetPass = false}) async {
+  Future<void> sendOtp() async {
     String token = await PrefsHelper.getString('token');
-     // String userMail = (Get.arguments != null && (Get.arguments['email'] as String).isNotEmpty) ? Get.arguments['email'] : '';
+
+     bool isResetPass = (Get.arguments != null) ? Get.arguments['isResetPass'] : false;
     final body = {
       "otp": otpCtrl.text.trim(),
     };
@@ -39,7 +40,7 @@ class OtpController extends GetxController {
        await PrefsHelper.setString('role',role);
        await PrefsHelper.setString('token',token);
         if(isResetPass){
-          // Get.toNamed(Routes.CHANGE_PASSWORD,arguments: {'isResetPass': true});
+          Get.toNamed(Routes.NEWPASSWORD,arguments: {'isResetPass': true});
         }else{
           if(role =='customer'){
              Get.toNamed(Routes.HOME);

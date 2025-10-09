@@ -120,22 +120,23 @@ class _NewPasswordViewState extends State<NewPasswordView> {
                       ),
                     ],
                   ),
-
                   SizedBox(height: 40.h),
-
                   // Continue Button
-                  CustomButton(
-                    onTap: () async{
-                      if(_formKey.currentState!.validate()){
-                       await _authenticationController.resetPassword();
-                      }
-                    },
-                    text: 'Continue',
-                    textStyle: GoogleFontStyles.h4(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  Obx(() {
+                    return CustomButton(
+                      loading: _authenticationController.isLoadingResetPass.value,
+                      onTap: () async {
+                        if (_formKey.currentState!.validate()) {
+                          await _authenticationController.resetPassword();
+                        }
+                      },
+                      text: 'Continue',
+                      textStyle: GoogleFontStyles.h4(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    );
+                  }),
 
                   SizedBox(height: 40.h),
                 ],
