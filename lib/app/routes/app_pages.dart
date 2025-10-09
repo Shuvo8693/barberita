@@ -94,6 +94,11 @@ class AppPages {
       binding: AuthenticationBinding(),
     ),
     GetPage(
+      name: _Paths.BARBERVERIFICATION,
+      page: () => BarberVerificationView(),
+      binding: AuthenticationBinding(),
+    ),
+    GetPage(
       name: _Paths.BARBARVERIFICATION,
       page: () => BarberVerificationView(),
       binding: AuthenticationBinding(),

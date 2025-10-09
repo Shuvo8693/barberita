@@ -1,3 +1,4 @@
+import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/app_logo/app_logo.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
@@ -5,6 +6,8 @@ import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 
 class RoleSelectionView extends StatefulWidget {
@@ -59,7 +62,11 @@ class _RoleSelectionViewState extends State<RoleSelectionView> {
                      await PrefsHelper.setString('role',_selectedRole?.toLowerCase());
                      final role = await PrefsHelper.getString('role');
                      print(role);
-                     Navigator.pushReplacementNamed(context, '/signup',arguments: {'role':_selectedRole});
+                     if(role=='barber'){
+                        Get.toNamed(Routes.BARBARVERIFICATION);
+                     }else{
+                       Navigator.pushReplacementNamed(context, '/signup',arguments: {'role':_selectedRole});
+                     }
                     }
                   },
                   text: 'Confirm'

@@ -4,33 +4,20 @@ import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-// Model class for uploaded file
-class UploadedFile {
-  final String name;
-  final String size;
-  final bool isComplete;
-  final bool hasError;
 
-  UploadedFile({
-    required this.name,
-    required this.size,
-    required this.isComplete,
-    required this.hasError,
-  });
-}
 
 // File Upload Section Widget
 class FileUploadSection extends StatelessWidget {
   final String title;
   final String subtitle;
-  final List<UploadedFile> uploadedFiles;
+  final Widget child;
   final VoidCallback? onChooseFile;
 
   const FileUploadSection({
     super.key,
     required this.title,
     required this.subtitle,
-    required this.uploadedFiles,
+    required this.child,
     this.onChooseFile,
   });
 
@@ -83,7 +70,7 @@ class FileUploadSection extends StatelessWidget {
           SizedBox(height: 20.h),
 
           // Uploaded Files List
-          ...uploadedFiles.map((file) => UploadedFileItem(file: file)),
+          child
         ],
       ),
     );

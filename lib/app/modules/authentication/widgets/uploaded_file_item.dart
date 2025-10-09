@@ -1,18 +1,30 @@
 
-import 'package:barberita/app/modules/authentication/widgets/file_upload_section.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+// Model class for uploaded file
+class UploadedFile {
+  final String name;
+  final String file;
+
+  UploadedFile({
+    required this.name,
+    required this.file,
+
+  });
+}
 
 
 // Uploaded File Item Widget
 class UploadedFileItem extends StatelessWidget {
-  final UploadedFile file;
+  final UploadedFile uploadedFile;
+  final VoidCallback removeOnTap;
 
   const UploadedFileItem({
     super.key,
-    required this.file,
+    required this.uploadedFile,
+    required this.removeOnTap,
   });
 
   @override
@@ -39,7 +51,7 @@ class UploadedFileItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Icon(
-              file.name.contains('.pdf') ? Icons.picture_as_pdf : Icons.image,
+              uploadedFile.name.contains('.pdf') ? Icons.picture_as_pdf : Icons.image,
               color: Colors.white70,
               size: 20.sp,
             ),
@@ -52,7 +64,7 @@ class UploadedFileItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  file.name,
+                  uploadedFile.name,
                   style: GoogleFontStyles.h5(
                     color: Colors.white,
                     fontSize: 14.sp,
@@ -60,7 +72,7 @@ class UploadedFileItem extends StatelessWidget {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  file.size,
+                  uploadedFile.file,
                   style: GoogleFontStyles.h6(
                     color: Colors.grey[400],
                   ),
@@ -70,21 +82,20 @@ class UploadedFileItem extends StatelessWidget {
           ),
 
           // Status Icon
-          Container(
-            width: 20.w,
-            height: 20.h,
-            decoration: BoxDecoration(
-              color: file.isComplete
-                  ? Colors.green
-                  : (file.hasError ? Colors.red : Colors.blue),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              file.isComplete
-                  ? Icons.check
-                  : (file.hasError ? Icons.close : Icons.more_horiz),
-              color: Colors.white,
-              size: 12.sp,
+          GestureDetector(
+            onTap: removeOnTap,
+            child: Container(
+              width: 20.w,
+              height: 20.h,
+              decoration: BoxDecoration(
+                color: Colors.red ,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.close ,
+                color: Colors.white,
+                size: 12.sp,
+              ),
             ),
           ),
         ],
