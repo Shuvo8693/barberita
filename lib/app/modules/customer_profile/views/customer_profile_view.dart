@@ -280,7 +280,7 @@ class _CustomerProfileViewState extends State<CustomerProfileView> {
           TextButton(
             onPressed: () async {
               await PrefsHelper.remove('role').then((v) {
-                Get.offAllNamed(Routes.ONBOARING);
+                Get.offAllNamed(Routes.SIGNIN);
               });
 
               // Handle logout

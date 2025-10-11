@@ -1,5 +1,6 @@
 
 import 'package:barberita/common/app_text_style/google_app_style.dart';
+import 'package:barberita/common/bottom_menu/bottom_menu..dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,6 +28,7 @@ class _BarberAddServiceViewState extends State<BarberAddServiceView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: SafeArea(child: BottomMenu(1)),
       appBar: CustomAppBar(title: 'Add Service'),
       body: SingleChildScrollView(
         child: Padding(

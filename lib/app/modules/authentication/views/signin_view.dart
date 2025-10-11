@@ -195,7 +195,7 @@ class _SignInViewState extends State<SignInView> {
                   SizedBox(height: 16.h),
 
                   // Sign Up Link
-                  DontHaveAnAccount(onTap: () {Get.toNamed(Routes.SIGNUP);}),
+                  DontHaveAnAccount(onTap: () {Get.toNamed(Routes.ROLESELECTION);}),
 
                   SizedBox(height: 40.h),
                 ],

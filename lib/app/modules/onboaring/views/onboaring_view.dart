@@ -60,7 +60,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   }
 
   void _skipToEnd() {
-    Navigator.pushReplacementNamed(context, '/login');
+    Get.toNamed(Routes.SIGNIN);
   }
 
   @override
