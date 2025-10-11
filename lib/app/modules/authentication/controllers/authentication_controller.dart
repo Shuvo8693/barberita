@@ -1,9 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide MultipartFile;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class AuthenticationController extends GetxController {
@@ -38,6 +41,67 @@ class AuthenticationController extends GetxController {
         endpoint: ApiConstants.registerUrl,
         body: body,
         timeout: Duration(seconds: 10),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+      if (response.isSuccess && response.data != null) {
+        Get.snackbar('Success', response.message ?? 'User creation successfully done ',);
+        String token = response.data!['data']['token'];
+        await PrefsHelper.setString('token', token).then((value){
+          return Get.toNamed(Routes.OTP);
+
+        });
+
+      } else {
+        Get.snackbar('Failed', response.message ?? 'User creation failed ');
+        //throw NetworkException(response.message ?? 'User creation failed ');
+      }
+    } catch (e) {
+      print(e);
+      rethrow;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  /// ======================== Create barber ================================
+
+  List<String> iqamaFilePathsList = [];
+  List<String> healthFilePathsList = [];
+
+  createBarber() async {
+
+    final role = await PrefsHelper.getString('role');
+
+    Map<String,String> body = {
+      "name" : nameController.text,
+      "phone" : phoneController.text,
+      "password" : confirmPasswordController.text,
+      "longitude": currentLocation?.longitude.toString()??'',
+      "latitude" : currentLocation?.latitude.toString()??''
+    };
+
+    _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
+    _networkCaller.addResponseInterceptor(LoggingInterceptor());
+
+    try {
+      isLoading.value = true;
+      // residancePermit
+      final residancePermit = await MultipartFile.fromFile(
+        field: 'residancePermit',
+        file: File(iqamaFilePathsList.first),
+        contentType: getContentType(iqamaFilePathsList.first),
+      );
+      // healthCertificate
+      final healthCertificate = await MultipartFile.fromFile(
+        field: 'healthCertificate',
+        file: File(healthFilePathsList.first),
+        contentType: getContentType(healthFilePathsList.first),
+      );
+
+      final response = await _networkCaller.multipart<Map<String, dynamic>>(
+        endpoint: ApiConstants.registerBarberUrl,
+        files: [residancePermit,healthCertificate],
+        fields: body,
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {

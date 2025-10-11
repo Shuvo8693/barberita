@@ -12,6 +12,7 @@ class ApiConstants{
 ///>>>>>>>>>>>>>>>>>>>>>>>>>>> Api End point >>>>>>>>>>>>>>>>>>>
 
 static String registerUrl= '/api/v1/auth/register';
+static String registerBarberUrl= '/api/v1/barber/add-barber';
 static String verifyOtpUrl= '/api/v1/auth/verify-otp';
 static String verifyForgotOtpUrl(String userMail) =>  '/api/v1/user/verify-forget-otp?email=$userMail';
 static String searchMechanicUrl(String service) =>  '/api/v1/mechanic/all?serviceName=$service';

@@ -43,9 +43,9 @@ class OtpController extends GetxController {
           Get.toNamed(Routes.NEWPASSWORD,arguments: {'isResetPass': true});
         }else{
           if(role =='customer'){
-             Get.toNamed(Routes.HOME);
+             Get.offAndToNamed(Routes.HOME);
           } else if(role =='barber'){
-            Get.toNamed(Routes.BARBER_HOME);
+            Get.offAndToNamed(Routes.BARBER_HOME);
           }else{
             Get.snackbar('Failed route', ' Select your role before route home');
           }

@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:barberita/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:barberita/app/modules/authentication/widgets/file_upload_section.dart';
 import 'package:barberita/app/modules/authentication/widgets/uploaded_file_item.dart';
+import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
@@ -9,6 +11,8 @@ import 'package:barberita/common/file_picker/file_picker_service.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class BarberVerificationView extends StatefulWidget {
   const BarberVerificationView({super.key});
@@ -17,11 +21,11 @@ class BarberVerificationView extends StatefulWidget {
   State<BarberVerificationView> createState() => _BarberVerificationViewState();
 }
 
-class _BarberVerificationViewState extends State<BarberVerificationView>
-    with SingleTickerProviderStateMixin {
+class _BarberVerificationViewState extends State<BarberVerificationView> with SingleTickerProviderStateMixin {
+
   late TabController _tabController;
-  List<String> iqamaFilePathsList = [];
-  List<String> healthFilePathsList = [];
+  final AuthenticationController _authenticationController = Get.put(AuthenticationController());
+
 
   @override
   void initState() {
@@ -102,8 +106,8 @@ class _BarberVerificationViewState extends State<BarberVerificationView>
                     },
                     child: Column(
                       children: [
-                        ...List.generate(iqamaFilePathsList.length, (index) {
-                          String iqamaFilePathItem = iqamaFilePathsList[index];
+                        ...List.generate(_authenticationController.iqamaFilePathsList.length, (index) {
+                          String iqamaFilePathItem = _authenticationController.iqamaFilePathsList[index];
                           return UploadedFileItem(
                             uploadedFile: UploadedFile(
                               name: iqamaFilePathItem.split('/').last,
@@ -111,7 +115,7 @@ class _BarberVerificationViewState extends State<BarberVerificationView>
                             ),
                             removeOnTap: () {
                               setState(() {
-                                iqamaFilePathsList.removeAt(index);
+                                _authenticationController.iqamaFilePathsList.removeAt(index);
                               });
                             },
                           );
@@ -128,8 +132,8 @@ class _BarberVerificationViewState extends State<BarberVerificationView>
                     },
                     child: Column(
                       children: [
-                        ...List.generate(healthFilePathsList.length, (index) {
-                          String healthFilePathItem = healthFilePathsList[index];
+                        ...List.generate(_authenticationController.healthFilePathsList.length, (index) {
+                          String healthFilePathItem = _authenticationController.healthFilePathsList[index];
                           return UploadedFileItem(
                             uploadedFile: UploadedFile(
                               name: healthFilePathItem.split('/').last,
@@ -137,7 +141,7 @@ class _BarberVerificationViewState extends State<BarberVerificationView>
                             ),
                             removeOnTap: () {
                               setState(() {
-                                healthFilePathsList.removeAt(index);
+                                _authenticationController.healthFilePathsList.removeAt(index);
                               });
                             },
                           );
@@ -154,8 +158,14 @@ class _BarberVerificationViewState extends State<BarberVerificationView>
               padding: EdgeInsets.all(20.w),
               child: CustomButton(
                 text: 'Continue to Sign up',
-                onTap: () {
-                  // Handle continue action
+                onTap:(){
+                  if(_authenticationController.iqamaFilePathsList.isNotEmpty && _authenticationController.healthFilePathsList.isNotEmpty){
+                     Get.toNamed(Routes.SIGNUP);
+                  }else{
+                    if(!Get.isSnackbarOpen){
+                      Get.snackbar('Incompleted', 'Upload your Iqama or Residence / Health certificate');
+                    }
+                  }
                 },
               ),
             ),
@@ -184,10 +194,13 @@ class _BarberVerificationViewState extends State<BarberVerificationView>
                   File? file = await FilePickerService.pickPDF();
                   if (file != null) {
                     setState(() {
+
                       if (isIqama == true) {
-                        iqamaFilePathsList.add(file.path);
+                        _authenticationController.iqamaFilePathsList.clear();
+                        _authenticationController.iqamaFilePathsList.add(file.path);
                       } else {
-                        healthFilePathsList.add(file.path);
+                        _authenticationController.healthFilePathsList.clear();
+                        _authenticationController.healthFilePathsList.add(file.path);
                       }
                     });
                     print('Photo taken: ${file.path}');
@@ -203,10 +216,13 @@ class _BarberVerificationViewState extends State<BarberVerificationView>
                   if (image != null) {
                     print('Image selected: ${image.path}');
                     setState(() {
+
                       if (isIqama == true) {
-                        iqamaFilePathsList.add(image.path);
+                        _authenticationController.iqamaFilePathsList.clear();
+                        _authenticationController.iqamaFilePathsList.add(image.path);
                       } else {
-                        healthFilePathsList.add(image.path);
+                        _authenticationController.healthFilePathsList.clear();
+                        _authenticationController.healthFilePathsList.add(image.path);
                       }
                     });
                   }

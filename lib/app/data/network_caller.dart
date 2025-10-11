@@ -800,3 +800,24 @@ class ApiService {
     }
   }
 }
+
+// ✅ Support multiple image types
+String getContentType(String filePath) {
+  String extension = filePath.toLowerCase().split('.').last;
+
+  switch (extension) {
+    case 'pdf':
+      return 'application/pdf';
+    case 'jpg':
+    case 'jpeg':
+      return 'image/jpeg';
+    case 'png':
+      return 'image/png';
+    case 'gif':
+      return 'image/gif';
+    case 'webp':
+      return 'image/webp';
+    default:
+      return 'application/octet-stream'; // fallback
+  }
+}

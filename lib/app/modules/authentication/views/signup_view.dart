@@ -4,6 +4,7 @@ import 'package:barberita/app/modules/authentication/widgets/location_button.dar
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_logo/app_logo.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
+import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:barberita/common/widgets/have_an_account.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -193,8 +194,13 @@ class _SignUpViewState extends State<SignUpView> {
                         return CustomButton(
                           loading: _authenticationController.isLoading.value,
                           onTap: () async {
+                            final role = await PrefsHelper.getString('role');
                             if(_formKey.currentState!.validate()){
-                              await _authenticationController.createUser();
+                              if(role=='customer'){
+                                await _authenticationController.createUser();
+                              }else{
+                                await _authenticationController.createBarber();
+                              }
                             }
                           },
                           text: 'Sign Up',
