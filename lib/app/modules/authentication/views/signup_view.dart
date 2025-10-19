@@ -97,8 +97,8 @@ class _SignUpViewState extends State<SignUpView> {
                         controller: _authenticationController.phoneController,
                         hintText: 'Enter Your phone Number',
                         inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(11)
+                          // FilteringTextInputFormatter.digitsOnly,
+                          // LengthLimitingTextInputFormatter(11)
                         ],
                         hintStyle: GoogleFontStyles.h5(
                           color: Colors.white.withOpacity(0.5),

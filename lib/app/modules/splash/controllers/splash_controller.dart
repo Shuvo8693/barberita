@@ -11,7 +11,13 @@ class SplashController extends GetxController {
      print(payload);
     String role = payload['role']??'';
     String phone = payload['phone'];
-      Get.toNamed(Routes.ONBOARING);
+     if(token.isNotEmpty && role == 'customer'){
+       Get.toNamed(Routes.HOME);
+     }else if(token.isNotEmpty && role == 'barber'){
+       Get.toNamed(Routes.BARBER_HOME);
+     }else{
+       Get.toNamed(Routes.ONBOARING);
+     }
     });
   }
 }

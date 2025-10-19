@@ -45,16 +45,16 @@ class _BottomMenuState extends State<BottomMenu> {
     // Navigate to corresponding pages
     switch (index)  {
       case 0 :
-        if(userRole=='User'){
+        if(userRole=='customer'){
           Get.offAllNamed(Routes.HOME);
-        }else if(userRole=='Barber'){
+        }else if(userRole=='barber'){
           Get.offAllNamed(Routes.BARBER_HOME);
         }
         break;
       case 1:
-        if(userRole=='User'){
+        if(userRole=='customer'){
           Get.offAllNamed(Routes.BOOKING);
-        }else if(userRole=='Barber'){
+        }else if(userRole=='barber'){
           Get.offAllNamed(Routes.SERVICEMANAGEMENT);
         }
         break;
@@ -96,7 +96,7 @@ class _BottomMenuState extends State<BottomMenu> {
           unselectedFontSize: 12.sp,
             items: [
               _buildBottomNavItem(AppSvg.homeSvg, 'Home'),
-              _buildBottomNavItem(userRole=='User'?AppSvg.bookingSvg:AppSvg.add_servicSvg, userRole=='User'?'Booking':'Add Service'),
+              _buildBottomNavItem(userRole=='customer'?AppSvg.bookingSvg:AppSvg.add_servicSvg, userRole=='customer'?'Booking':'Add Service'),
               _buildBottomNavItem(AppSvg.personSvg, 'Profile'),
             ],
           ),
