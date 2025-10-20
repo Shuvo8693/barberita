@@ -10,11 +10,14 @@ class SplashController extends GetxController {
      final payload = decodeJWT(token);
      print(payload);
     String role = payload['role']??'';
+    bool isLogIn = payload['isLogin']??false;
     String phone = payload['phone'];
-     if(token.isNotEmpty && role == 'customer'){
+     if(token.isNotEmpty && role == 'customer' && isLogIn){
        Get.toNamed(Routes.HOME);
-     }else if(token.isNotEmpty && role == 'barber'){
+     }else if(token.isNotEmpty && role == 'barber' && isLogIn){
        Get.toNamed(Routes.BARBER_HOME);
+     }else if(token.isNotEmpty && isLogIn==false){
+       Get.toNamed(Routes.SIGNIN);
      }else{
        Get.toNamed(Routes.ONBOARING);
      }

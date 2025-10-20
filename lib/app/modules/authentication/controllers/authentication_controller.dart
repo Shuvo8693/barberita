@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
 import 'package:barberita/app/routes/app_pages.dart';
+import 'package:barberita/common/jwt_decoder/jwt_decoder.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide MultipartFile;
@@ -204,9 +205,14 @@ class AuthenticationController extends GetxController {
         await PrefsHelper.setString('role', role);
         await PrefsHelper.setString('token', token).then((value)async{
           String? userRole =await PrefsHelper.getString('role');
-          if(userRole =='customer'){
+          String token = await PrefsHelper.getString('token');
+          final payload = decodeJWT(token);
+          print(payload);
+          String role = payload['role']??'';
+          bool isLogIn = payload['isLogin']??false;
+          if(role =='customer' && isLogIn){
             Get.toNamed(Routes.HOME);
-          } else if(userRole =='barber'){
+          } else if(role =='barber' && isLogIn){
             Get.toNamed(Routes.BARBER_HOME);
           }else{
             Get.snackbar('Failed to route', ' Login again or create account');

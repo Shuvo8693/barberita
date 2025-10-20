@@ -1,4 +1,5 @@
 import 'package:barberita/app/modules/barber_home/views/review_view.dart';
+import 'package:barberita/app/modules/customer_profile/controllers/customer_profile_controller.dart';
 import 'package:barberita/app/modules/customer_profile/views/settings/settings_screen.dart';
 import 'package:barberita/app/modules/customer_profile/views/support_view.dart';
 import 'package:barberita/app/routes/app_pages.dart';
@@ -6,6 +7,7 @@ import 'package:barberita/common/app_images/network_image%20.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/bottom_menu/bottom_menu..dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
+import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:barberita/common/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,11 +25,13 @@ class CustomerProfileView extends StatefulWidget {
 }
 
 class _CustomerProfileViewState extends State<CustomerProfileView> {
+  final profileController = Get.put(CustomerProfileController());
+
   @override
   void initState() {
     super.initState();
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -237,16 +241,17 @@ class _CustomerProfileViewState extends State<CustomerProfileView> {
             const Spacer(),
             isActiveSwitch
                 ? Switch(
-                value: value,
-                onChanged: onChanged,
-              padding: EdgeInsets.all(0),
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              activeColor: Colors.green,
-            ):Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.white.withOpacity(0.5),
-              size: 16.sp
-            ),
+                    value: value,
+                    onChanged: onChanged,
+                    padding: EdgeInsets.all(0),
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    activeColor: Colors.green,
+                  )
+                : Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.white.withOpacity(0.5),
+                    size: 16.sp,
+                  ),
           ],
         ),
       ),
@@ -277,28 +282,19 @@ class _CustomerProfileViewState extends State<CustomerProfileView> {
               style: GoogleFontStyles.h5(color: Colors.white.withOpacity(0.7)),
             ),
           ),
-          TextButton(
-            onPressed: () async {
-              await PrefsHelper.remove('role').then((v) {
-                Get.offAllNamed(Routes.SIGNIN);
-              });
+          Obx((){
+            return  CustomButton(
+              loading: profileController.isLoadingLogOut.value,
+              width: 80.w,
+              height: 35.h,
+              onTap: () async {
+                await profileController.logout();
+              },
+              text: 'Log out',
+              color: Colors.red,
+            );
+           }
 
-              // Handle logout
-            },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(6.r),
-              ),
-              child: Text(
-                'Log Out',
-                style: GoogleFontStyles.h5(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
           ),
         ],
       ),
