@@ -39,6 +39,7 @@ class TopRatedCard extends StatelessWidget {
     var data = hairdressers[index];
 
     return Container(
+      width: 160.w,
       decoration: BoxDecoration(
         color: AppColors.primaryColor,
         borderRadius: BorderRadius.circular(12.r),
@@ -56,11 +57,12 @@ class TopRatedCard extends StatelessWidget {
                   topRight: Radius.circular(12.r),
                 ),
               ),
-              Positioned(
-                top: 8.h,
-                left: 8.w,
-                child: Icon(Icons.favorite, color: Colors.red, size: 20.sp),
-              ),
+              /// favourite icon
+              // Positioned(
+              //   top: 8.h,
+              //   left: 8.w,
+              //   child: Icon(Icons.favorite, color: Colors.red, size: 20.sp),
+              // ),
             ],
           ),
           Padding(

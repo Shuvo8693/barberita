@@ -32,11 +32,12 @@ class _HomeViewState extends State<HomeView> {
   ];
 
   @override
-  void didChangeDependencies()async {
-     await homeController.fetchTopBarber();
-     await homeController.fetchFavouriteBarber();
+  void didChangeDependencies() async {
     super.didChangeDependencies();
+    await homeController.fetchTopBarber();
+    await homeController.fetchFavouriteBarber();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +82,7 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           Get.toNamed(Routes.NOTIFICATION);
                         },
                         child: Badge.count(
@@ -168,7 +169,7 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           Get.toNamed(Routes.FAVOURITE);
                         },
                         child: Padding(
@@ -188,28 +189,37 @@ class _HomeViewState extends State<HomeView> {
                   // Favourite Card
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: Obx((){
-                     final favouriteData = homeController.favouriteBarberModel.value.data??[];
-                     if(homeController.isLoadingFavouriteBarber.value){
-                       return CupertinoActivityIndicator();
-                     } else if(favouriteData.isEmpty){
-                       return Text('No available favourite');
-                     }
-                    final favouriteFirstData = favouriteData.first;
+                    child: Obx(() {
+                      final favouriteData =
+                          homeController.favouriteBarberModel.value.data ?? [];
+                      if (homeController.isLoadingFavouriteBarber.value) {
+                        return CupertinoActivityIndicator();
+                      } else if (favouriteData.isEmpty) {
+                        return Text('No available favourite');
+                      }
+                      final favouriteFirstData = favouriteData.first;
                       return FavouriteHairdresserCard(
-                        imageUrl: favouriteFirstData?.barberId?.userId?.image??'',
-                        name: favouriteFirstData?.barberId?.userId?.name??'',
+                        imageUrl:
+                            favouriteFirstData?.barberId?.userId?.image ?? '',
+                        name: favouriteFirstData?.barberId?.userId?.name ?? '',
                         type: 'Hair Style',
-                        status:favouriteFirstData?.barberId?.isOpen==true? 'Open now': 'Closed now',
-                        rating: favouriteFirstData?.barberId?.rating.toString()??'',
-                        price: '\$${ favouriteFirstData?.barberId?.minPrice}-\$${ favouriteFirstData?.barberId?.maxPrice}',
+                        status: favouriteFirstData?.barberId?.isOpen == true
+                            ? 'Open now'
+                            : 'Closed now',
+                        rating:
+                            favouriteFirstData?.barberId?.rating.toString() ??
+                            '',
+                        price:
+                            '\$${favouriteFirstData?.barberId?.minPrice}-\$${favouriteFirstData?.barberId?.maxPrice}',
                         onTap: () {
                           // Handle booking action
+                          if (favouriteFirstData?.barberId?.isOpen == false) {
+                            Get.snackbar('Closed', 'Barber service is closed');
+                          }
+                          Get.toNamed(Routes.HAIRDRESSER_DETAILS);
                         },
                       );
-                    }
-
-                    ),
+                    }),
                   ),
 
                   SizedBox(height: 20.h),
@@ -229,14 +239,18 @@ class _HomeViewState extends State<HomeView> {
                   SizedBox(height: 12.h),
 
                   // Top Rated Grid
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: Row(
-                      children: [
-                        Expanded(child: TopRatedCard(index: 0)),
-                        SizedBox(width: 12.w),
-                        Expanded(child: TopRatedCard(index: 1)),
-                      ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.w),
+                      child: Row(
+                        children: List.generate(2, (index) {
+                          return Padding(
+                            padding: EdgeInsets.only(right: 8.w),
+                            child: TopRatedCard(index: index),
+                          );
+                        }),
+                      ),
                     ),
                   ),
                   SizedBox(height: 20.h),
