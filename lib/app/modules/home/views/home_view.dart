@@ -199,14 +199,11 @@ class _HomeViewState extends State<HomeView> {
                       }
                       final favouriteFirstData = favouriteData.first;
                       return FavouriteHairdresserCard(
-                        imageUrl:
-                            favouriteFirstData?.barberId?.userId?.image ?? '',
+                        imageUrl: favouriteFirstData?.barberId?.userId?.image ?? '',
                         name: favouriteFirstData?.barberId?.userId?.name ?? '',
                         type: 'Hair Style',
-                        status: favouriteFirstData?.barberId?.isOpen == true
-                            ? 'Open now'
-                            : 'Closed now',
-                        rating: favouriteFirstData?.barberId?.rating.toString() ?? '',
+                        status: favouriteFirstData?.barberId?.isOpen == true ? 'Open now' : 'Closed now',
+                        rating: favouriteFirstData?.barberId?.rating?.toStringAsFixed(1) ?? '',
                         price: '\$${favouriteFirstData?.barberId?.minPrice}-\$${favouriteFirstData?.barberId?.maxPrice}',
                         onTap: () {
                           // Handle booking action

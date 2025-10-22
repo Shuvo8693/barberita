@@ -87,7 +87,7 @@ class TopRatedCard extends StatelessWidget {
                     Icon(Icons.star, color: Colors.amber, size: 14.sp),
                     SizedBox(width: 2.w),
                     Text(
-                      barberTopRated.averageRating.toString(),
+                      barberTopRated.averageRating.toStringAsFixed(1),
                       style: GoogleFontStyles.customSize(
                         size: 10.sp,
                         color: Colors.white.withOpacity(0.7),
