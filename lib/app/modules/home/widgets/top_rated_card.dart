@@ -1,3 +1,5 @@
+import 'package:barberita/app/modules/home/model/favourite_model.dart';
+import 'package:barberita/app/modules/home/model/top_rated_barber_model.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/app_images/network_image%20.dart';
@@ -7,12 +9,13 @@ import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class TopRatedCard extends StatelessWidget {
   final int index;
+  final BarberTopRated barberTopRated;
+  final VoidCallback onTap;
 
-  const TopRatedCard({super.key, required this.index});
+  const TopRatedCard({super.key, required this.index,required this.barberTopRated, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +53,7 @@ class TopRatedCard extends StatelessWidget {
           Stack(
             children: [
               CustomNetworkImage(
-                imageUrl: data['image'],
+                imageUrl: barberTopRated.coverPicture??'',
                 height: 120.h,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(12.r),
@@ -74,7 +77,7 @@ class TopRatedCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        data['name'],
+                        barberTopRated.name,
                         style: GoogleFontStyles.h6(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
@@ -84,7 +87,7 @@ class TopRatedCard extends StatelessWidget {
                     Icon(Icons.star, color: Colors.amber, size: 14.sp),
                     SizedBox(width: 2.w),
                     Text(
-                      data['rating'],
+                      barberTopRated.averageRating.toString(),
                       style: GoogleFontStyles.customSize(
                         size: 10.sp,
                         color: Colors.white.withOpacity(0.7),
@@ -94,7 +97,7 @@ class TopRatedCard extends StatelessWidget {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  data['type'],
+                  'Hair cut',
                   style: GoogleFontStyles.customSize(
                     size: 10.sp,
                     color: const Color(0xFFE6C4A3),
@@ -102,7 +105,7 @@ class TopRatedCard extends StatelessWidget {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  data['status'],
+                  barberTopRated.isOpen?'Open now':'Close now',
                   style: GoogleFontStyles.customSize(
                     size: 10.sp,
                     color: Colors.green,
@@ -110,16 +113,14 @@ class TopRatedCard extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  'Price Range: ${data['price']}',
+                  'Price Range: ${barberTopRated.minPrice}-${barberTopRated.maxPrice}',
                   style: GoogleFontStyles.customSize(
                     size: 9.sp,
                     color: Colors.white.withOpacity(0.7),
                   ),
                 ),
                 SizedBox(height: 8.h),
-                CustomButton(onTap: () {
-                  Get.toNamed(Routes.HAIRDRESSER_DETAILS);
-                }, text: 'Book now', height: 30.h),
+                CustomButton(onTap: onTap, text: 'Book now', height: 30.h),
               ],
             ),
           ),

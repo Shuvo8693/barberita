@@ -206,17 +206,14 @@ class _HomeViewState extends State<HomeView> {
                         status: favouriteFirstData?.barberId?.isOpen == true
                             ? 'Open now'
                             : 'Closed now',
-                        rating:
-                            favouriteFirstData?.barberId?.rating.toString() ??
-                            '',
-                        price:
-                            '\$${favouriteFirstData?.barberId?.minPrice}-\$${favouriteFirstData?.barberId?.maxPrice}',
+                        rating: favouriteFirstData?.barberId?.rating.toString() ?? '',
+                        price: '\$${favouriteFirstData?.barberId?.minPrice}-\$${favouriteFirstData?.barberId?.maxPrice}',
                         onTap: () {
                           // Handle booking action
                           if (favouriteFirstData?.barberId?.isOpen == false) {
                             Get.snackbar('Closed', 'Barber service is closed');
                           }
-                          Get.toNamed(Routes.HAIRDRESSER_DETAILS);
+                          Get.toNamed(Routes.HAIRDRESSER_DETAILS,arguments: {'barberId':favouriteFirstData?.barberId?.id});
                         },
                       );
                     }),
@@ -239,20 +236,35 @@ class _HomeViewState extends State<HomeView> {
                   SizedBox(height: 12.h),
 
                   // Top Rated Grid
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      child: Row(
-                        children: List.generate(2, (index) {
-                          return Padding(
-                            padding: EdgeInsets.only(right: 8.w),
-                            child: TopRatedCard(index: index),
-                          );
-                        }),
+                  Obx(() {
+                    final barberTopRatedData = homeController.barberTopRatedModel.value.barberList ?? [];
+                    if (homeController.isLoadingTopBarber.value) {
+                      return CupertinoActivityIndicator();
+                    } else if (barberTopRatedData.isEmpty) {
+                      return Text('No available Barber');
+                    }
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                        child: Row(
+                          children: List.generate(barberTopRatedData.length, (index) {
+                            final barberTopRatedIndex = barberTopRatedData[index];
+                            return Padding(
+                              padding: EdgeInsets.only(right: 8.w),
+                              child: TopRatedCard(
+                                index: index,
+                                barberTopRated: barberTopRatedIndex,
+                                onTap: () {
+                                  Get.toNamed(Routes.HAIRDRESSER_DETAILS,arguments: {'barberId':barberTopRatedIndex.barberId});
+                                },
+                              ),
+                            );
+                          }),
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                   SizedBox(height: 20.h),
                 ],
               ),

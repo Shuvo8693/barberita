@@ -1,18 +1,18 @@
 class BarberTopRatedModel {
-  final bool success;
-  final String message;
-  final List<Barber> barberList;
+  final bool? success;
+  final String? message;
+  final List<BarberTopRated>? barberList;
 
   BarberTopRatedModel({
-    required this.success,
-    required this.message,
-    required this.barberList,
+     this.success,
+     this.message,
+     this.barberList,
   });
 
   // Factory constructor to parse the JSON response
   factory BarberTopRatedModel.fromJson(Map<String, dynamic> json) {
     var list = json['data'] as List;
-    List<Barber> barberList = list.map((i) => Barber.fromJson(i)).toList();
+    List<BarberTopRated> barberList = list.map((i) => BarberTopRated.fromJson(i)).toList();
 
     return BarberTopRatedModel(
       success: json['success'],
@@ -22,7 +22,7 @@ class BarberTopRatedModel {
   }
 }
 
-class Barber {
+class BarberTopRated {
   final String barberId;
   final String name;
   final String phone;
@@ -36,7 +36,7 @@ class Barber {
   final double minPrice;
   final double maxPrice;
 
-  Barber({
+  BarberTopRated({
     required this.barberId,
     required this.name,
     required this.phone,
@@ -52,8 +52,8 @@ class Barber {
   });
 
   // Factory constructor to parse the JSON response
-  factory Barber.fromJson(Map<String, dynamic> json) {
-    return Barber(
+  factory BarberTopRated.fromJson(Map<String, dynamic> json) {
+    return BarberTopRated(
       barberId: json['barberId'],
       name: json['name'],
       phone: json['phone'],

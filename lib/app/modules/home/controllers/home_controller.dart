@@ -1,12 +1,14 @@
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
 import 'package:barberita/app/modules/home/model/favourite_model.dart';
+import 'package:barberita/app/modules/home/model/top_rated_barber_model.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
 
   final NetworkCaller _networkCaller = NetworkCaller.instance;
+  Rx<BarberTopRatedModel> barberTopRatedModel = BarberTopRatedModel().obs;
   var isLoadingTopBarber = false.obs;
 
   Future<void> fetchTopBarber() async {
@@ -25,7 +27,7 @@ class HomeController extends GetxController {
       );
       if (response.isSuccess && response.data != null) {
         List<dynamic> responseData = response.data!['data'] as List<dynamic>;
-        print(responseData);
+          barberTopRatedModel.value = BarberTopRatedModel.fromJson( response.data!);
 
       } else {
         Get.snackbar('Failed', response.message ?? 'Resend otp failed');
