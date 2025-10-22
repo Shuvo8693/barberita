@@ -1,12 +1,12 @@
-import 'package:barberita/app/modules/authentication/views/otp_view.dart';
-import 'package:barberita/app/modules/authentication/views/verify_phone_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
 import '../modules/authentication/views/barbar_verification_view.dart';
 import '../modules/authentication/views/new_password_view.dart';
+import '../modules/authentication/views/otp_view.dart';
 import '../modules/authentication/views/signin_view.dart';
 import '../modules/authentication/views/signup_view.dart';
+import '../modules/authentication/views/verify_phone_view.dart';
 import '../modules/barber_add_service/bindings/barber_add_service_binding.dart';
 import '../modules/barber_add_service/views/barber_add_service_view.dart';
 import '../modules/barber_add_service/views/service_management_view.dart';
@@ -178,5 +178,6 @@ class AppPages {
       page: () => const FavouriteView(),
       binding: FavouriteBinding(),
     ),
+
   ];
 }

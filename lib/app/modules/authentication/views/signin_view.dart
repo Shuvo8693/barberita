@@ -72,7 +72,7 @@ class _SignInViewState extends State<SignInView> {
                         controller: _authenticationController.phoneLoginCtrl,
                         hintText: 'Enter Your phone Number',
                         inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
+                          // FilteringTextInputFormatter.digitsOnly,
                           // LengthLimitingTextInputFormatter(11)
                         ],
                         hintStyle: GoogleFontStyles.h5(

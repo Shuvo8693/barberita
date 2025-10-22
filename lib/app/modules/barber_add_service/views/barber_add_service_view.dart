@@ -28,7 +28,7 @@ class _BarberAddServiceViewState extends State<BarberAddServiceView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: SafeArea(child: BottomMenu(1)),
+      bottomNavigationBar: SafeArea(child:  BottomMenu(1)),
       appBar: CustomAppBar(title: 'Add Service'),
       body: SingleChildScrollView(
         child: Padding(

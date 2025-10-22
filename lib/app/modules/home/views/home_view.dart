@@ -1,3 +1,4 @@
+import 'package:barberita/app/modules/home/controllers/home_controller.dart';
 import 'package:barberita/app/modules/home/widgets/top_rated_card.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_images/network_image%20.dart';
@@ -20,6 +21,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final homeController = Get.put(HomeController());
   final TextEditingController _searchController = TextEditingController();
   int selectedFilterIndex = 0;
   List<String> recentSearch = [
@@ -28,6 +30,11 @@ class _HomeViewState extends State<HomeView> {
     'Fellow Hairdresser',
   ];
 
+  @override
+  void didChangeDependencies()async {
+     await homeController.fetchTopBarber();
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -38,9 +38,7 @@ class ServiceItemCard extends StatelessWidget {
             },
           ),
         ),
-
         SizedBox(width: 12.w),
-
         // Service Details
         Expanded(
           child: Column(
