@@ -5,6 +5,7 @@ import 'package:barberita/common/app_images/network_image%20.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/bottom_menu/bottom_menu..dart';
 import 'package:barberita/common/widgets/casess_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/widgets/custom_text_field.dart';
@@ -33,6 +34,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void didChangeDependencies()async {
      await homeController.fetchTopBarber();
+     await homeController.fetchFavouriteBarber();
     super.didChangeDependencies();
   }
   @override
@@ -182,22 +184,31 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ],
                   ),
-
                   SizedBox(height: 12.h),
-
                   // Favourite Card
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: FavouriteHairdresserCard(
-                      imageUrl: AppNetworkImage.saloonHairMen2Img,
-                      name: 'Marty\'s Hairdresser',
-                      type: 'Braided',
-                      status: 'Open now',
-                      rating: '4.5',
-                      price: '\$2.99-\$100',
-                      onTap: () {
-                        // Handle booking action
-                      },
+                    child: Obx((){
+                     final favouriteData = homeController.favouriteBarberModel.value.data??[];
+                     if(homeController.isLoadingFavouriteBarber.value){
+                       return CupertinoActivityIndicator();
+                     } else if(favouriteData.isEmpty){
+                       return Text('No available favourite');
+                     }
+                    final favouriteFirstData = favouriteData.first;
+                      return FavouriteHairdresserCard(
+                        imageUrl: favouriteFirstData?.barberId?.userId?.image??'',
+                        name: favouriteFirstData?.barberId?.userId?.name??'',
+                        type: 'Hair Style',
+                        status:favouriteFirstData?.barberId?.isOpen==true? 'Open now': 'Closed now',
+                        rating: favouriteFirstData?.barberId?.rating.toString()??'',
+                        price: '\$${ favouriteFirstData?.barberId?.minPrice}-\$${ favouriteFirstData?.barberId?.maxPrice}',
+                        onTap: () {
+                          // Handle booking action
+                        },
+                      );
+                    }
+
                     ),
                   ),
 

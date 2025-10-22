@@ -25,5 +25,6 @@ static String resendOtpUrl= '/api/v1/auth/resend-otp';
 static String logInUrl= '/api/v1/auth/login';
 static String resetPasswordUrl= '/api/v1/auth/reset-password';
 static String topRatedBarberUrl= '/api/v1/barber/top-rated-barber';
+static String favouriteBarberUrl= '/api/v1/favorite/get-favorite-barber';
 
 }

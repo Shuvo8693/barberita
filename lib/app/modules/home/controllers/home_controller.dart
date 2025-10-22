@@ -1,5 +1,6 @@
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
+import 'package:barberita/app/modules/home/model/favourite_model.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:get/get.dart';
 
@@ -37,8 +38,10 @@ class HomeController extends GetxController {
     }
 
   }
+/// ======================= fetch favourite =========================
 
-
+  final Rx<FavoriteBarbersModel> favouriteBarberModel = FavoriteBarbersModel().obs;
+  var isLoadingFavouriteBarber = false.obs;
   Future<void> fetchFavouriteBarber() async {
     String token = await PrefsHelper.getString('token');
 
@@ -47,16 +50,16 @@ class HomeController extends GetxController {
     _networkCaller.addResponseInterceptor(LoggingInterceptor());
 
     try {
-      isLoadingTopBarber.value = true;
+      isLoadingFavouriteBarber.value = true;
       final response = await _networkCaller.get<Map<String, dynamic>>(
-        endpoint:ApiConstants.topRatedBarberUrl,
+        endpoint:ApiConstants.favouriteBarberUrl,
         timeout: Duration(seconds: 10),
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
         List<dynamic> responseData = response.data!['data'] as List<dynamic>;
-        print(responseData);
-
+        favouriteBarberModel.value = FavoriteBarbersModel.fromJson(response.data!);
+        print(favouriteBarberModel.value);
       } else {
         Get.snackbar('Failed', response.message ?? 'Resend otp failed');
       }
@@ -64,7 +67,7 @@ class HomeController extends GetxController {
       print(e);
       throw NetworkException('$e');
     } finally {
-      isLoadingTopBarber.value = false;
+      isLoadingFavouriteBarber.value = false;
     }
 
   }
