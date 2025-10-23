@@ -1,50 +1,76 @@
+import 'package:barberita/app/data/api_constants.dart';
+import 'package:barberita/app/modules/hairdresser_details/controllers/hairdresser_details_controller.dart';
+import 'package:barberita/app/modules/hairdresser_details/model/barber_review_model.dart';
 import 'package:barberita/common/app_images/network_image%20.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/widgets/casess_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+
 
 // Reviews Tab Widget
-class ReviewsTab extends StatelessWidget {
+class ReviewsTab extends StatefulWidget {
   const ReviewsTab({super.key});
 
   @override
+  State<ReviewsTab> createState() => _ReviewsTabState();
+}
+
+class _ReviewsTabState extends State<ReviewsTab> {
+  final HairdresserDetailsController _hairdresserDetailsController = Get.put(HairdresserDetailsController());
+
+  @override
+  void didChangeDependencies() async {
+    await _hairdresserDetailsController.fetchBarberReview();
+    super.didChangeDependencies();
+  }
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(20.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Review Header
-          Text(
-            'Review (1208)',
-            style: GoogleFontStyles.h4(
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
+    return Obx((){
+      Review? review = _hairdresserDetailsController.barberReviewModel.value.data?.reviews?.first;
+      if(_hairdresserDetailsController.isLoadingBarberReview.value){
+        return Center(child: CupertinoActivityIndicator());
+        } else if(review!.totalReviews! < 1 ){
+           return Center(child: Text('No review available here'));
+         }
+          return SingleChildScrollView(
+            padding: EdgeInsets.all(20.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Review Header
+                Text(
+                  'Review (${review.totalReviews})',
+                  style: GoogleFontStyles.h4(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: 20.h),
+
+                // Review Items
+                ...List.generate(review.reviews!.length, (index){
+                   final barberReviewIndex = review.reviews?[index];
+                  return Padding(
+                    padding:  EdgeInsets.only(bottom: 8.h),
+                    child: _buildReviewItem(
+                      barberReviewIndex?.name??'',
+                      barberReviewIndex?.rating?.toStringAsFixed(1)??'',
+                      '1 days ago',
+                      barberReviewIndex?.comment??'',
+                      '${ApiConstants.baseUrl}${barberReviewIndex?.image??''}',
+                    ),
+                  );
+                }),
+
+                SizedBox(height: 20.h),
+              ],
             ),
-          ),
-          SizedBox(height: 20.h),
-
-          // Review Items
-          _buildReviewItem(
-            'John Perkins',
-            '4.5',
-            '1 days ago',
-            'The barbers are highly skilled, offering everything from sharp, contemporary cuts to classic styles. The atmosphere is welcoming, with a nostalgic old-school vibe that makes it feel like you\'ve stepped into a time capsule of barbering excellence.',
-            AppNetworkImage.saloonHairMen3Img,
-          ),
-          SizedBox(height: 20.h),
-
-          _buildReviewItem(
-            'John Perkins',
-            '4.2',
-            '1 days ago',
-            'The barbers are highly skilled, offering everything from sharp, contemporary cuts to classic styles. The atmosphere is welcoming, with a nostalgic old-school vibe that makes it feel like you\'ve stepped into a time capsule of barbering excellence.',
-            AppNetworkImage.saloonHairMen4Img,
-          ),
-        ],
-      ),
-    );
+          );
+        }
+      );
   }
 
   Widget _buildReviewItem(String name, String rating, String time, String review, String imageUrl) {

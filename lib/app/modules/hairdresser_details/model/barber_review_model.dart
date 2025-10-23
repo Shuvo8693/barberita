@@ -17,15 +17,37 @@ class BarberReviewModel {
 }
 
 class ReviewData {
-  final List<BarberReview>? reviews;
+  final List<Review>? reviews;
 
   ReviewData({this.reviews});
 
   factory ReviewData.fromJson(Map<String, dynamic> json) {
+    var reviewList = json['reviews'] as List<dynamic>?;
+    List<Review> reviews = reviewList != null
+        ? reviewList.map((e) => Review.fromJson(e as Map<String, dynamic>)).toList()
+        : [];
+
     return ReviewData(
-      reviews: (json['reviews'] as List<dynamic>?)
-          ?.map((e) => BarberReview.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      reviews: reviews,
+    );
+  }
+}
+
+class Review {
+  final int? totalReviews;
+  final List<BarberReview>? reviews;
+
+  Review({this.totalReviews, this.reviews});
+
+  factory Review.fromJson(Map<String, dynamic> json) {
+    var reviewList = json['reviews'] as List<dynamic>?;
+    List<BarberReview> reviews = reviewList != null
+        ? reviewList.map((e) => BarberReview.fromJson(e as Map<String, dynamic>)).toList()
+        : [];
+
+    return Review(
+      totalReviews: json['totalReviews'] as int?,
+      reviews: reviews,
     );
   }
 }
@@ -33,40 +55,31 @@ class ReviewData {
 class BarberReview {
   final String? id;
   final String? barberId;
-  final String? customerId;
-  final String? serviceId;
-  final String? reviewFor;
   final int? rating;
   final String? comment;
   final String? createdAt;
-  final String? updatedAt;
-  final int? v;
+  final String? name;
+  final String? image;
 
   BarberReview({
     this.id,
     this.barberId,
-    this.customerId,
-    this.serviceId,
-    this.reviewFor,
     this.rating,
     this.comment,
     this.createdAt,
-    this.updatedAt,
-    this.v,
+    this.name,
+    this.image,
   });
 
   factory BarberReview.fromJson(Map<String, dynamic> json) {
     return BarberReview(
       id: json['_id'] as String?,
       barberId: json['barberId'] as String?,
-      customerId: json['customerId'] as String?,
-      serviceId: json['serviceId'] as String?,
-      reviewFor: json['reviewFor'] as String?,
       rating: json['rating'] as int?,
       comment: json['comment'] as String?,
       createdAt: json['createdAt'] as String?,
-      updatedAt: json['updatedAt'] as String?,
-      v: json['__v'] as int?,
+      name: json['name'] as String?,
+      image: json['image'] as String?,
     );
   }
 }

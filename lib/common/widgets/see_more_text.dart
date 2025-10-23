@@ -1,3 +1,4 @@
+import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -20,17 +21,17 @@ class _SeeMoreTextState extends State<SeeMoreText> {
   Widget build(BuildContext context) {
     bool isTextOverFlow = widget.text.length > widget.characterLimit;
     String displayedText = _isExpanded || !isTextOverFlow  /// if (isTextOverFlow) is true then !isTextOverFlow will be false for hide bigger text , and if (isTextOverFlow) is false then !isTextOverFlow  will be true for show small text
-        ? widget.text
-        : "${widget.text.substring(0, widget.characterLimit)}...";
+        ? widget.text : "${widget.text.substring(0, widget.characterLimit)}...";
 
     return RichText(
-      text: TextSpan(children: [
+      text: TextSpan(
+          children: [
         TextSpan(text: displayedText,style:widget.style ?? const TextStyle(color: Colors.black)),
         if (isTextOverFlow) ...[ // if isTextOverFlow is true then see more button will show
           const TextSpan(text: '  '),
           TextSpan(
             text: _isExpanded ? 'SeeLess' : 'SeeMore',
-            style: const TextStyle(color: Colors.black,fontWeight: FontWeight.w700),
+            style: const TextStyle(color: AppColors.secondaryAppColor,fontWeight: FontWeight.w700),
             recognizer: TapGestureRecognizer()..onTap = () {
               setState(() {
                 _isExpanded =! _isExpanded;

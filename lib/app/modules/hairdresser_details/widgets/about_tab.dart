@@ -21,8 +21,8 @@ class _AboutTabState extends State<AboutTab> {
 
   @override
   void didChangeDependencies() async {
-    super.didChangeDependencies();
     await _hairdresserDetailsController.fetchBarberDetails();
+    super.didChangeDependencies();
   }
 
   @override
