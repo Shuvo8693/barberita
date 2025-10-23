@@ -17,6 +17,7 @@ static String verifyOtpUrl= '/api/v1/auth/verify-otp';
 static String verifyForgotOtpUrl(String userMail) =>  '/api/v1/user/verify-forget-otp?email=$userMail';
 static String searchMechanicUrl(String service) =>  '/api/v1/mechanic/all?serviceName=$service';
 static String allMechanicUrl({int? currentPage, int? limit}) =>  '/api/v1/mechanic/all?currentPage=$currentPage&limit=$limit';
+static String nearbyBarbersUrl({String? name, bool? isNearby}) =>  '/api/v1/barber/get-barbers?search=$name&nearby=$isNearby';
 
 static String phoneSendUrl= '/api/v1/auth/forget-password';
 static String logOutUrl= '/api/v1/auth/logout';
