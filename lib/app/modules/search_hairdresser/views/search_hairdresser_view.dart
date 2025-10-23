@@ -1,10 +1,16 @@
 import 'package:barberita/app/modules/home/widgets/favourite_hairdresser_card.dart';
+import 'package:barberita/app/modules/search_hairdresser/controllers/search_hairdresser_controller.dart';
+import 'package:barberita/app/modules/search_hairdresser/model/nearby_barber_model.dart';
+import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_images/network_image%20.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/widgets/custom_text_field.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class SearchHairdresserView extends StatefulWidget {
   const SearchHairdresserView({super.key});
@@ -15,6 +21,7 @@ class SearchHairdresserView extends StatefulWidget {
 
 class _SearchHairdresserViewState extends State<SearchHairdresserView> {
   final TextEditingController _searchController = TextEditingController();
+  final SearchHairdresserController _searchHairdresserController = Get.put(SearchHairdresserController());
   int selectedFilterIndex = 0;
 
   @override
@@ -64,6 +71,13 @@ class _SearchHairdresserViewState extends State<SearchHairdresserView> {
                     color: Colors.white.withOpacity(0.5),
                     size: 20.sp,
                   ),
+                  onChanged: (value)async{
+                   if(selectedFilterIndex==0){
+                    await _searchHairdresserController.fetchBarber(name: value,isNearby: false);
+                   } else if(selectedFilterIndex==1){
+                     await _searchHairdresserController.fetchBarber(name: value,isNearby: true);
+                   }
+                  },
                 ),
 
                 SizedBox(height: 20.h),
@@ -81,27 +95,41 @@ class _SearchHairdresserViewState extends State<SearchHairdresserView> {
           ),
 
           // Results List
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              itemCount: 4, // Placeholder count
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 16.h),
-                  child:  FavouriteHairdresserCard(
-                    imageUrl: AppNetworkImage.saloonHairMen2Img,
-                    name: 'Marty\'s Hairdresser',
-                    type: 'Braided',
-                    status: 'Open now',
-                    rating: '4.5',
-                    price: '\$2.99-\$100',
-                    onTap: () {
-                      // Handle booking action
-                    },
-                  ),
-                );
-              },
-            ),
+          Obx((){
+            List<NearbyBarber>? nearbyBarberList = _searchHairdresserController.nearByBarberModel.value.nearbyBarberList??[];
+            if(_searchHairdresserController.isLoadingNearByBarber.value){
+              return Center(child: CupertinoActivityIndicator());
+            }else if(nearbyBarberList.isEmpty){
+              return Center(child: Text('No Nearby barber is available'));
+            }
+            return Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                itemCount: nearbyBarberList.length, // Placeholder count
+                itemBuilder: (context, index) {
+                  final nearbyBarberIndex = nearbyBarberList[index];
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 16.h),
+                    child:  FavouriteHairdresserCard(
+                      imageUrl: nearbyBarberIndex.image??'',
+                      name: nearbyBarberIndex.name??'',
+                      type: 'Hair Style',
+                      status: nearbyBarberIndex.barberDetails?.isOpen==true ? 'Open now' : 'Closed now',
+                      rating: nearbyBarberIndex.barberDetails?.rating?.toStringAsFixed(1) ?? '',
+                      price: '\$${nearbyBarberIndex.minPrice} - \$${nearbyBarberIndex.maxPrice}',
+                      onTap: () {
+                        // Handle booking action
+                        if (nearbyBarberIndex.barberDetails?.isOpen == false) {
+                          Get.snackbar('Closed', 'Barber service is closed');
+                        }
+                        Get.toNamed(Routes.HAIRDRESSER_DETAILS,arguments: {'barberId':nearbyBarberIndex.barberDetails?.id});
+                      },
+                    ),
+                  );
+                },
+              ),
+            );
+           }
           ),
         ],
       ),

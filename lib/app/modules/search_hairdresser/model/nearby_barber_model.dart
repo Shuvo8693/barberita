@@ -1,22 +1,22 @@
-class BarberResponse {
+class NearByBarberModel {
   final bool? success;
   final int? status;
   final String? message;
-  final List<Barber>? data;
+  final List<NearbyBarber>? nearbyBarberList;
 
-  BarberResponse({this.success, this.status, this.message, this.data});
+  NearByBarberModel({this.success, this.status, this.message, this.nearbyBarberList});
 
-  factory BarberResponse.fromJson(Map<String, dynamic> json) {
-    return BarberResponse(
+  factory NearByBarberModel.fromJson(Map<String, dynamic> json) {
+    return NearByBarberModel(
       success: json['success'] as bool?,
       status: json['status'] as int?,
       message: json['message'] as String?,
-      data: (json['data'] as List<dynamic>?)?.map((e) => Barber.fromJson(e as Map<String, dynamic>)).toList(),
+      nearbyBarberList: (json['data'] as List<dynamic>?)?.map((e) => NearbyBarber.fromJson(e as Map<String, dynamic>)).toList(),
     );
   }
 }
 
-class Barber {
+class NearbyBarber {
   final String? id;
   final String? name;
   final String? phone;
@@ -36,7 +36,7 @@ class Barber {
   final double? maxPrice;
   final Location? location;
 
-  Barber({
+  NearbyBarber({
     this.id,
     this.name,
     this.phone,
@@ -57,8 +57,8 @@ class Barber {
     this.location,
   });
 
-  factory Barber.fromJson(Map<String, dynamic> json) {
-    return Barber(
+  factory NearbyBarber.fromJson(Map<String, dynamic> json) {
+    return NearbyBarber(
       id: json['_id'] as String?,
       name: json['name'] as String?,
       phone: json['phone'] as String?,
