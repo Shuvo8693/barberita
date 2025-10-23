@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:barberita/app/modules/home/widgets/favourite_hairdresser_card.dart';
 import 'package:barberita/app/modules/search_hairdresser/controllers/search_hairdresser_controller.dart';
 import 'package:barberita/app/modules/search_hairdresser/model/nearby_barber_model.dart';
@@ -23,6 +25,20 @@ class _SearchHairdresserViewState extends State<SearchHairdresserView> {
   final TextEditingController _searchController = TextEditingController();
   final SearchHairdresserController _searchHairdresserController = Get.put(SearchHairdresserController());
   int selectedFilterIndex = 0;
+
+  Timer? _debouncer;
+
+  onSearchChanged(String? query) {
+    if (_debouncer?.isActive ?? false) _debouncer?.cancel();  // when timer counting then it will be active
+
+    _debouncer = Timer(const Duration(milliseconds: 500), () async {   // when type should be stoped for 400 milliseconds  then it will hit the inner function
+      if (selectedFilterIndex == 0) {
+        await _searchHairdresserController.fetchBarber(name: query, isNearby: false);
+      } else if (selectedFilterIndex == 1) {
+        await _searchHairdresserController.fetchBarber(name: query, isNearby: true);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,13 +87,7 @@ class _SearchHairdresserViewState extends State<SearchHairdresserView> {
                     color: Colors.white.withOpacity(0.5),
                     size: 20.sp,
                   ),
-                  onChanged: (value)async{
-                   if(selectedFilterIndex==0){
-                    await _searchHairdresserController.fetchBarber(name: value,isNearby: false);
-                   } else if(selectedFilterIndex==1){
-                     await _searchHairdresserController.fetchBarber(name: value,isNearby: true);
-                   }
-                  },
+                  onChanged: onSearchChanged,
                 ),
 
                 SizedBox(height: 20.h),

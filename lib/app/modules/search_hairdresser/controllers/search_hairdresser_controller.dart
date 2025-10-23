@@ -27,6 +27,7 @@ class SearchHairdresserController extends GetxController {
       if (response.isSuccess && response.data != null) {
         List<dynamic> responseData = response.data!['data'] as List<dynamic>;
         nearByBarberModel.value = NearByBarberModel.fromJson( response.data!);
+        print(nearByBarberModel.value);
 
       } else {
         Get.snackbar('Failed', response.message ?? 'Resend otp failed');

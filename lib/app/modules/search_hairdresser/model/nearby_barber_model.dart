@@ -125,14 +125,14 @@ class BarberDetails {
 
 class Location {
   final String? type;
-  final List<double>? coordinates;
+  final List<dynamic>? coordinates;
 
   Location({this.type, this.coordinates});
 
   factory Location.fromJson(Map<String, dynamic> json) {
     return Location(
       type: json['type'] as String?,
-      coordinates: (json['coordinates'] as List<double>?)?.map((e) => e.toDouble()).toList(),
+      coordinates: (json['coordinates'] as List<dynamic>?)?.map((e) => e.toDouble()).toList(),
     );
   }
 }
