@@ -34,8 +34,7 @@ class CustomNetworkImage extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: imageUrl,
       fit: boxFit ?? BoxFit.cover,
-      imageBuilder:
-          (context, imageProvider) => Container(
+      imageBuilder: (context, imageProvider) => Container(
             height: height,
             width: width,
             decoration: BoxDecoration(
@@ -43,9 +42,7 @@ class CustomNetworkImage extends StatelessWidget {
               borderRadius: borderRadius,
               shape: boxShape,
               color: backgroundColor,
-              image:
-                  imageUrl.isEmpty
-                      ? DecorationImage(
+              image: imageUrl.isEmpty ? DecorationImage(
                         image: imageProvider,
                         fit: BoxFit.fitHeight,
                         colorFilter: colorFilter,
@@ -58,8 +55,7 @@ class CustomNetworkImage extends StatelessWidget {
             ),
             child: child,
           ),
-      placeholder:
-          (context, url) => Shimmer.fromColors(
+      placeholder: (context, url) => Shimmer.fromColors(
             baseColor: Colors.grey.withOpacity(0.6),
             highlightColor: Colors.grey.withOpacity(0.3),
             child: Container(
@@ -79,9 +75,10 @@ class CustomNetworkImage extends StatelessWidget {
             width: width,
             decoration: BoxDecoration(
               border: border,
-              color: Colors.grey.withOpacity(0.6),
+              color: Colors.yellow.withOpacity(0.6),
               borderRadius: borderRadius,
               shape: boxShape,
+              image: DecorationImage(image: AssetImage('assets/image/no-image.jpg'),fit: BoxFit.fill )
             ),
             // child: const Icon(Icons.error),
           ),

@@ -1,3 +1,4 @@
+import 'package:barberita/app/modules/hairdresser_details/controllers/hairdresser_details_controller.dart';
 import 'package:barberita/app/modules/hairdresser_details/widgets/about_tab.dart';
 import 'package:barberita/app/modules/hairdresser_details/widgets/review_tab.dart';
 import 'package:barberita/app/modules/hairdresser_details/widgets/service_tab.dart';
@@ -10,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class HairdresserDetailsView extends StatefulWidget {
   const HairdresserDetailsView({super.key});
@@ -19,8 +19,9 @@ class HairdresserDetailsView extends StatefulWidget {
   State<HairdresserDetailsView> createState() => _HairdresserDetailsViewState();
 }
 
-class _HairdresserDetailsViewState extends State<HairdresserDetailsView>
-    with SingleTickerProviderStateMixin {
+class _HairdresserDetailsViewState extends State<HairdresserDetailsView> with SingleTickerProviderStateMixin {
+  final HairdresserDetailsController _hairdresserDetailsController = Get.put(HairdresserDetailsController());
+
   late TabController _tabController;
   bool isFavorite = true;
 
@@ -29,6 +30,14 @@ class _HairdresserDetailsViewState extends State<HairdresserDetailsView>
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
   }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    await _hairdresserDetailsController.fetchBarberDetails();
+  }
+
+
 
   @override
   void dispose() {
@@ -45,7 +54,10 @@ class _HairdresserDetailsViewState extends State<HairdresserDetailsView>
             // Hero Image Section
             Stack(
               children: [
-                CustomNetworkImage(imageUrl: AppNetworkImage.saloonHairMen3Img,height: 200.h,boxFit: BoxFit.cover,),
+                Obx((){
+                String? image = _hairdresserDetailsController.barberDetailsModel.value.data?.image;
+                  return CustomNetworkImage(imageUrl: image??'', height: 200.h,boxFit: BoxFit.cover,);
+                }),
                 // Back Button
                 SafeArea(
                   child: Padding(
