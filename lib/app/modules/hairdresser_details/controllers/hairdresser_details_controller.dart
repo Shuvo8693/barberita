@@ -16,6 +16,7 @@ class HairdresserDetailsController extends GetxController {
     String barberId = Get.arguments['barberId']??'';
     String token = await PrefsHelper.getString('token');
 
+    _networkCaller.clearInterceptors();
     _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
     _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
     _networkCaller.addResponseInterceptor(LoggingInterceptor());
@@ -42,6 +43,7 @@ class HairdresserDetailsController extends GetxController {
     }
 
   }
+
  /// ============================ barber review ==========================
 
   Rx<BarberReviewModel> barberReviewModel = BarberReviewModel().obs;
@@ -51,6 +53,7 @@ class HairdresserDetailsController extends GetxController {
     String barberId = Get.arguments['barberId']??'';
     String token = await PrefsHelper.getString('token');
 
+    _networkCaller.clearInterceptors();
     _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
     _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
     _networkCaller.addResponseInterceptor(LoggingInterceptor());
@@ -75,6 +78,5 @@ class HairdresserDetailsController extends GetxController {
     } finally {
       isLoadingBarberReview.value = false;
     }
-
   }
 }

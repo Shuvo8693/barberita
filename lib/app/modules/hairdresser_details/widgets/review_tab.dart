@@ -29,10 +29,10 @@ class _ReviewsTabState extends State<ReviewsTab> {
   @override
   Widget build(BuildContext context) {
     return Obx((){
-      Review? review = _hairdresserDetailsController.barberReviewModel.value.data?.reviews?.first;
+      Review? review = _hairdresserDetailsController.barberReviewModel.value.data?.reviews?.first?? Review();
       if(_hairdresserDetailsController.isLoadingBarberReview.value){
         return Center(child: CupertinoActivityIndicator());
-        } else if(review!.totalReviews! < 1 ){
+        } else if( review.totalReviews == null ){
            return Center(child: Text('No review available here'));
          }
           return SingleChildScrollView(
@@ -51,7 +51,7 @@ class _ReviewsTabState extends State<ReviewsTab> {
                 SizedBox(height: 20.h),
 
                 // Review Items
-                ...List.generate(review.reviews!.length, (index){
+                ...List.generate(review.reviews?.length??0, (index){
                    final barberReviewIndex = review.reviews?[index];
                   return Padding(
                     padding:  EdgeInsets.only(bottom: 8.h),
