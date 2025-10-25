@@ -1,3 +1,5 @@
+import 'package:barberita/app/modules/booking/controllers/booking_controller.dart';
+import 'package:barberita/app/modules/hairdresser_details/controllers/booking_controller.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
@@ -17,9 +19,7 @@ class BookAppointmentView extends StatefulWidget {
 }
 
 class _BookAppointmentViewState extends State<BookAppointmentView> {
-  DateTime? selectedDate;
-  TimeOfDay? selectedTime;
-  String? selectedAddress;
+ final  BookingController _bookingController = Get.put(BookingController());
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                   showTitleActions: true,
                   minTime: DateTime.now(),
                   maxTime: DateTime.now().add(const Duration(days: 365)),
-                  currentTime: selectedDate ?? DateTime.now(),
+                  currentTime: _bookingController.selectedDate ?? DateTime.now(),
                   locale: LocaleType.en,
                   theme: const DatePickerTheme(
                     backgroundColor: Color(0xFF2C2C2E),
@@ -62,7 +62,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                   ),
                   onConfirm: (date) {
                     setState(() {
-                      selectedDate = date;
+                      _bookingController.selectedDate = date;
                     });
                   },
                 );
@@ -78,11 +78,11 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                   children: [
                     Expanded(
                       child: Text(
-                        selectedDate != null
-                            ? DateFormat('dd/MM/yyyy').format(selectedDate!)
+                        _bookingController.selectedDate != null
+                            ? DateFormat('dd/MM/yyyy').format(_bookingController.selectedDate!)
                             : '15/12/2023',
                         style: GoogleFontStyles.h5(
-                          color: selectedDate != null
+                          color: _bookingController.selectedDate != null
                               ? Colors.white
                               : Colors.white.withOpacity(0.5),
                         ),
@@ -115,8 +115,8 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                 DatePicker.showTimePicker(
                   context,
                   showTitleActions: true,
-                  currentTime: selectedTime != null
-                      ? DateTime(2023, 1, 1, selectedTime!.hour, selectedTime!.minute)
+                  currentTime: _bookingController.selectedTime != null
+                      ? DateTime(2023, 1, 1, _bookingController.selectedTime!.hour, _bookingController.selectedTime!.minute)
                       : DateTime(2023, 1, 1, 10, 0),
                   locale: LocaleType.en,
                   theme: const DatePickerTheme(
@@ -132,7 +132,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                   ),
                   onConfirm: (time) {
                     setState(() {
-                      selectedTime = TimeOfDay(hour: time.hour, minute: time.minute);
+                      _bookingController.selectedTime = TimeOfDay(hour: time.hour, minute: time.minute);
                     });
                   },
                 );
@@ -148,11 +148,11 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                   children: [
                     Expanded(
                       child: Text(
-                        selectedTime != null
-                            ? selectedTime!.format(context)
+                        _bookingController.selectedTime != null
+                            ? _bookingController.selectedTime!.format(context)
                             : '10:04AM - 12:00PM',
                         style: GoogleFontStyles.h5(
-                          color: selectedTime != null
+                          color: _bookingController.selectedTime != null
                               ? Colors.white
                               : Colors.white.withOpacity(0.5),
                         ),
@@ -202,9 +202,9 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     SizedBox(width: 12.w),
                     Expanded(
                       child: Text(
-                        selectedAddress ?? 'Set Your Current Location',
+                        _bookingController.currentAddress ?? 'Set Your Current Location',
                         style: GoogleFontStyles.h5(
-                          color: selectedAddress != null
+                          color: _bookingController.currentAddress != null
                               ? Colors.white
                               : Colors.white.withOpacity(0.5),
                         ),
@@ -217,11 +217,11 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
 
             const Spacer(),
 
-            // Continue Button
+            // ===== Continue Button =================
             CustomButton(
               onTap: () {
                 Get.toNamed(Routes.BOOKING_MANAGEMENT);
-                if (selectedDate != null && selectedTime != null) {
+                if (_bookingController.selectedDate != null && _bookingController.selectedTime != null) {
                   // Handle appointment booking
                   _bookAppointment();
                 } else {
@@ -234,7 +234,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                   );
                 }
               },
-              text: 'Continue',
+              text: 'Book Now',
             ),
 
             SizedBox(height: 60.h),
@@ -277,12 +277,12 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     'Use Current Location',
                     style: GoogleFontStyles.h5(color: Colors.white),
                   ),
-                  onTap: () {
-                    // setState(() {
-                    //   selectedAddress = 'Current Location';
-                    // });
-                    // Navigator.pop(context);
-                    Get.toNamed(Routes.LOCATIONSELECTORMAP);
+                  onTap: () async{
+                    final result = await Get.toNamed(Routes.LOCATIONSELECTORMAP);
+                    print(result);
+                    _bookingController.currentLocation = result['latLng'];
+                    _bookingController.currentAddress = result['address'];
+                    setState(() {});
                   },
                 ),
 
@@ -295,12 +295,14 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     'Choose on Map',
                     style: GoogleFontStyles.h5(color: Colors.white),
                   ),
-                  onTap: () {
-                    // setState(() {
-                    //   selectedAddress = '123 Main Street, City';
-                    // });
-                    // Navigator.pop(context);
-                    Get.toNamed(Routes.LOCATIONSELECTORMAP);
+                  onTap: () async {
+                    final result = await Get.toNamed(Routes.LOCATIONSELECTORMAP);
+                    print(result);
+                    _bookingController.currentLocation = result['latLng'];
+                    _bookingController.currentAddress = result['address'];
+                    setState(() {});
+                    
+                    
                   },
                 ),
 
@@ -324,7 +326,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
           style: GoogleFontStyles.h4(color: Colors.white),
         ),
         content: Text(
-          'Your appointment has been successfully booked for ${selectedDate != null ? DateFormat('dd/MM/yyyy').format(selectedDate!) : ''} at ${selectedTime?.format(context) ?? ''}',
+          'Your appointment has been successfully booked for ${_bookingController.selectedDate != null ? DateFormat('dd/MM/yyyy').format(_bookingController.selectedDate!) : ''} at ${_bookingController.selectedTime?.format(context) ?? ''}',
           style: GoogleFontStyles.h5(color: Colors.white.withOpacity(0.8)),
         ),
         actions: [

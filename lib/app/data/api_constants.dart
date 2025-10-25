@@ -30,5 +30,6 @@ static String resetPasswordUrl= '/api/v1/auth/reset-password';
 static String topRatedBarberUrl= '/api/v1/barber/top-rated-barber';
 static String favouriteBarberUrl= '/api/v1/favorite/get-favorite-barber';
 static String addBookingUrl = '/api/v1/booking/add-booking';
+static String allServicesUrl = '/api/v1/barber/all-services';
 
 }
