@@ -131,6 +131,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     ),
                   ),
                   onConfirm: (time) {
+
                     setState(() {
                       _bookingController.selectedTime = TimeOfDay(hour: time.hour, minute: time.minute);
                     });
@@ -202,9 +203,9 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     SizedBox(width: 12.w),
                     Expanded(
                       child: Text(
-                        _bookingController.currentAddress ?? 'Set Your Current Location',
+                        _bookingController.selectedAddress ?? 'Set Your Current Location',
                         style: GoogleFontStyles.h5(
-                          color: _bookingController.currentAddress != null
+                          color: _bookingController.selectedAddress != null
                               ? Colors.white
                               : Colors.white.withOpacity(0.5),
                         ),
@@ -218,25 +219,25 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
             const Spacer(),
 
             // ===== Continue Button =================
-            CustomButton(
-              onTap: () {
-                Get.toNamed(Routes.BOOKING_MANAGEMENT);
-                if (_bookingController.selectedDate != null && _bookingController.selectedTime != null) {
-                  // Handle appointment booking
-                  _bookAppointment();
-                } else {
-                  // Show validation message
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Please select date and time'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              },
-              text: 'Book Now',
+            Obx(() {
+              return CustomButton(
+                 loading: _bookingController.isLoadingBooking.value,
+                onTap: () async {
+                  if (_bookingController.selectedDate != null && _bookingController.selectedTime != null && _bookingController.selectedAddress !=null) {
+                  await  _bookingController.addBooking();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please select date and time'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                },
+                text: 'Book Now',
+              );
+             }
             ),
-
             SizedBox(height: 60.h),
           ],
         ),
@@ -281,7 +282,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     final result = await Get.toNamed(Routes.LOCATIONSELECTORMAP);
                     print(result);
                     _bookingController.currentLocation = result['latLng'];
-                    _bookingController.currentAddress = result['address'];
+                    _bookingController.selectedAddress = result['address'];
                     setState(() {});
                   },
                 ),
@@ -299,7 +300,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     final result = await Get.toNamed(Routes.LOCATIONSELECTORMAP);
                     print(result);
                     _bookingController.currentLocation = result['latLng'];
-                    _bookingController.currentAddress = result['address'];
+                    _bookingController.selectedAddress = result['address'];
                     setState(() {});
                     
                     

@@ -19,32 +19,6 @@ class ServicesTab extends StatefulWidget {
 
 class _ServicesTabState extends State<ServicesTab> {
   final BookingController _bookingController = Get.put(BookingController());
-  List<Map<String, dynamic>> services = [
-    {
-      'title': 'Basic Hair cut',
-      'description': 'A simple yet servicelook.',
-      'price': '\$50',
-      'image': AppNetworkImage.saloonHairMenImg,
-    },
-    {
-      'title': 'Child Hair cut',
-      'description': 'A simple yet servicelook.',
-      'price': '\$50',
-      'image': AppNetworkImage.saloonHairMen2Img,
-    },
-    {
-      'title': 'Hair Trim',
-      'description': 'A simple yet servicelook.',
-      'price': '\$50',
-      'image': AppNetworkImage.saloonHairMen3Img,
-    },
-    {
-      'title': 'Basic Hair cut',
-      'description': 'A simple yet servicelook.',
-      'price': '\$50',
-      'image': AppNetworkImage.saloonHairMen4Img,
-    },
-  ];
   List<bool>? isSelected;
 
   // @override
@@ -85,8 +59,7 @@ class _ServicesTabState extends State<ServicesTab> {
             ),
             SizedBox(height: 20.h),
             ...List.generate(barberServiceList.length, (index) {
-              var service =
-                  barberServiceList[index]; // Access the service based on the index
+              var service = barberServiceList[index]; // Access the service based on the index
               return Padding(
                 padding: EdgeInsets.only(bottom: 12.h),
                 child: GestureDetector(
@@ -95,8 +68,14 @@ class _ServicesTabState extends State<ServicesTab> {
                       isSelected?[index] = !isSelected![index];
                     });
                     if (isSelected?[index] == true) {
-                      // need to make model of this list then add in the model
-
+                      setState(() {
+                        _bookingController.serviceIdList.add(barberServiceList[index].id??'');
+                      });
+                      print( _bookingController.serviceIdList);
+                    }else{
+                      _bookingController.serviceIdList.removeWhere((id)=> id == barberServiceList[index].id);
+                      setState(() {});
+                      print( _bookingController.serviceIdList);
                     }
                   },
                   child: _buildServiceItem(

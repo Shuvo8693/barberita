@@ -2,11 +2,13 @@ import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
 import 'package:barberita/app/modules/hairdresser_details/model/barber_details_model.dart';
 import 'package:barberita/app/modules/hairdresser_details/model/service_model.dart';
+import 'package:barberita/app/routes/app_pages.dart';
 
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 
 class BookingController extends GetxController {
 
@@ -16,6 +18,7 @@ class BookingController extends GetxController {
 
   Future<void> fetchService() async {
     String barberId = Get.arguments['barberId']??'';
+    await PrefsHelper.setString('barberId',barberId);
     String token = await PrefsHelper.getString('token');
 
     _networkCaller.clearInterceptors();
@@ -25,6 +28,7 @@ class BookingController extends GetxController {
 
     try {
       isLoadingService.value = true;
+      serviceIdList = [];
       final response = await _networkCaller.get<Map<String, dynamic>>(
         endpoint:ApiConstants.barberServiceUrl(barberId: barberId),
         timeout: Duration(seconds: 10),
@@ -48,22 +52,26 @@ class BookingController extends GetxController {
  /// ===================== add booking =============================
 
   LatLng? currentLocation;
-  String? currentAddress;
+  String? selectedAddress;
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
+  List<String> serviceIdList =[];
 
   var isLoadingBooking = false.obs;
 
   Future<void> addBooking() async {
-    String barberId = Get.arguments['barberId']??'';
     String token = await PrefsHelper.getString('token');
+    String barberId = await PrefsHelper.getString('barberId');
+
+    final date  = DateFormat('dd-MM-yyyy').format(selectedDate!);
+
 
     final body ={
-      "serviceIds" :["68d79c7db5f74fc46cdde565" , "68d79c87b5f74fc46cdde571"],
+      "serviceIds" :serviceIdList,
       "barberId" : barberId,
-      "date" : "10/10/2025",
-      "time" : "10.20am",
-      "address" : "demo address dhaka"
+      "date" : date,
+      "time" : "${selectedTime?.hour} : ${selectedTime?.minute} ${selectedTime?.period==DayPeriod.am?'AM':'PM'}",
+      "address" : selectedAddress
     };
 
     _networkCaller.clearInterceptors();
@@ -80,10 +88,10 @@ class BookingController extends GetxController {
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
-
-
+        Get.toNamed(Routes.BOOKING_MANAGEMENT);
+        Get.snackbar('Success', response.message??'Booking created successfully');
       } else {
-        Get.snackbar('Failed', response.message!);
+        Get.snackbar('Failed', response.message??'');
       }
     } catch (e) {
       print(e);
