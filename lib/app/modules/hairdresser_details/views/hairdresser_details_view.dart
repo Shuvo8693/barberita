@@ -1,4 +1,5 @@
 import 'package:barberita/app/data/api_constants.dart';
+import 'package:barberita/app/modules/hairdresser_details/controllers/booking_controller.dart';
 import 'package:barberita/app/modules/hairdresser_details/controllers/hairdresser_details_controller.dart';
 import 'package:barberita/app/modules/hairdresser_details/widgets/about_tab.dart';
 import 'package:barberita/app/modules/hairdresser_details/widgets/review_tab.dart';
@@ -22,6 +23,7 @@ class HairdresserDetailsView extends StatefulWidget {
 
 class _HairdresserDetailsViewState extends State<HairdresserDetailsView> with SingleTickerProviderStateMixin {
   final HairdresserDetailsController _hairdresserDetailsController = Get.put(HairdresserDetailsController());
+  final BookingController _bookingController = Get.put(BookingController());
 
   late TabController _tabController;
   bool isFavorite = true;
@@ -173,8 +175,12 @@ class _HairdresserDetailsViewState extends State<HairdresserDetailsView> with Si
               padding: EdgeInsets.all(20.w),
               child: CustomButton(
                 onTap: () {
-                  // Handle booking
-                  Get.toNamed(Routes.BOOK_APPOINTMENT);
+                  if(_bookingController.serviceIdList.isNotEmpty){
+                    Get.toNamed(Routes.BOOK_APPOINTMENT);
+                  }else{
+                    Get.snackbar('Choose any service', 'You have to select any services');
+                  }
+
                 },
                 text: 'Book Appointment',
               ),

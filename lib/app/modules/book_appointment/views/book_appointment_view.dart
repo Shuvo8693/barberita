@@ -228,7 +228,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Please select date and time'),
+                        content: Text('Please select date, time & address'),
                         backgroundColor: Colors.red,
                       ),
                     );

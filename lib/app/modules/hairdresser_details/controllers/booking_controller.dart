@@ -89,9 +89,9 @@ class BookingController extends GetxController {
       );
       if (response.isSuccess && response.data != null) {
         Get.toNamed(Routes.BOOKING_MANAGEMENT);
-        Get.snackbar('Success', response.message??'Booking created successfully');
+        Get.snackbar('Success', response.message ?? 'Booking created successfully');
       } else {
-        Get.snackbar('Failed', response.message??'');
+        Get.snackbar('Failed', response.message ?? '');
       }
     } catch (e) {
       print(e);
