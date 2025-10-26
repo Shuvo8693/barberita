@@ -1,41 +1,43 @@
-class ServicesModel {
+class BarberServicesModel {
   final bool? success;
   final int? status;
   final String? message;
-  final ServicesData? data;
+  final BarberServicesData? data;
 
-  ServicesModel({
+  BarberServicesModel({
     this.success,
     this.status,
     this.message,
     this.data,
   });
 
-  factory ServicesModel.fromJson(Map<String, dynamic> json) {
-    return ServicesModel(
+  factory BarberServicesModel.fromJson(Map<String, dynamic> json) {
+    return BarberServicesModel(
       success: json['success'],
       status: json['status'],
       message: json['message'],
-      data: json['data'] != null ? ServicesData.fromJson(json['data']) : null,
+      data: json['data'] != null
+          ? BarberServicesData.fromJson(json['data'])
+          : null,
     );
   }
 }
 
-class ServicesData {
-  final List<Service>? services;
+class BarberServicesData {
+  final List<BarberService>? services;
 
-  ServicesData({this.services});
+  BarberServicesData({this.services});
 
-  factory ServicesData.fromJson(Map<String, dynamic> json) {
-    return ServicesData(
+  factory BarberServicesData.fromJson(Map<String, dynamic> json) {
+    return BarberServicesData(
       services: (json['services'] as List<dynamic>?)
-          ?.map((item) => Service.fromJson(item))
+          ?.map((item) => BarberService.fromJson(item))
           .toList(),
     );
   }
 }
 
-class Service {
+class BarberService {
   final String? id;
   final String? barberId;
   final String? serviceName;
@@ -44,7 +46,7 @@ class Service {
   final String? description;
   final int? v;
 
-  Service({
+  BarberService({
     this.id,
     this.barberId,
     this.serviceName,
@@ -54,8 +56,8 @@ class Service {
     this.v,
   });
 
-  factory Service.fromJson(Map<String, dynamic> json) {
-    return Service(
+  factory BarberService.fromJson(Map<String, dynamic> json) {
+    return BarberService(
       id: json['_id'],
       barberId: json['barberId'],
       serviceName: json['serviceName'],

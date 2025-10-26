@@ -1,3 +1,4 @@
+import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/modules/hairdresser_details/controllers/hairdresser_details_controller.dart';
 import 'package:barberita/app/modules/hairdresser_details/widgets/about_tab.dart';
 import 'package:barberita/app/modules/hairdresser_details/widgets/review_tab.dart';
@@ -56,7 +57,7 @@ class _HairdresserDetailsViewState extends State<HairdresserDetailsView> with Si
               children: [
                 Obx((){
                 String? image = _hairdresserDetailsController.barberDetailsModel.value.data?.image;
-                  return CustomNetworkImage(imageUrl: image??'', height: 200.h,boxFit: BoxFit.cover,);
+                  return CustomNetworkImage(imageUrl: '${ApiConstants.baseUrl}${image??''}', height: 200.h,boxFit: BoxFit.cover,);
                 }),
                 // Back Button
                 SafeArea(

@@ -11,7 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class BookingController extends GetxController {
 
   final NetworkCaller _networkCaller = NetworkCaller.instance;
-  Rx<ServicesModel> serviceModel = ServicesModel().obs;
+  Rx<BarberServicesModel> barberServiceModel = BarberServicesModel().obs;
   var isLoadingService = false.obs;
 
   Future<void> fetchService() async {
@@ -26,13 +26,13 @@ class BookingController extends GetxController {
     try {
       isLoadingService.value = true;
       final response = await _networkCaller.get<Map<String, dynamic>>(
-        endpoint:ApiConstants.allServicesUrl,
+        endpoint:ApiConstants.barberServiceUrl(barberId: barberId),
         timeout: Duration(seconds: 10),
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
-        serviceModel.value = ServicesModel.fromJson( response.data!);
-        print(serviceModel.value);
+        barberServiceModel.value = BarberServicesModel.fromJson( response.data!);
+        print(barberServiceModel.value);
 
       } else {
         Get.snackbar('Failed', response.message!);
