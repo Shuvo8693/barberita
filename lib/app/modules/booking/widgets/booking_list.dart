@@ -1,5 +1,6 @@
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
+import 'package:barberita/common/jwt_decoder/payload_value.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,7 +31,8 @@ class _BookingListState extends State<BookingList> {
 
   String? _userRole;
   role()async{
-    final role = await PrefsHelper.getString('role');
+    final payloadValue = await getPayloadValue();
+    String role = payloadValue['userRole']??'';
     setState(() {
       _userRole = role;
     });
@@ -85,19 +87,19 @@ class _BookingListState extends State<BookingList> {
   String _getListTitle(BookingStatusType statusType) {
     switch (statusType) {
       case BookingStatusType.active:
-        if(_userRole=='User'){
+        if(_userRole=='customer'){
           return 'Your Active Booking';
         }else{
           return 'Your Active Order';
         }
       case BookingStatusType.request:
-        if(_userRole=='User'){
+        if(_userRole=='customer'){
           return 'Your Pending Requests';
         }else{
           return 'Your Pending Order';
         }
       case BookingStatusType.history:
-        if(_userRole=='User'){
+        if(_userRole=='customer'){
           return 'Booking History';
         }else{
           return 'Your Order History';
@@ -120,13 +122,13 @@ class _BookingListState extends State<BookingList> {
   String _getStatus(BookingStatusType statusType) {
     switch (statusType) {
       case BookingStatusType.active:
-        if(_userRole=='User'){
+        if(_userRole=='customer'){
           return 'Confirmed';
         }else{
           return 'In-Progress';
         }
       case BookingStatusType.request:
-        if(_userRole=='User'){
+        if(_userRole=='customer'){
           return 'Pending';
         }else{
           return 'Pending';

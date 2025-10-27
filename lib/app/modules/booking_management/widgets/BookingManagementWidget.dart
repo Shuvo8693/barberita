@@ -51,7 +51,7 @@ class BookingManagementWidget extends StatelessWidget {
               padding: EdgeInsets.all(12),
               child: CustomButton(
                 onTap: (){
-                  Get.toNamed(Routes.FEEDBACK);
+                  Get.toNamed(Routes.HOME);
                 },
                 text: 'Done',
               ),

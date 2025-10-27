@@ -20,6 +20,7 @@ static String barberDetailsUrl({String? barberId}) =>  '/api/v1/barber/get-barbe
 static String barberReviewUrl({String? barberId}) =>  '/api/v1/review/barber-reviews/$barberId';
 static String barberServiceUrl({String? barberId}) =>  '/api/v1/barber/barber-services?barberId=$barberId';
 static String bookingDetailsUrl({String? bookingGroupId}) =>  '/api/v1/booking/get-booking-details/$bookingGroupId';
+static String bookingStatusUrl({String? status}) =>  '/api/v1/booking/$status';
 static String allMechanicUrl({int? currentPage, int? limit}) =>  '/api/v1/mechanic/all?currentPage=$currentPage&limit=$limit';
 static String nearbyBarbersUrl({String? name, bool? isNearby}) =>  '/api/v1/barber/get-barbers?search=$name&nearby=$isNearby';
 
