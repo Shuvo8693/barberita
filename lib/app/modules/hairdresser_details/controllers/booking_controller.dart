@@ -55,7 +55,7 @@ class BookingController extends GetxController {
   String? selectedAddress;
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
-  List<String> serviceIdList =[];
+  List<String> serviceIdList = [];
 
   var isLoadingBooking = false.obs;
 
@@ -88,7 +88,8 @@ class BookingController extends GetxController {
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
-        Get.toNamed(Routes.BOOKING_MANAGEMENT);
+       final bookingGroupId = response.data?['data']['bookingGroupId'];
+        Get.toNamed(Routes.BOOKING_MANAGEMENT,arguments: {'bookingGroupId':bookingGroupId});
         Get.snackbar('Success', response.message ?? 'Booking created successfully');
       } else {
         Get.snackbar('Failed', response.message ?? '');

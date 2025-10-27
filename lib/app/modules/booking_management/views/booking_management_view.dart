@@ -1,5 +1,6 @@
 import 'package:barberita/app/modules/booking_management/widgets/BookingManagementWidget.dart';
 import 'package:barberita/app/modules/booking_management/model/booking_management_models.dart';
+import 'package:barberita/common/jwt_decoder/jwt_decoder.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:barberita/common/widgets/custom_page_loading.dart';
 import 'package:flutter/material.dart';
@@ -67,3 +68,4 @@ class _BookingManagementViewState extends State<BookingManagementView> {
     );
   }
 }
+
