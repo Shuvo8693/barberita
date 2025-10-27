@@ -1,16 +1,17 @@
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
-import 'package:barberita/app/modules/hairdresser_details/model/service_model.dart';
+import 'package:barberita/app/modules/booking_management/model/booking_details_model.dart';
 
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:get/get.dart';
 
 class BookingManagementController extends GetxController {
+
   final NetworkCaller _networkCaller = NetworkCaller.instance;
-  Rx<BarberServicesModel> barberServiceModel = BarberServicesModel().obs;
+  Rx<BookingDetailsModel> bookingDetailsModel = BookingDetailsModel().obs;
   var isLoadingService = false.obs;
 
-  Future<void> fetchService() async {
+  Future<void> fetchBookingDetails() async {
      String bookingGroupId = Get.arguments['bookingGroupId']??'';
     String token = await PrefsHelper.getString('token');
 
@@ -27,8 +28,8 @@ class BookingManagementController extends GetxController {
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
-        barberServiceModel.value = BarberServicesModel.fromJson( response.data!);
-        print(barberServiceModel.value);
+        bookingDetailsModel.value = BookingDetailsModel.fromJson( response.data!);
+        print(bookingDetailsModel.value);
 
       } else {
         Get.snackbar('Failed', response.message!);

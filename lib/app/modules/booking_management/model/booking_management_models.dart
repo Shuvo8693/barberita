@@ -3,18 +3,18 @@ class BookingData {
   final String name, service, address, phone, time, rating, orderId;
   final String? imageUrl;
   final List<OrderItem> items;
-  final double serviceFee, subtotal, total;
+  final num? serviceFee, subtotal, total;
   final List<BookingStatus> statuses;
 
   BookingData({required this.name, required this.service, required this.address,
     required this.phone, required this.time, required this.rating, required this.orderId,
-    this.imageUrl, required this.items, required this.serviceFee, required this.subtotal,
+    this.imageUrl, required this.items, this.serviceFee, this.subtotal,
     required this.total, required this.statuses});
 }
 
 class OrderItem {
   final String name;
-  final double price;
+  final num price;
   final int quantity;
   OrderItem({required this.name, required this.price, this.quantity = 0});
 }

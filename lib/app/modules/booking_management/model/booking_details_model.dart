@@ -2,7 +2,7 @@ class BookingDetailsModel {
   final bool? success;
   final int? status;
   final String? message;
-  final List<BookingData>? data;
+  final List<BookingDetailsData>? data;
 
   BookingDetailsModel({
     this.success,
@@ -16,14 +16,12 @@ class BookingDetailsModel {
       success: json['success'],
       status: json['status'],
       message: json['message'],
-      data: (json['data'] as List<dynamic>?)
-          ?.map((item) => BookingData.fromJson(item))
-          .toList(),
+      data: (json['data'] as List<dynamic>?)?.map((item) => BookingDetailsData.fromJson(item)).toList(),
     );
   }
 }
 
-class BookingData {
+class BookingDetailsData {
   final String? date;
   final String? time;
   final String? address;
@@ -31,11 +29,11 @@ class BookingData {
   final String? name;
   final String? phone;
   final String? orderId;
-  final List<BookingService>? services;
+  final List<BookingServiceDetails>? services;
   final int? totalPrice;
   final int? avgRating;
 
-  BookingData({
+  BookingDetailsData({
     this.date,
     this.time,
     this.address,
@@ -48,8 +46,8 @@ class BookingData {
     this.avgRating,
   });
 
-  factory BookingData.fromJson(Map<String, dynamic> json) {
-    return BookingData(
+  factory BookingDetailsData.fromJson(Map<String, dynamic> json) {
+    return BookingDetailsData(
       date: json['date'],
       time: json['time'],
       address: json['address'],
@@ -58,7 +56,7 @@ class BookingData {
       phone: json['phone'],
       orderId: json['orderId'],
       services: (json['services'] as List<dynamic>?)
-          ?.map((item) => BookingService.fromJson(item))
+          ?.map((item) => BookingServiceDetails.fromJson(item))
           .toList(),
       totalPrice: json['totalPrice'],
       avgRating: json['avgRating'],
@@ -66,17 +64,17 @@ class BookingData {
   }
 }
 
-class BookingService {
+class BookingServiceDetails {
   final String? name;
   final int? price;
 
-  BookingService({
+  BookingServiceDetails({
     this.name,
     this.price,
   });
 
-  factory BookingService.fromJson(Map<String, dynamic> json) {
-    return BookingService(
+  factory BookingServiceDetails.fromJson(Map<String, dynamic> json) {
+    return BookingServiceDetails(
       name: json['name'],
       price: json['price'],
     );

@@ -37,7 +37,7 @@ class BookingManagementWidget extends StatelessWidget {
                       OrderDetailsCard(booking: booking),
                       SizedBox(height: 24.h),
                       if(userRole.isNotEmpty)...[
-                        userRole == 'user'?
+                        userRole == 'customer'?
                         BookingStatusCard(statuses: booking.statuses) :_buildOrderConfirmation(context),
                       ],
                       SizedBox(height: 32.h),
@@ -46,7 +46,7 @@ class BookingManagementWidget extends StatelessWidget {
                 ),
               ),
             ),
-            if(userRole == 'user')
+            if(userRole == 'customer')
             Container(
               padding: EdgeInsets.all(12),
               child: CustomButton(

@@ -88,7 +88,8 @@ class BookingController extends GetxController {
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
-       final bookingGroupId = response.data?['data']['bookingGroupId'];
+       List<dynamic> bookingData = response.data?['data'] as List<dynamic>;
+        String bookingGroupId = bookingData.first['bookingGroupId']??'';
         Get.toNamed(Routes.BOOKING_MANAGEMENT,arguments: {'bookingGroupId':bookingGroupId});
         Get.snackbar('Success', response.message ?? 'Booking created successfully');
       } else {
