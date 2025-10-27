@@ -1,6 +1,7 @@
 import 'package:barberita/app/modules/booking_management/widgets/BookingManagementWidget.dart';
 import 'package:barberita/app/modules/booking_management/model/booking_management_models.dart';
 import 'package:barberita/common/jwt_decoder/jwt_decoder.dart';
+import 'package:barberita/common/jwt_decoder/payload_value.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:barberita/common/widgets/custom_page_loading.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +23,15 @@ class _BookingManagementViewState extends State<BookingManagementView> {
   void initState() {
     super.initState();
     _loadUserRole();
+
   }
 
   Future<void> _loadUserRole() async {
     try {
-      final role = await PrefsHelper.getString('role');
+      final payloadValue = await getPayloadValue();
+        String role = payloadValue['userRole']??'';
       setState(() {
-        _userRole = role ?? '';
+        _userRole = role ;
         _isLoading = false;
       });
     } catch (e) {
