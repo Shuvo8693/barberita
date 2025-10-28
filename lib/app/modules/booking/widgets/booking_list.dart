@@ -1,7 +1,12 @@
+import 'package:barberita/app/data/api_constants.dart';
+import 'package:barberita/app/modules/booking/controllers/booking_status_controller.dart';
+import 'package:barberita/app/modules/booking/model/booking_status_model.dart';
+import 'package:barberita/app/modules/hairdresser_details/controllers/booking_controller.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/jwt_decoder/payload_value.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -22,6 +27,7 @@ class BookingList extends StatefulWidget {
 
 class _BookingListState extends State<BookingList> {
 
+  final BookingStatusController _bookingStatusController = Get.put(BookingStatusController());
 
   @override
   void initState() {
@@ -30,12 +36,33 @@ class _BookingListState extends State<BookingList> {
   }
 
   String? _userRole;
+
   role()async{
     final payloadValue = await getPayloadValue();
     String role = payloadValue['userRole']??'';
     setState(() {
       _userRole = role;
     });
+  }
+
+
+  fetchBooking()async{
+    switch(widget.statusType){
+      case BookingStatusType.active:
+       await _bookingStatusController.fetchBookingStatus(bookingStatus: 'accepted-bookings');
+        break;
+      case BookingStatusType.request:
+       await _bookingStatusController.fetchBookingStatus(bookingStatus: 'pending-bookings' );
+       break;
+      case BookingStatusType.history:
+       await _bookingStatusController.fetchBookingStatus(bookingStatus: 'completed-bookings');
+        break;
+    }
+  }
+  @override
+  void didChangeDependencies() async{
+    super.didChangeDependencies();
+    await fetchBooking();
   }
 
   @override
@@ -54,31 +81,41 @@ class _BookingListState extends State<BookingList> {
           ),
         ),
         SizedBox(height: 16.h),
-        Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            itemCount: 4, // Sample count, can be replaced with dynamic data
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.only(bottom: 16.h),
-                child: BookingCard(
-                  name: 'Darlene Robertson',
-                  service: 'Hair Cut',
-                  rating: '4.5',
-                  price: '\$ 17.84',
-                  time: '4:00 PM - 5:00 PM',
-                  date: '12.12.25',
-                  role: _userRole??'',
-                  status: _getStatus(widget.statusType),
-                  imageUrl: 'assets/images/hairdresser${index + 1}.jpg',
-                  onDetailsTap: () {
-                    // Navigate to booking details
-                    _getView(widget.statusType);
-                  },
-                ),
-              );
-            },
-          ),
+        Obx((){
+          List<BookingStatusData> bookingStatusData = _bookingStatusController.bookingsStatusModel.value.data??[];
+          if(_bookingStatusController.isLoadingBookingStatus.value){
+            return Center(child: CupertinoActivityIndicator());
+          } else if (bookingStatusData.isEmpty){
+            return Text('No booking status is available');
+          }
+          return Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              itemCount: bookingStatusData.length, // Sample count, can be replaced with dynamic data
+              itemBuilder: (context, index) {
+               final bookingStatusIndex = bookingStatusData[index];
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 16.h),
+                  child: BookingCard(
+                    name: bookingStatusIndex.barberInfo?.name??'',
+                    service: 'Hair Cut',
+                    rating: '',
+                    price: '\$${bookingStatusIndex.totalPrice?.toStringAsFixed(2)??''}',
+                    time: bookingStatusIndex.time??'',
+                    date: bookingStatusIndex.date??'',
+                    role: _userRole ?? '',
+                    status: _getStatus(widget.statusType),
+                    imageUrl: '${ApiConstants.baseUrl}${bookingStatusIndex.barberInfo?.image??''}',
+                    onDetailsTap: () {
+                      // Navigate to booking details
+                      _getView(widget.statusType,bookingGroupId: bookingStatusIndex.bookingGroupId );
+                    },
+                  ),
+                );
+              },
+            ),
+          );
+         }
         ),
       ],
     );
@@ -108,12 +145,12 @@ class _BookingListState extends State<BookingList> {
     }
   }
 
-   _getView(BookingStatusType statusType) {
+   _getView(BookingStatusType statusType, {String? bookingGroupId}) {
     switch (statusType) {
       case BookingStatusType.active:
-        return Get.toNamed(Routes.BOOKING_MANAGEMENT);
+        return Get.toNamed(Routes.BOOKING_MANAGEMENT,arguments: {'bookingGroupId':bookingGroupId});
       case BookingStatusType.request:
-        return Get.toNamed(Routes.BOOKING_MANAGEMENT);
+        return Get.toNamed(Routes.BOOKING_MANAGEMENT,arguments: {'bookingGroupId':bookingGroupId});
       case BookingStatusType.history:
         return Get.toNamed(Routes.HISTORYDETAILS);
     }

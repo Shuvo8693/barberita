@@ -1,4 +1,4 @@
-import 'package:barberita/app/modules/booking/controllers/booking_controller.dart';
+import 'package:barberita/app/modules/booking/controllers/booking_status_controller.dart';
 import 'package:barberita/app/modules/hairdresser_details/controllers/booking_controller.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';

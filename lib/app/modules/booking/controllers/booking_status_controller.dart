@@ -5,12 +5,12 @@ import 'package:barberita/app/modules/booking/model/booking_status_model.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:get/get.dart';
 
-class BookingAppointmentController extends GetxController {
+class BookingStatusController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller.instance;
   Rx<BookingsStatusModel> bookingsStatusModel = BookingsStatusModel().obs;
   var isLoadingBookingStatus = false.obs;
 
-  Future<void> fetchBookingStatus(String? bookingStatus) async {
+  Future<void> fetchBookingStatus({String? bookingStatus}) async {
     String token = await PrefsHelper.getString('token');
 
     _networkCaller.clearInterceptors();
