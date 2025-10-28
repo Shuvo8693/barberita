@@ -1,11 +1,16 @@
+import 'package:barberita/app/modules/booking/controllers/booking_status_controller.dart';
 import 'package:barberita/app/modules/booking/widgets/review_history_card.dart';
+import 'package:barberita/app/modules/booking_management/controllers/booking_management_controller.dart';
+import 'package:barberita/app/modules/booking_management/model/booking_details_model.dart';
 import 'package:barberita/app/modules/booking_management/model/booking_management_models.dart';
-import 'package:barberita/app/modules/booking_management/widgets/booking_status_card.dart';
+import 'package:barberita/app/modules/booking_management/widgets/BookingManagementWidget.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
-import 'package:barberita/common/custom_appbar/custom_appbar.dart';
+import 'package:barberita/common/jwt_decoder/payload_value.dart';
+import 'package:barberita/common/widgets/custom_page_loading.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class HistoryDetailsView extends StatefulWidget {
   const HistoryDetailsView({super.key});
@@ -15,48 +20,117 @@ class HistoryDetailsView extends StatefulWidget {
 }
 
 class _HistoryDetailsViewState extends State<HistoryDetailsView> {
+  final BookingStatusController _bookingStatusController = Get.put(BookingStatusController());
+
+  String _userRole = '';
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserRole();
+  }
+
+  Future<void> _loadUserRole() async {
+    try {
+      final payloadValue = await getPayloadValue();
+      String role = payloadValue['userRole'] ?? '';
+      setState(() {
+        _userRole = role;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _userRole = '';
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    await _bookingStatusController.fetchBookingDetails();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Booking History Details',),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(20.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              SizedBox(height: 16.h),
-
-              // Booking Status Section
-              BookingStatusCard(
-                statuses: [
-                  BookingStatus(title: 'Booking Placed', timestamp: '20 Dec 2025, 11:20 PM', isCompleted: true),
-                  BookingStatus(title: 'In progress', timestamp: '20 Dec 2025, 12:20 PM', isCompleted: true),
-                  BookingStatus(title: 'Worked Done', timestamp: '20 Dec 2025, 1:20 PM', isCompleted: true),
-                ],
+      body: Obx(() {
+        List<BookingDetailsData>? bookingDataList = _bookingStatusController.bookingDetailsModel.value.data ?? [];
+        if (_bookingStatusController.isLoadingService.value) {
+          return const Center(child: CustomPageLoading());
+        } else if (bookingDataList.isEmpty) {
+          return Center(child: Text('Not found any booking details'));
+        }
+        final bookingDetailsData = bookingDataList.first;
+        bool pending = bookingDetailsData.status == 'pending';
+        bool accepted = bookingDetailsData.status == 'accepted';
+        bool completed = bookingDetailsData.status == 'completed';
+        return BookingManagementWidget(
+          userRole: _userRole,
+          booking: BookingData(
+            name: bookingDetailsData.name ?? '',
+            service: 'Hair Cut',
+            address: bookingDetailsData.address ?? '',
+            phone: bookingDetailsData.phone ?? '',
+            time: bookingDetailsData.time ?? '',
+            rating: bookingDetailsData.avgRating?.toStringAsFixed(1) ?? '',
+            imageUrl: '',
+            orderId: bookingDetailsData.orderId ?? '',
+            items: bookingDetailsData.services?.map((serviceItem) {
+                  return OrderItem(
+                    name: serviceItem.name ?? '',
+                    price: serviceItem.price ?? 0,
+                    quantity: 0,
+                  );
+                }).toList() ?? [],
+            serviceFee: 0,
+            subtotal: 0,
+            total: bookingDetailsData.totalPrice ?? 0,
+            statuses: [
+              BookingStatus(
+                title: 'Booking Placed',
+                timestamp: '',
+                isCompleted: pending || accepted || completed
+                    ? true
+                    : false,
               ),
-
-              SizedBox(height: 32.h),
-
-              /// =================> Review Section <==================
-              Text(
-                'Review',
-                style: GoogleFontStyles.h5(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
+              BookingStatus(
+                title: 'In progress',
+                timestamp: '',
+                isCompleted: accepted || completed ? true : false,
               ),
-
-              SizedBox(height: 16.h),
-              // Review Card
-              ReviewHistoryCard(),
+              BookingStatus(
+                title: 'Worked Done',
+                timestamp: '',
+                isCompleted: completed ? true : false,
+              ),
             ],
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }
 
-
+// /// =================> Review Section <==================
+// Padding(
+//   padding: EdgeInsets.all(16.w),
+//   child: Column(
+//     mainAxisSize: MainAxisSize.min,
+//     crossAxisAlignment: CrossAxisAlignment.start,
+//     children: [
+//       Text(
+//         'Review',
+//         style: GoogleFontStyles.h5(
+//           color: Colors.white,
+//           fontWeight: FontWeight.w600,
+//         ),
+//       ),
+//       SizedBox(height: 16.h),
+//       ReviewHistoryCard(),
+//       SizedBox(height: 16.h),
+//     ],
+//   ),
+// )

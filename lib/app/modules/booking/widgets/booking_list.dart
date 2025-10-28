@@ -152,7 +152,7 @@ class _BookingListState extends State<BookingList> {
       case BookingStatusType.request:
         return Get.toNamed(Routes.BOOKING_MANAGEMENT,arguments: {'bookingGroupId':bookingGroupId});
       case BookingStatusType.history:
-        return Get.toNamed(Routes.HISTORYDETAILS);
+        return Get.toNamed(Routes.HISTORYDETAILS,arguments: {'bookingGroupId':bookingGroupId});
     }
   }
 
