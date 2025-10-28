@@ -30,8 +30,8 @@ class BookingDetailsData {
   final String? phone;
   final String? orderId;
   final List<BookingServiceDetails>? services;
-  final int? totalPrice;
-  final int? avgRating;
+  final num? totalPrice;
+  final num? avgRating;
 
   BookingDetailsData({
     this.date,
@@ -66,7 +66,7 @@ class BookingDetailsData {
 
 class BookingServiceDetails {
   final String? name;
-  final int? price;
+  final num? price;
 
   BookingServiceDetails({
     this.name,

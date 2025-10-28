@@ -54,42 +54,45 @@ class _BookingManagementViewState extends State<BookingManagementView> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const Center(child: CustomPageLoading());
-    }
-    return Obx((){
-      List<BookingDetailsData>?  bookingDataList = _bookingManagementController.bookingDetailsModel.value.data??[];
-      if(_bookingManagementController.isLoadingService.value){
-        return const Center(child: CustomPageLoading());
-      } else if(bookingDataList.isEmpty){
-        return Center(child: Text('Not found any booking details'));
-      }
-      final bookingDetailsData = bookingDataList.first;
-      return BookingManagementWidget(
-        userRole: _userRole,
-        booking: BookingData(
-          name: bookingDetailsData.name??'',
-          service: 'Hair Cut',
-          address: bookingDetailsData.address??'',
-          phone:  bookingDetailsData.phone??'',
-          time:  bookingDetailsData.time??'',
-          rating:  bookingDetailsData.avgRating?.toStringAsFixed(1)??'',
-          imageUrl: '',
-          orderId: bookingDetailsData.orderId??'',
-          items: bookingDetailsData.services?.map((serviceItem){
-            return OrderItem(name: serviceItem.name??'', price: serviceItem.price??0, quantity: 0);
-          }).toList()??[],
-          serviceFee: 0,
-          subtotal: 0,
-          total:bookingDetailsData.totalPrice??0,
-          statuses: [
-            BookingStatus(title: 'Booking Placed', timestamp: '20 Dec 2025, 11:20 PM',isCompleted: true),
-            BookingStatus(title: 'In progress', timestamp: '20 Dec 2025, 12:20 PM', isCompleted: false),
-            BookingStatus(title: 'Worked Done', timestamp: '20 Dec 2025, 1:20 PM', isCompleted: false),
-          ],
-        ),
-      );
-     }
+
+    return Scaffold(
+      body: Obx((){
+        List<BookingDetailsData>?  bookingDataList = _bookingManagementController.bookingDetailsModel.value.data??[];
+        if(_bookingManagementController.isLoadingService.value){
+          return const Center(child: CustomPageLoading());
+        } else if(bookingDataList.isEmpty){
+          return Center(child: Text('Not found any booking details'));
+        }
+        final bookingDetailsData = bookingDataList.first;
+        bool pending = bookingDetailsData.status=='pending';
+        bool accepted = bookingDetailsData.status=='accepted';
+        bool completed = bookingDetailsData.status=='completed';
+        return BookingManagementWidget(
+          userRole: _userRole,
+          booking: BookingData(
+            name: bookingDetailsData.name??'',
+            service: 'Hair Cut',
+            address: bookingDetailsData.address??'',
+            phone:  bookingDetailsData.phone??'',
+            time:  bookingDetailsData.time??'',
+            rating:  bookingDetailsData.avgRating?.toStringAsFixed(1)??'',
+            imageUrl: '',
+            orderId: bookingDetailsData.orderId??'',
+            items: bookingDetailsData.services?.map((serviceItem){
+              return OrderItem(name: serviceItem.name??'', price: serviceItem.price??0, quantity: 0);
+            }).toList()??[],
+            serviceFee: 0,
+            subtotal: 0,
+            total:bookingDetailsData.totalPrice??0,
+            statuses: [
+              BookingStatus(title: 'Booking Placed', timestamp: '',isCompleted: pending || accepted || completed ? true : false),
+              BookingStatus(title: 'In progress', timestamp: '', isCompleted: accepted || completed ? true : false),
+              BookingStatus(title: 'Worked Done', timestamp: '', isCompleted: completed ? true : false),
+            ],
+          ),
+        );
+       }
+      ),
     );
   }
 }
