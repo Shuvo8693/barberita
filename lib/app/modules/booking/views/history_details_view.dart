@@ -4,6 +4,7 @@ import 'package:barberita/app/modules/booking_management/controllers/booking_man
 import 'package:barberita/app/modules/booking_management/model/booking_details_model.dart';
 import 'package:barberita/app/modules/booking_management/model/booking_management_models.dart';
 import 'package:barberita/app/modules/booking_management/widgets/BookingManagementWidget.dart';
+import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/jwt_decoder/payload_value.dart';
 import 'package:barberita/common/widgets/custom_page_loading.dart';
@@ -69,6 +70,15 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
         bool completed = bookingDetailsData.status == 'completed';
         return BookingManagementWidget(
           userRole: _userRole,
+          isReviewHistoryPageActive: true,
+          isOrderCompleted: completed,
+          markAsDoneTap: () {
+            if(accepted){
+               Get.toNamed(Routes.FEEDBACK);
+            }else{
+              Get.snackbar('Failed to mark as done', 'Seems that your order is not accepted yet');
+            }
+          },
           booking: BookingData(
             name: bookingDetailsData.name ?? '',
             service: 'Hair Cut',
