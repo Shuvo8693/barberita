@@ -30,7 +30,12 @@ class CustomerProfileController extends GetxController {
           Get.offAllNamed(Routes.SPLASH);
         });
       } else {
-        Get.snackbar('Failed', response.message ?? 'User login failed ');
+       String message = response.data!['message'];
+        if(message.contains('expired')){
+          Get.offAllNamed(Routes.SIGNIN);
+        }else{
+          Get.snackbar('Failed', response.message ?? 'User login failed ');
+        }
       }
     } catch (e) {
       print(e);

@@ -29,11 +29,13 @@ class BookingDetailsData {
   final String? name;
   final String? phone;
   final String? orderId;
+  final String? barberId;
+  final String? customerId;
   final List<BookingServiceDetails>? services;
   final num? totalPrice;
   final num? avgRating;
 
-  BookingDetailsData({
+  BookingDetailsData( {
     this.date,
     this.time,
     this.address,
@@ -44,6 +46,8 @@ class BookingDetailsData {
     this.services,
     this.totalPrice,
     this.avgRating,
+    this.barberId,
+    this.customerId,
   });
 
   factory BookingDetailsData.fromJson(Map<String, dynamic> json) {
@@ -55,6 +59,8 @@ class BookingDetailsData {
       name: json['name'],
       phone: json['phone'],
       orderId: json['orderId'],
+      barberId: json['barberId'],
+      customerId: json['customerId'],
       services: (json['services'] as List<dynamic>?)
           ?.map((item) => BookingServiceDetails.fromJson(item))
           .toList(),

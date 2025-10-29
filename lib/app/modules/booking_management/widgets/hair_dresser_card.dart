@@ -54,7 +54,7 @@ class HairdresserCard extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         // Handle tap action
-                        Get.toNamed(Routes.REVIEW);
+                        Get.toNamed(Routes.REVIEW,arguments: {'userId':booking.userId});
                       },
                       child: buildRating(booking.rating),
                     ),

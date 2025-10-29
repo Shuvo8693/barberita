@@ -1,12 +1,12 @@
 // Models
 class BookingData {
-  final String name, service, address, phone, time, rating, orderId;
+  final String name, service, address, phone, time, rating, orderId,userId;
   final String? imageUrl;
   final List<OrderItem> items;
   final num? serviceFee, subtotal, total;
   final List<BookingStatus> statuses;
 
-  BookingData({
+  BookingData( {
     required this.name,
     required this.service,
     required this.address,
@@ -20,6 +20,7 @@ class BookingData {
     this.subtotal,
     required this.total,
     required this.statuses,
+    required this.userId,
   });
 }
 

@@ -80,6 +80,7 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
             }
           },
           booking: BookingData(
+            userId: '',
             name: bookingDetailsData.name ?? '',
             service: 'Hair Cut',
             address: bookingDetailsData.address ?? '',

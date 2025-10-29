@@ -14,6 +14,7 @@ class HomeController extends GetxController {
   Future<void> fetchTopBarber() async {
     String token = await PrefsHelper.getString('token');
 
+    _networkCaller.clearInterceptors();
     _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
     _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
     _networkCaller.addResponseInterceptor(LoggingInterceptor());
@@ -46,7 +47,7 @@ class HomeController extends GetxController {
   var isLoadingFavouriteBarber = false.obs;
   Future<void> fetchFavouriteBarber() async {
     String token = await PrefsHelper.getString('token');
-
+    _networkCaller.clearInterceptors();
     _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
     _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
     _networkCaller.addResponseInterceptor(LoggingInterceptor());
