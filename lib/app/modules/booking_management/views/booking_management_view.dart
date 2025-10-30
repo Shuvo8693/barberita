@@ -71,9 +71,10 @@ class _BookingManagementViewState extends State<BookingManagementView> {
         return BookingManagementWidget(
           userRole: _userRole,
           isOrderCompleted: completed,
-          markAsDoneTap: () {
+          isLoadingMarkAsDone: _bookingManagementController.isLoadingMarkAsDone.value,
+          markAsDoneTap: () async{
             if(accepted){
-              Get.toNamed(Routes.FEEDBACK);
+              await _bookingManagementController.markAsDone(barberId: bookingDetailsData.barberId);
             }else{
               Get.snackbar('Failed to mark as done', 'Seems that your order is not accepted yet');
             }

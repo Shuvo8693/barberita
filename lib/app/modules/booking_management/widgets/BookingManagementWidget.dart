@@ -18,12 +18,17 @@ class BookingManagementWidget extends StatelessWidget {
   final String userRole;
   final bool isReviewHistoryPageActive;
   final bool isOrderCompleted;
+  final bool isLoadingMarkAsDone;
   final VoidCallback? markAsDoneTap;
 
   const BookingManagementWidget({
     super.key,
     required this.booking,
-    required this.userRole, this.isReviewHistoryPageActive = false, this.markAsDoneTap,  this.isOrderCompleted = false,
+    required this.userRole,
+    this.isReviewHistoryPageActive = false,
+    this.markAsDoneTap,
+    this.isOrderCompleted = false,
+    this.isLoadingMarkAsDone = false,
   });
 
   @override
@@ -53,23 +58,23 @@ class BookingManagementWidget extends StatelessWidget {
                       SizedBox(height: 32.h),
 
                       /// =================> Review Section <==================
-                      if(isReviewHistoryPageActive)
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Review',
-                            style: GoogleFontStyles.h5(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
+                      if (isReviewHistoryPageActive)
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Review',
+                              style: GoogleFontStyles.h5(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 16.h),
-                          ReviewHistoryCard(),
-                          SizedBox(height: 16.h),
-                        ],
-                      ),
+                            SizedBox(height: 16.h),
+                            ReviewHistoryCard(),
+                            SizedBox(height: 16.h),
+                          ],
+                        ),
                     ],
                   ),
                 ),
@@ -79,8 +84,8 @@ class BookingManagementWidget extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(12.sp),
                 child: CustomButton(
-                  onTap: markAsDoneTap??(){},
-                  text: 'Mark as Done',
+                  onTap: markAsDoneTap ?? () {},
+                  text: isLoadingMarkAsDone ? 'Processing...' : 'Mark as Done',
                 ),
               ),
           ],
