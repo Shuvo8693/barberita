@@ -4,6 +4,7 @@ import 'jwt_decoder.dart';
 
 Future<Map<String, dynamic>> getPayloadValue()async{
   final token = await PrefsHelper.getString('token');
+
   final payloads = decodeJWT(token);
   String id = payloads['id'] ?? '';
   String role = payloads['role'] ?? '';

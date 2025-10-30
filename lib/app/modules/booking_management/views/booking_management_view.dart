@@ -79,7 +79,7 @@ class _BookingManagementViewState extends State<BookingManagementView> {
             }
           },
           booking: BookingData(
-            userId: '',
+            userId: _userRole=='customer'? bookingDetailsData.barberId??'': bookingDetailsData.customerId??'',
             name: bookingDetailsData.name??'',
             service: 'Hair Cut',
             address: bookingDetailsData.address??'',

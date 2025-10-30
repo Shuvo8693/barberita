@@ -97,7 +97,7 @@ class _BookingListState extends State<BookingList> {
                 return Padding(
                   padding: EdgeInsets.only(bottom: 16.h),
                   child: BookingCard(
-                    name: bookingStatusIndex.barberInfo?.name??'',
+                    name: bookingStatusIndex.userInfo?.name??'',
                     service: 'Hair Cut',
                     rating: '',
                     price: '\$${bookingStatusIndex.totalPrice?.toStringAsFixed(2)??''}',
@@ -105,7 +105,7 @@ class _BookingListState extends State<BookingList> {
                     date: bookingStatusIndex.date??'',
                     role: _userRole ?? '',
                     status: _getStatus(widget.statusType),
-                    imageUrl: '${ApiConstants.baseUrl}${bookingStatusIndex.barberInfo?.image??''}',
+                    imageUrl: '${ApiConstants.baseUrl}${bookingStatusIndex.userInfo?.image??''}',
                     onDetailsTap: () {
                       // Navigate to booking details
                       _getView(widget.statusType,bookingGroupId: bookingStatusIndex.bookingGroupId );

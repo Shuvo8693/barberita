@@ -16,7 +16,7 @@ Map<String,dynamic> decodeJWT(String token){
    throw Exception('Error decoding JWT: $e');
  }
   
- }
+}
 
  extension Base64Extension on String {
    static String normalizes(String source) {

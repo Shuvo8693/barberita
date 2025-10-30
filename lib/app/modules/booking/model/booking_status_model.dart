@@ -26,7 +26,7 @@ class BookingStatusData {
   final String? time;
   final String? status;
   final String? address;
-  final BarberInfo? barberInfo;
+  final UserInfo? userInfo;
   final List<ServiceInfo>? services;
   final int? totalPrice;
   final String? bookingGroupId;
@@ -36,7 +36,7 @@ class BookingStatusData {
     this.time,
     this.status,
     this.address,
-    this.barberInfo,
+    this.userInfo,
     this.services,
     this.totalPrice,
     this.bookingGroupId,
@@ -48,8 +48,8 @@ class BookingStatusData {
       time: json['time'] ?? '',
       status: json['status'] ?? '',
       address: json['address'] ?? '',
-      barberInfo: json['barberInfo'] != null
-          ? BarberInfo.fromJson(json['barberInfo'])
+      userInfo: json['userInfo'] != null
+          ? UserInfo.fromJson(json['userInfo'])
           : null,
       services: (json['services'] as List<dynamic>?)
           ?.map((item) => ServiceInfo.fromJson(item))
@@ -61,24 +61,24 @@ class BookingStatusData {
   }
 }
 
-class BarberInfo {
-  final String? barberId;
+class UserInfo {
+  final String? userId;
   final String? name;
   final String? phone;
   final String? image;
   final String? cover;
 
-  BarberInfo({
-    this.barberId,
+  UserInfo({
+    this.userId,
     this.name,
     this.phone,
     this.image,
     this.cover,
   });
 
-  factory BarberInfo.fromJson(Map<String, dynamic> json) {
-    return BarberInfo(
-      barberId: json['barberId'] ?? '',
+  factory UserInfo.fromJson(Map<String, dynamic> json) {
+    return UserInfo(
+      userId: json['barberId'] ?? '',
       name: json['name'] ?? '',
       phone: json['phone'] ?? '',
       image: json['image'] ?? '',
