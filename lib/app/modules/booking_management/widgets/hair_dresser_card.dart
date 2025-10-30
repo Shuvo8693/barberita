@@ -7,10 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-class HairdresserCard extends StatelessWidget {
+class BarberCard extends StatelessWidget {
   final BookingData booking;
 
-  const HairdresserCard({super.key, required this.booking});
+  const BarberCard({super.key, required this.booking});
 
   @override
   Widget build(BuildContext context) {

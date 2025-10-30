@@ -1,16 +1,17 @@
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
-import 'package:barberita/app/modules/booking/model/booking_status_model.dart';
+import 'package:barberita/app/modules/barber_home/model/user_review_model.dart';
 
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:get/get.dart';
 
 class BarberHomeController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller.instance;
-  Rx<BookingsStatusModel> bookingsStatusModel = BookingsStatusModel().obs;
-  var isLoadingBookingStatus = false.obs;
+  Rx<UserReviewModel> userReviewModel = UserReviewModel().obs;
+  var isLoadingUserReview = false.obs;
 
-  Future<void> fetchBookingStatus({String? bookingStatus}) async {
+  Future<void> fetchUserReview() async {
+   String userId = Get.arguments['userId']??'';
     String token = await PrefsHelper.getString('token');
 
     _networkCaller.clearInterceptors();
@@ -19,15 +20,15 @@ class BarberHomeController extends GetxController {
     _networkCaller.addResponseInterceptor(LoggingInterceptor());
 
     try {
-      isLoadingBookingStatus.value = true;
+      isLoadingUserReview.value = true;
       final response = await _networkCaller.get<Map<String, dynamic>>(
-        endpoint:ApiConstants.bookingStatusUrl(status: bookingStatus),
+        endpoint:ApiConstants.userReviewUrl(userId: userId),
         timeout: Duration(seconds: 10),
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
-        bookingsStatusModel.value = BookingsStatusModel.fromJson( response.data!);
-        print(bookingsStatusModel.value);
+        userReviewModel.value = UserReviewModel.fromJson( response.data!);
+        print(userReviewModel.value);
 
       } else {
         Get.snackbar('Failed', response.message!);
@@ -36,8 +37,7 @@ class BarberHomeController extends GetxController {
       print(e);
       throw NetworkException('$e');
     } finally {
-      isLoadingBookingStatus.value = false;
+      isLoadingUserReview.value = false;
     }
-
   }
 }

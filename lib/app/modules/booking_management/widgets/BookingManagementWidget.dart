@@ -40,7 +40,8 @@ class BookingManagementWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      HairdresserCard(booking: booking),
+                      //==== barber card =====
+                      BarberCard(booking: booking),
                       SizedBox(height: 24.h),
                       OrderDetailsCard(booking: booking),
                       SizedBox(height: 24.h),
