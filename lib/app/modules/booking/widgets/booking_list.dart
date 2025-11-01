@@ -5,7 +5,6 @@ import 'package:barberita/app/modules/hairdresser_details/controllers/booking_co
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/jwt_decoder/payload_value.dart';
-import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

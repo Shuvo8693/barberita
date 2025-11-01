@@ -12,9 +12,12 @@ class FeedbackController extends GetxController {
   final TextEditingController commentCtrl = TextEditingController();
   var isLoadingBookingStatus = false.obs;
 
+
+
   Future<void> postReview() async {
      final result  = Get.arguments ?? '';
     String token = await PrefsHelper.getString('token');
+
 
     final body = {
       "bookingGroupId" : "c9131f17-4591-4c24-a826-557180286ab3",

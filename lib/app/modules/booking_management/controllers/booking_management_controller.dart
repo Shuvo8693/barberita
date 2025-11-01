@@ -65,7 +65,7 @@ class BookingManagementController extends GetxController {
       final response = await _networkCaller.patch<Map<String, dynamic>>(
         endpoint:ApiConstants.markAsDoneUrl(bookingGroupId: bookingGroupId),
         body: {
-          "status" : "completed"
+          "status" : "mark_as_done"
         },
         timeout: Duration(seconds: 10),
         fromJson: (json) => json as Map<String, dynamic>,
