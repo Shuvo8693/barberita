@@ -1,12 +1,28 @@
+import 'package:barberita/app/modules/customer_profile/controllers/settings_controller.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
+import 'package:barberita/common/widgets/html_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 // 3. About Us Screen
-class AboutUsScreen extends StatelessWidget {
+class AboutUsScreen extends StatefulWidget {
   const AboutUsScreen({super.key});
 
+  @override
+  State<AboutUsScreen> createState() => _AboutUsScreenState();
+}
+
+class _AboutUsScreenState extends State<AboutUsScreen> {
+  final SettingsController _settingsController = Get.put(SettingsController());
+
+  @override
+  void didChangeDependencies() async{
+    super.didChangeDependencies();
+    await _settingsController.termsPolicyApi(TermsAndPolicy.about);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,17 +40,23 @@ class AboutUsScreen extends StatelessWidget {
 
               SizedBox(height: 20.h),
 
-              Container(
-                padding: EdgeInsets.all(20.w),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2C2C2E),
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Text(
-                  'Lorem ipsum dolor sit amet consectetur. Lacus at vestibulum gravida rhoncus mauris. Quisque mi est vel dis. Donec rhoncus lorem auctor sed enim est elit. Consequat condimentum gravida et facilisis elementum aliquet. At vel porttitor eget vehicula tincidunt rutrum aliquet malesuada. Elementum ultricies venenatis at neque dis. Gravida accumsan mauris tellus est proin. Volutpat in accumsan veit lorem rutrum placerat auctor. Sed lorem est a et ex orci. Non rutrum ornare ut cursus vel tempus aliquet vitae placerat condimentum ut et dignissim.\n\nVel blandit sit risus molestis consecuetur. Egestas rhoncus sodales ut at mauris magna aenean. Cursus consequat et platea phasellus sit. Facilisi consequat ut orci mauris facilisis in. Lorem ornare et dignissim aliquet lorem sed mauris porttitor auctor.\n\nSuscipit nullis at mollis consequat condimentum molestie. Consequat ut adipiscing at urna ultricies mauris vestibulum orci. Arcu mauris lorem orci adipiscing et massa. Ut molestie lorem consequat porttitor. mauris vestibulum cursus vel cursus tellus non aliquet lorem consequat porttitor lorem mauris vestibulum cursus vel cursus tellus non aliquet lorem consequat porttitor lorem. Nulla alias duis elit et imperdiet lacusta. Mauris auctor lacinia nulla morbi elit. Molestie cursus cursus adipiscing. Lorem quis prorem cum qui qui posuere. Pretium pulvinar mauris suscipit mauris.',
-                  style: GoogleFontStyles.h6(
-                    color: Colors.white.withOpacity(0.8),
-                    height: 1.6,
+              SafeArea(
+                child: Container(
+                  padding: EdgeInsets.all(20.w),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2C2C2E),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: Obx((){
+                    final content= _settingsController.termsAndPrivacyModel.value.data;
+                    if(_settingsController.isLoadingTermsPrivacy.value){
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: 24.w),
+                      child: HTMLView(htmlData: content?.description??''),
+                    );
+                  },
                   ),
                 ),
               ),

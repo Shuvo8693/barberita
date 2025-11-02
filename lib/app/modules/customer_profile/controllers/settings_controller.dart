@@ -6,10 +6,12 @@ import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:get/get.dart' hide MultipartFile;
 
+
+
 class SettingsController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller.instance;
   Rx<TermsAndPrivacyModel> termsAndPrivacyModel = TermsAndPrivacyModel().obs;
-  var isLoadingBookingStatus = false.obs;
+  var isLoadingTermsPrivacy = false.obs;
 
   Future<void> fetchTermsPolicy({String? termsPolicy}) async {
     String token = await PrefsHelper.getString('token');
@@ -20,7 +22,7 @@ class SettingsController extends GetxController {
     _networkCaller.addResponseInterceptor(LoggingInterceptor());
 
     try {
-      isLoadingBookingStatus.value = true;
+      isLoadingTermsPrivacy.value = true;
       final response = await _networkCaller.get<Map<String, dynamic>>(
         endpoint:ApiConstants.termsPolicyUrl(termsAndPolicy: termsPolicy),
         timeout: Duration(seconds: 10),
@@ -37,8 +39,28 @@ class SettingsController extends GetxController {
       print(e);
       throw NetworkException('$e');
     } finally {
-      isLoadingBookingStatus.value = false;
+      isLoadingTermsPrivacy.value = false;
     }
 
   }
+
+
+ Future<void> termsPolicyApi(TermsAndPolicy? termsPolicy)async{
+    if(termsPolicy != null){
+      switch (termsPolicy){
+        case TermsAndPolicy.about:
+          await fetchTermsPolicy(termsPolicy: 'about');
+          break;
+        case TermsAndPolicy.privacy:
+          await fetchTermsPolicy(termsPolicy: 'privacy');
+          break;
+        case TermsAndPolicy.terms:
+          await fetchTermsPolicy(termsPolicy: 'terms');
+          break;
+      }
+    }
+
+  }
+
 }
+enum TermsAndPolicy  { about,privacy,terms}
