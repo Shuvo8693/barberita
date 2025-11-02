@@ -14,17 +14,20 @@ class FeedbackController extends GetxController {
 
 
 
-  Future<void> postReview() async {
-     final result  = Get.arguments ?? '';
+  Future<void> postReview({VoidCallback? callBack}) async {
+    //{'bookingGroupId':bookingGroupId,'myId':myId,'barberId':barberId}
+     final bookingGroupId  = Get.arguments['bookingGroupId'] ?? '';
+     final myId  = Get.arguments['myId'] ?? '';
+     final barberId  = Get.arguments['barberId'] ?? '';
     String token = await PrefsHelper.getString('token');
 
 
     final body = {
-      "bookingGroupId" : "c9131f17-4591-4c24-a826-557180286ab3",
-      "customerId" : "68e5fc8c77f9973c84781f8c",
-      "barberId": "68d0d3d3d676b78de82f9734",
-      "rating" : 5,
-      "comment" : "excellent"
+      "bookingGroupId" : bookingGroupId,
+      "customerId" : myId,
+      "barberId": barberId,
+      "rating" : selectedRating,
+      "comment" : commentCtrl.text
     };
 
     _networkCaller.clearInterceptors();
@@ -41,8 +44,7 @@ class FeedbackController extends GetxController {
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
-
-
+        callBack?.call();
       } else {
         Get.snackbar('Failed', response.message!);
       }

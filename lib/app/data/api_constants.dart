@@ -21,7 +21,7 @@ static String barberReviewUrl({String? barberId}) =>  '/api/v1/review/barber-rev
 static String barberServiceUrl({String? barberId}) =>  '/api/v1/barber/barber-services?barberId=$barberId';
 static String bookingDetailsUrl({String? bookingGroupId}) =>  '/api/v1/booking/get-booking-details/$bookingGroupId';
 static String markAsDoneCompleteUrl({String? bookingGroupId}) =>  '/api/v1/booking/update-booking-status/$bookingGroupId';
-static String markAsDoneUrl({String? bookingGroupId}) =>  '/api/v1/booking/mark-as-done/$bookingGroupId';
+static String markAsDoneUrl({String? bookingGroupId}) =>  '$baseUrl/api/v1/booking/mark-as-done/$bookingGroupId';  // manual request method
 static String bookingStatusUrl({String? status}) =>  '/api/v1/booking/$status';
 static String userReviewUrl({String? userId}) =>  '/api/v1/review/barber-reviews/$userId';
 static String allMechanicUrl({int? currentPage, int? limit}) =>  '/api/v1/mechanic/all?currentPage=$currentPage&limit=$limit';

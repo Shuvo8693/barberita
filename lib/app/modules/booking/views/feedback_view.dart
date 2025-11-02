@@ -19,8 +19,6 @@ class FeedbackView extends StatefulWidget {
 class _FeedbackViewState extends State<FeedbackView> {
  final FeedbackController _feedbackController = Get.put(FeedbackController());
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,8 +150,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                     SizedBox(height: 24.h),
 
                     // Feedback Text Field
-                    CustomTextField(
-                        controller: _feedbackController.commentCtrl,
+                    CustomTextField(controller: _feedbackController.commentCtrl,
                       maxLines: 5,
                       hintText: 'comments here ...',
                       fillColor: Colors.transparent,
@@ -166,9 +163,11 @@ class _FeedbackViewState extends State<FeedbackView> {
 
               // Submit Button
               CustomButton(
-                onTap: () {
+                onTap: () async {
                   if (_feedbackController.selectedRating > 0) {
-                    _submitFeedback();
+                   await _feedbackController.postReview(callBack: (){
+                     _submitFeedback();
+                   });
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -214,9 +213,7 @@ class _FeedbackViewState extends State<FeedbackView> {
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF2C2C2E),
         title: Text(
-          'Thank You!',
-          style: GoogleFontStyles.h4(color: Colors.white),
-        ),
+          'Thank You!', style: GoogleFontStyles.h4(color: Colors.white)),
         content: Text(
           'Your feedback has been submitted successfully.\nRating: ${_feedbackController.selectedRating}/5',
           style: GoogleFontStyles.h5(color: Colors.white.withOpacity(0.8)),
@@ -225,10 +222,8 @@ class _FeedbackViewState extends State<FeedbackView> {
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
-              Navigator.of(context).pop();
             },
-            child: Text(
-              'OK',
+            child: Text('OK',
               style: GoogleFontStyles.h5(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,

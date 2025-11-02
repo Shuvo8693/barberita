@@ -251,13 +251,7 @@ class NetworkCaller {
               .timeout(timeoutDuration);
           break;
         case HttpMethod.patch:
-          response = await _client
-              .patch(
-                uri,
-                headers: requestHeaders,
-                body: body != null ? jsonEncode(body) : null,
-              )
-              .timeout(timeoutDuration);
+          response = await _client.patch(uri, headers: requestHeaders, body: body != null ? jsonEncode(body) : null,).timeout(timeoutDuration);
           break;
         case HttpMethod.delete:
           response = await _client

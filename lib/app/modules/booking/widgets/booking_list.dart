@@ -46,6 +46,8 @@ class _BookingListState extends State<BookingList> {
 
 
   fetchBooking()async{
+    _bookingStatusController.bookingsStatusModel.value.data?.clear();
+    setState(() {});
     switch(widget.statusType){
       case BookingStatusType.active:
        await _bookingStatusController.fetchBookingStatus(bookingStatus: 'accepted-bookings');
@@ -85,7 +87,7 @@ class _BookingListState extends State<BookingList> {
           if(_bookingStatusController.isLoadingBookingStatus.value){
             return Center(child: CupertinoActivityIndicator());
           } else if (bookingStatusData.isEmpty){
-            return Text('No booking status is available');
+            return Center(child: Text('No booking status is available'));
           }
           return Expanded(
             child: ListView.builder(
