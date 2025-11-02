@@ -24,6 +24,7 @@ static String markAsDoneCompleteUrl({String? bookingGroupId}) =>  '/api/v1/booki
 static String markAsDoneUrl({String? bookingGroupId}) =>  '$baseUrl/api/v1/booking/mark-as-done/$bookingGroupId';  // manual request method
 static String bookingStatusUrl({String? status}) =>  '/api/v1/booking/$status';
 static String userReviewUrl({String? userId}) =>  '/api/v1/review/barber-reviews/$userId';
+static String termsPolicyUrl({String? termsAndPolicy}) =>  '/$termsAndPolicy';
 static String allMechanicUrl({int? currentPage, int? limit}) =>  '/api/v1/mechanic/all?currentPage=$currentPage&limit=$limit';
 static String nearbyBarbersUrl({String? name, bool? isNearby}) =>  '/api/v1/barber/get-barbers?search=$name&nearby=$isNearby';
 
@@ -38,5 +39,6 @@ static String favouriteBarberUrl= '/api/v1/favorite/get-favorite-barber';
 static String addBookingUrl = '/api/v1/booking/add-booking';
 static String allServicesUrl = '/api/v1/barber/all-services';
 static String addReviewUrl = '/api/v1/review/add-review';
+
 
 }

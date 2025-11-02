@@ -1,0 +1,44 @@
+
+import 'package:barberita/app/data/api_constants.dart';
+import 'package:barberita/app/data/network_caller.dart';
+import 'package:barberita/app/modules/customer_profile/model/terms_and_policy_model.dart';
+import 'package:barberita/app/routes/app_pages.dart';
+import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
+import 'package:get/get.dart' hide MultipartFile;
+
+class SettingsController extends GetxController {
+  final NetworkCaller _networkCaller = NetworkCaller.instance;
+  Rx<TermsAndPrivacyModel> termsAndPrivacyModel = TermsAndPrivacyModel().obs;
+  var isLoadingBookingStatus = false.obs;
+
+  Future<void> fetchTermsPolicy({String? termsPolicy}) async {
+    String token = await PrefsHelper.getString('token');
+
+    _networkCaller.clearInterceptors();
+    _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
+    _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
+    _networkCaller.addResponseInterceptor(LoggingInterceptor());
+
+    try {
+      isLoadingBookingStatus.value = true;
+      final response = await _networkCaller.get<Map<String, dynamic>>(
+        endpoint:ApiConstants.termsPolicyUrl(termsAndPolicy: termsPolicy),
+        timeout: Duration(seconds: 10),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+      if (response.isSuccess && response.data != null) {
+        termsAndPrivacyModel.value = TermsAndPrivacyModel.fromJson( response.data!);
+        print(termsAndPrivacyModel.value);
+
+      } else {
+        Get.snackbar('Failed', response.message!);
+      }
+    } catch (e) {
+      print(e);
+      throw NetworkException('$e');
+    } finally {
+      isLoadingBookingStatus.value = false;
+    }
+
+  }
+}
