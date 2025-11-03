@@ -30,7 +30,7 @@ class CustomerProfileController extends GetxController {
           Get.offAllNamed(Routes.SPLASH);
         });
       } else {
-       String message = response.data!['message'];
+        String message = response.data!['message'];
         if(message.contains('expired')){
           Get.offAllNamed(Routes.SIGNIN);
         }else{
@@ -45,4 +45,37 @@ class CustomerProfileController extends GetxController {
     }
 
   }
+
+  /// =============== Fetch profile =======================
+
+  RxBool isLoadingProfile = false.obs;
+
+  Future<void> fetchProfile() async {
+    String token = await PrefsHelper.getString('token');
+
+    _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
+    _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
+    _networkCaller.addResponseInterceptor(LoggingInterceptor());
+
+    try {
+      isLoadingProfile.value = true;
+      final response = await _networkCaller.get<Map<String, dynamic>>(
+        endpoint: ApiConstants.profileUrl,
+        timeout: Duration(seconds: 10),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+      if (response.isSuccess && response.data != null) {
+
+      } else {
+        Get.snackbar('Failed', response.message ?? '');
+      }
+    } catch (e) {
+      print(e);
+      throw NetworkException('$e');
+    } finally {
+      isLoadingProfile.value = false;
+    }
+
+  }
 }
+

@@ -54,67 +54,6 @@ class BookingManagementController extends GetxController {
   var isLoadingMarkAsDone = false.obs;
 
   Future<void> markAsDone({String? barberId}) async {
-    if(isLoadingMarkAsDone.value) return;
-    String bookingGroupId = Get.arguments['bookingGroupId'] ?? '';
-    String token = await PrefsHelper.getString('token');
-    final result = await getPayloadValue();
-    String myId = result['userId'];
-
-    Map<String, String> headers = {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
-      // 'Accept': '*/*',
-      // 'Accept-Encoding': 'gzip, deflate, br',
-      // 'Connection': 'keep-alive',
-      // 'Cache-Control': 'no-cache',
-    };
-
-    try {
-      isLoadingMarkAsDone.value = true;
-
-      var request = http.Request('PATCH', Uri.parse(ApiConstants.markAsDoneUrl(bookingGroupId: bookingGroupId)));
-
-      request.headers.addAll(headers);
-      request.body = jsonEncode({"status": "mark_as_done"});
-
-      var response = await request.send();
-      var responseBody = await http.Response.fromStream(response);
-
-      print('Response status: ${responseBody.statusCode}');
-      print('Response body: ${responseBody.body}');
-
-      if (responseBody.statusCode == 200 || responseBody.statusCode == 201) {
-        Map<String, dynamic> decodedBody = jsonDecode(responseBody.body);
-
-        Get.toNamed(
-          Routes.FEEDBACK,
-          arguments: {
-            'bookingGroupId': bookingGroupId,
-            'myId': myId,
-            'barberId': barberId
-          },
-        );
-        Get.snackbar(
-          'Successfully',
-          decodedBody['message'] ?? 'Mark as done need barber confirmation',
-        );
-      } else {
-        Map<String, dynamic> decodedBody = jsonDecode(responseBody.body);
-        Get.snackbar('Failed', decodedBody['message'] ?? 'Request failed');
-      }
-    } on TimeoutException {
-      Get.snackbar('Error', 'Request timeout. Please try again.');
-    } catch (e) {
-      print('Error: $e');
-      Get.snackbar('Error', '$e');
-    } finally {
-      isLoadingMarkAsDone.value = false;
-    }
-  }
-
-
-
-/*  Future<void> markAsDone({String? barberId}) async {
      String bookingGroupId = Get.arguments['bookingGroupId']??'';
     String token = await PrefsHelper.getString('token');
      final result = await getPayloadValue();
@@ -146,6 +85,6 @@ class BookingManagementController extends GetxController {
       isLoadingMarkAsDone.value = false;
     }
 
-  }*/
+  }
 
 }
