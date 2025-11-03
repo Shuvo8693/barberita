@@ -1,3 +1,4 @@
+import 'package:barberita/app/modules/customer_profile/views/edit_profile_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
@@ -177,6 +178,11 @@ class AppPages {
       name: _Paths.FAVOURITE,
       page: () => const FavouriteView(),
       binding: FavouriteBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDITPROFILE,
+      page: () => const EditProfileScreen(),
+      binding: CustomerProfileBinding(),
     ),
 
   ];

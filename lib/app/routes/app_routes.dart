@@ -29,6 +29,7 @@ abstract class Routes {
   static const OTP = _Paths.OTP;
   static const VERIFYPHONE = _Paths.VERIFYPHONE;
   static const BARBERVERIFICATION = _Paths.BARBERVERIFICATION;
+  static const EDITPROFILE = _Paths.EDITPROFILE;
 }
 
 abstract class _Paths {
@@ -59,4 +60,5 @@ abstract class _Paths {
   static const SERVICEMANAGEMENT = '/service_management';
   static const REVIEW = '/review';
   static const FAVOURITE = '/favourite';
+  static const EDITPROFILE = '/edit-profile';
 }

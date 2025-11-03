@@ -31,6 +31,7 @@ class UserInfoData {
   final String? status;
   final int? v;
   final String? about;
+  final String? address;
   final int? experience;
   final String? workingHour;
   final String? barberCover;
@@ -47,7 +48,7 @@ class UserInfoData {
   final bool? isLogin;
   final String? email;
 
-  UserInfoData({
+  UserInfoData( {
     this.id,
     this.userId,
     this.residencePath,
@@ -72,6 +73,7 @@ class UserInfoData {
     this.location,
     this.isLogin,
     this.email,
+    this.address,
   });
 
   factory UserInfoData.fromJson(Map<String, dynamic> json) {
@@ -85,6 +87,7 @@ class UserInfoData {
       status: json['status'] as String?,
       v: json['__v'] as int?,
       about: json['about'] as String?,
+      address: json['address'] as String?,
       experience: json['experience'] as int?,
       workingHour: json['workingHour'] as String?,
       barberCover: json['barberCover'] as String?,

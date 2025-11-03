@@ -85,12 +85,7 @@ class _CustomerProfileViewState extends State<CustomerProfileView> {
                         icon: Icons.person_outline,
                         title: 'Edit Profile',
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const EditProfileScreen(),
-                            ),
-                          );
+                         Get.toNamed(Routes.EDITPROFILE);
                         },
                       ),
 
