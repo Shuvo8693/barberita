@@ -6,5 +6,6 @@ class AppNetworkImage{
   static String saloonHairMen2Img="https://www.shutterstock.com/image-photo/young-man-trendy-haircut-barber-260nw-1529716025.jpg";
   static String saloonHairMen3Img="https://www.shutterstock.com/image-photo/attractive-happy-man-smiling-while-260nw-2267242719.jpg";
   static String saloonHairMen4Img="https://t3.ftcdn.net/jpg/05/06/74/32/360_F_506743235_coW6QAlhxlBWjnRk0VNsHqaXGGH9F4JS.jpg";
+  static String saloon2mg="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2Fsb258ZW58MHx8MHx8fDA%3D&fm=jpg&q=60&w=3000";
 
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:barberita/app/data/api_constants.dart';
 
@@ -18,6 +19,7 @@ class NetworkException implements Exception {
 
 /// HTTP methods enum
 enum HttpMethod { get, post, put, patch, delete, multipart }
+enum MultiPartMethod { post, put, patch }
 
 /// Multipart file wrapper
 class MultipartFile {
@@ -207,6 +209,7 @@ class NetworkCaller {
   Future<NetworkResponse<T>> request<T>({
     required String endpoint,
     required HttpMethod method,
+     MultiPartMethod multipartMethod = MultiPartMethod.put,
     Map<String, dynamic>? body,
     Map<String, String>? headers,
     Map<String, dynamic>? queryParameters,
@@ -265,6 +268,8 @@ class NetworkCaller {
             files: files,
             fields: fields,
             timeout: timeoutDuration,
+            multiPartMethodType: multipartMethod,
+
           );
           break;
       }
@@ -380,6 +385,7 @@ class NetworkCaller {
     List<MultipartFile>? files,
     Map<String, String>? fields,
     Map<String, String>? headers,
+     MultiPartMethod? multipartMethodType,
     Duration? timeout,
     T Function(dynamic)? fromJson,
   }) async {
@@ -391,6 +397,7 @@ class NetworkCaller {
       headers: headers,
       timeout: timeout,
       fromJson: fromJson,
+      multipartMethod: multipartMethodType ?? MultiPartMethod.post
     );
   }
 
@@ -431,16 +438,33 @@ class NetworkCaller {
       fromJson: fromJson,
     );
   }
+ /// ========== multipart  Method type  functions ==============
 
-  /// Send multipart request
+ static MultipartRequest getMethodType({required MultiPartMethod multipartMethod , required Uri uri}){
+    switch(multipartMethod){
+      case MultiPartMethod.put:
+        return http.MultipartRequest('PUT', uri);
+      case MultiPartMethod.post:
+        return http.MultipartRequest('POST', uri);
+      case MultiPartMethod.patch:
+        return http.MultipartRequest('PATCH', uri);
+
+    }
+  }
+
+  ///=== Send multipart request ====
   Future<http.Response> _sendMultipartRequest({
     required Uri uri,
     required Map<String, String> headers,
     List<MultipartFile>? files,
     Map<String, String>? fields,
     required Duration timeout,
+    required MultiPartMethod  multiPartMethodType
   }) async {
-    final request = http.MultipartRequest('POST', uri);
+    // final request = http.MultipartRequest('POST', uri);
+
+    final request = NetworkCaller.getMethodType(multipartMethod: multiPartMethodType, uri: uri);
+
 
     // Add headers (remove content-type as it will be set automatically)
     final filteredHeaders = Map<String, String>.from(headers);
@@ -601,7 +625,7 @@ class NetworkCaller {
   }
 }
 
-///  ====== Usage Example: ================
+///  ========================================== Usage Example: ===================
 
 class User {
   final int id;

@@ -11,7 +11,7 @@ import 'package:barberita/common/app_icons/app_icons.dart';
 enum ImageType { asset, network, file, svg }
 
 /// A comprehensive image asset management class with modern package integration
-class ImageAsset {
+class CustomImageProvider {
   final String path;
   final String? package;
   final double? width;
@@ -23,7 +23,7 @@ class ImageAsset {
   final String? semanticLabel;
   final ImageType imageType;
 
-  const ImageAsset(
+  const CustomImageProvider(
       this.path, {
         this.package,
         this.width,
@@ -37,7 +37,7 @@ class ImageAsset {
       });
 
   /// Factory constructors for different image types
-  factory ImageAsset.network(
+  factory CustomImageProvider.network(
       String url, {
         double? width,
         double? height,
@@ -47,7 +47,7 @@ class ImageAsset {
         BlendMode? colorBlendMode,
         String? semanticLabel,
       }) {
-    return ImageAsset(
+    return CustomImageProvider(
       url,
       width: width,
       height: height,
@@ -60,7 +60,7 @@ class ImageAsset {
     );
   }
 
-  factory ImageAsset.file(
+  factory CustomImageProvider.file(
       String filePath, {
         double? width,
         double? height,
@@ -70,7 +70,7 @@ class ImageAsset {
         BlendMode? colorBlendMode,
         String? semanticLabel,
       }) {
-    return ImageAsset(
+    return CustomImageProvider(
       filePath,
       width: width,
       height: height,
@@ -83,7 +83,7 @@ class ImageAsset {
     );
   }
 
-  factory ImageAsset.svg(
+  factory CustomImageProvider.svg(
       String path, {
         String? package,
         double? width,
@@ -94,7 +94,7 @@ class ImageAsset {
         BlendMode? colorBlendMode,
         String? semanticLabel,
       }) {
-    return ImageAsset(
+    return CustomImageProvider(
       path,
       package: package,
       width: width,
@@ -109,14 +109,14 @@ class ImageAsset {
   }
 
   /// Create from XFile (image_picker result)
-  factory ImageAsset.fromXFile(
+  factory CustomImageProvider.fromXFile(
       XFile xFile, {
         double? width,
         double? height,
         BoxFit? fit,
         AlignmentGeometry? alignment,
       }) {
-    return ImageAsset(
+    return CustomImageProvider(
       xFile.path,
       width: width,
       height: height,
@@ -494,7 +494,7 @@ class ImageAsset {
   }
 
   /// Copy this ImageAsset with new parameters
-  ImageAsset copyWith({
+  CustomImageProvider copyWith({
     String? path,
     String? package,
     double? width,
@@ -506,7 +506,7 @@ class ImageAsset {
     String? semanticLabel,
     ImageType? imageType,
   }) {
-    return ImageAsset(
+    return CustomImageProvider(
       path ?? this.path,
       package: package ?? this.package,
       width: width ?? this.width,
@@ -528,7 +528,7 @@ class ImageAsset {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is ImageAsset &&
+    return other is CustomImageProvider &&
         other.path == path &&
         other.package == package &&
         other.width == width &&
@@ -560,7 +560,7 @@ class ImageAsset {
 
 /// ========== Extension to make it easier to create ImageAsset from strings ===================
 extension StringToImageAsset on String {
-  ImageAsset toImageAsset({
+  CustomImageProvider toImageAsset({
     String? package,
     double? width,
     double? height,
@@ -571,7 +571,7 @@ extension StringToImageAsset on String {
     String? semanticLabel,
     ImageType? imageType,
   }) {
-    return ImageAsset(
+    return CustomImageProvider(
       this,
       package: package,
       width: width,
@@ -600,26 +600,26 @@ class ImageAssets {
  // static const String _svgPath = 'assets/svg/';
 
   // Example static image assets
-  static final ImageAsset logo = ImageAsset(
+  static final CustomImageProvider logo = CustomImageProvider(
     '${_baseIconPath}logo.png',
     width: 100,
     height: 100,
     fit: BoxFit.contain,
   );
 
-  static final ImageAsset logoSvg = ImageAsset.svg(
+  static final CustomImageProvider logoSvg = CustomImageProvider.svg(
     '$_baseIconPath${AppIcons.appIcons}',
     width: 100,
     height: 100,
     color: Colors.blue,
   );
 
-  static final ImageAsset backgroundImage = ImageAsset(
+  static final CustomImageProvider backgroundImage = CustomImageProvider(
     '${_baseImagePath}background.jpg',
     fit: BoxFit.cover,
   );
 
-  static final ImageAsset profilePlaceholder = ImageAsset(
+  static final CustomImageProvider profilePlaceholder = CustomImageProvider(
     '${_baseImagePath}profile_placeholder.png',
     width: 50,
     height: 50,
@@ -627,24 +627,24 @@ class ImageAssets {
   );
 
   // SVG icons
-  static final ImageAsset homeIcon = ImageAsset.svg('${_baseIconPath}home.svg');
-  static final ImageAsset profileIcon = ImageAsset.svg('${_baseIconPath}profile.svg');
-  static final ImageAsset settingsIcon = ImageAsset.svg('${_baseIconPath}settings.svg');
+  static final CustomImageProvider homeIcon = CustomImageProvider.svg('${_baseIconPath}home.svg');
+  static final CustomImageProvider profileIcon = CustomImageProvider.svg('${_baseIconPath}profile.svg');
+  static final CustomImageProvider settingsIcon = CustomImageProvider.svg('${_baseIconPath}settings.svg');
 
   // Network images
-  static ImageAsset networkImage(String url, {double? width, double? height}) {
-    return ImageAsset.network(url, width: width, height: height);
+  static CustomImageProvider networkImage(String url, {double? width, double? height}) {
+    return CustomImageProvider.network(url, width: width, height: height);
   }
 
   // Get image by name
-  static ImageAsset getImage(String name, {
+  static CustomImageProvider getImage(String name, {
     double? width,
     double? height,
     BoxFit? fit,
     bool isSvg = false,
   }) {
     final path = isSvg ? '$_baseIconPath$name' : '$_baseIconPath$name';
-    return ImageAsset(
+    return CustomImageProvider(
       path,
       width: width,
       height: height,
@@ -654,11 +654,11 @@ class ImageAssets {
   }
 
   // Get SVG icon with color
-  static ImageAsset getSvgIcon(String name, {
+  static CustomImageProvider getSvgIcon(String name, {
     double? size,
     Color? color,
   }) {
-    return ImageAsset.svg(
+    return CustomImageProvider.svg(
       '$_baseIconPath$name.svg',
       width: size,
       height: size,
@@ -694,7 +694,7 @@ class ImageAssetExample extends StatelessWidget {
             SizedBox(height: 20.h),
 
             // Network image with caching
-            ImageAsset.network(
+            CustomImageProvider.network(
               'https://via.placeholder.com/200x200',
               width: 200,
               height: 200,
@@ -703,7 +703,7 @@ class ImageAssetExample extends StatelessWidget {
             SizedBox(height: 20.h),
 
             // SVG from network
-            ImageAsset.svg(
+            CustomImageProvider.svg(
               'https://www.svgrepo.com/show/13654/avatar.svg',
             ).toImage(
               width: 100.w,
