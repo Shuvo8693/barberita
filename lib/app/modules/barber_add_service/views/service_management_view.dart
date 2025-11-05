@@ -18,7 +18,7 @@ class ServiceManagementView extends StatefulWidget {
 
 class _ServiceManagementViewState extends State<ServiceManagementView> {
   // Dummy data for services
-  List<ServiceItem> _serviceItems = [
+  final List<ServiceItem> _serviceItems = [
     ServiceItem(
       id: '1',
       imagePath: 'assets/images/service1.jpg',
@@ -96,7 +96,7 @@ class _ServiceManagementViewState extends State<ServiceManagementView> {
             SizedBox(height: 24.h),
 
             // Add Your Service Section
-            Text('Add Your Service', style: GoogleFontStyles.h5(color: Colors.white, fontWeight: FontWeight.w600)),
+            Text('Your added Services', style: GoogleFontStyles.h5(color: Colors.white, fontWeight: FontWeight.w600)),
 
             SizedBox(height: 16.h),
 
