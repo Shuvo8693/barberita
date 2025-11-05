@@ -1,11 +1,13 @@
 // Service Item Card Widget
+import 'package:barberita/app/data/api_constants.dart';
+import 'package:barberita/app/modules/barber_add_service/model/barber_added_service_model.dart';
 import 'package:barberita/app/modules/barber_add_service/model/service_item.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ServiceItemCard extends StatelessWidget {
-  final ServiceItem service;
+  final BarberServiceItem service;
   final Function(bool) onToggle;
   final VoidCallback onEdit;
 
@@ -23,8 +25,7 @@ class ServiceItemCard extends StatelessWidget {
         // Service Image
         ClipRRect(
           borderRadius: BorderRadius.circular(8.r),
-          child: Image.asset(
-            service.imagePath,
+          child: Image.asset('${ApiConstants.baseUrl}${service.serviceImage??''}',
             width: 60.w,
             height: 60.h,
             fit: BoxFit.cover,
@@ -45,29 +46,29 @@ class ServiceItemCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                service.title,
+                service.serviceName??'',
                 style: GoogleFontStyles.h6(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               Text(
-                service.subtitle,
+                'Hair Cut',
                 style: GoogleFontStyles.customSize(
                   size: 10.sp,
                   color: const Color(0xFFE6C4A3),
                 ),
               ),
               Text(
-                service.isActive ?'Open Now':'Closed',
+                service.active==true ?'Open Now':'Closed',
                 style: GoogleFontStyles.customSize(
                   size: 10.sp,
-                  color: service.isActive ? Colors.green : Colors.red,
+                  color: service.active==true ? Colors.green : Colors.red,
                 ),
               ),
               SizedBox(height: 4.h),
               Text(
-                'Price Range: ${service.priceRange}',
+                'Price Range: ${service.price}',
                 style: GoogleFontStyles.customSize(
                   size: 9.sp,
                   color: Colors.white.withOpacity(0.7),
@@ -81,7 +82,7 @@ class ServiceItemCard extends StatelessWidget {
         Column(
           children: [
             Switch(
-              value: service.isActive,
+              value: service.active??false,
               onChanged: onToggle,
               activeColor: Colors.green,
               inactiveThumbColor: Colors.grey,

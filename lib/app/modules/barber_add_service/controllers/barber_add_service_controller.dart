@@ -1,5 +1,6 @@
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
+import 'package:barberita/app/modules/barber_add_service/model/barber_added_service_model.dart';
 import 'package:barberita/app/modules/barber_home/model/user_review_model.dart';
 import 'package:barberita/common/jwt_decoder/payload_value.dart';
 
@@ -8,10 +9,10 @@ import 'package:get/get.dart';
 
 class BarberAddServiceController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller.instance;
-  Rx<UserReviewModel> userReviewModel = UserReviewModel().obs;
+  Rx<BarberAddedServiceModel> barberAddedServiceModel = BarberAddedServiceModel().obs;
   var isLoadingUserReview = false.obs;
 
-  Future<void> fetchUserReview() async {
+  Future<void> fetchAddedServices() async {
     String token = await PrefsHelper.getString('token');
     final result = await getPayloadValue();
     final myId = result['userId'];
@@ -29,8 +30,8 @@ class BarberAddServiceController extends GetxController {
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
-        userReviewModel.value = UserReviewModel.fromJson( response.data!);
-        print(userReviewModel.value);
+        barberAddedServiceModel.value = BarberAddedServiceModel.fromJson( response.data!);
+        print(barberAddedServiceModel.value);
 
       } else {
         Get.snackbar('Failed', response.message!);

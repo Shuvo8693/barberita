@@ -27,7 +27,7 @@ class BarberAddedServiceModel {
 
 class BarberAddedServiceData {
   final String? workingHours;
-  final List<Service>? services;
+  final List<BarberServiceItem>? services;
 
   BarberAddedServiceData({
     this.workingHours,
@@ -38,13 +38,13 @@ class BarberAddedServiceData {
     return BarberAddedServiceData(
       workingHours: json['workingHours'] as String?,
       services: (json['services'] as List<dynamic>?)
-          ?.map((e) => Service.fromJson(e))
+          ?.map((e) => BarberServiceItem.fromJson(e))
           .toList(),
     );
   }
 }
 
-class Service {
+class BarberServiceItem {
   final String? id;
   final String? barberId;
   final String? serviceName;
@@ -52,9 +52,9 @@ class Service {
   final int? price;
   final String? description;
   final int? v;
-  final bool? active;
+   bool? active;
 
-  Service({
+  BarberServiceItem({
     this.id,
     this.barberId,
     this.serviceName,
@@ -65,8 +65,8 @@ class Service {
     this.active,
   });
 
-  factory Service.fromJson(Map<String, dynamic> json) {
-    return Service(
+  factory BarberServiceItem.fromJson(Map<String, dynamic> json) {
+    return BarberServiceItem(
       id: json['_id'] as String?,
       barberId: json['barberId'] as String?,
       serviceName: json['serviceName'] as String?,
