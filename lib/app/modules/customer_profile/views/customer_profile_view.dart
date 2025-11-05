@@ -1,6 +1,7 @@
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/modules/barber_home/views/review_view.dart';
 import 'package:barberita/app/modules/customer_profile/controllers/customer_profile_controller.dart';
+import 'package:barberita/app/modules/customer_profile/controllers/settings_controller.dart';
 import 'package:barberita/app/modules/customer_profile/model/user_info_model.dart';
 import 'package:barberita/app/modules/customer_profile/views/settings/settings_screen.dart';
 import 'package:barberita/app/modules/customer_profile/views/support_view.dart';
@@ -29,6 +30,7 @@ class CustomerProfileView extends StatefulWidget {
 
 class _CustomerProfileViewState extends State<CustomerProfileView> {
   final CustomerProfileController _profileController = Get.put(CustomerProfileController());
+  final SettingsController _settingsController = Get.put(SettingsController());
   String? _role;
   String? _myId;
   bool _isRoleLoaded = false;
@@ -74,6 +76,7 @@ class _CustomerProfileViewState extends State<CustomerProfileView> {
               if (userInfoModel.data == null) {
                 return Center(child: Text('Reload the screen'));
               }
+
               return Container(
                 padding: EdgeInsets.all(24.w),
                 child: Column(
@@ -165,20 +168,26 @@ class _CustomerProfileViewState extends State<CustomerProfileView> {
                         },
                       ),
                       SizedBox(height: 16.h),
-                      _buildMenuItem(
-                        icon: Icons.switch_right,
-                        title: 'Active Status',
-                        value: true,
-                        isActiveSwitch: true,
-                        onChanged: (value) {},
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SupportScreen(),
-                            ),
-                          );
-                        },
+                      Obx((){
+                        UserInfoData userInfoData = _profileController.userInfoModel.value.data?? UserInfoData();
+
+                        return _buildMenuItem(
+                          icon: Icons.switch_right,
+                          title: _settingsController.isLoadingServiceActivation.value? 'Status Updating ....':'Active Status',
+                          value: userInfoData.isOpen??false,
+                          isActiveSwitch: true,
+                          onChanged: (value) async{
+                           await _settingsController.serviceActivation(voidCallBack: (){
+                             if (_profileController.userInfoModel.value.data != null) {
+                               _profileController.userInfoModel.value.data?.isOpen = value;
+                               _profileController.userInfoModel.refresh();
+                             }
+                            });
+                          },
+                          onTap: () {},
+                        );
+                      }
+
                       ),
 
                       verticalSpacing(40.h),

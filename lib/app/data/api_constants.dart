@@ -42,6 +42,7 @@ static String addReviewUrl = '/api/v1/review/add-review';
 static String profileUrl = '/api/v1/auth/get-profile-info';
 static String customerProfileUpdateUrl = '/api/v1/auth/profile-update';
 static String barberProfileUpdateUrl = '/api/v1/barber/update-barber';
+static String serviceActivationStatusUrl = '/api/v1/barber/update-available-status';
 
 
 }

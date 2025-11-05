@@ -128,6 +128,7 @@ class CustomerProfileController extends GetxController {
       "address": ?addressController?.text,
       "experience": ?experiencesController?.text,
       "about": ?aboutSkillsController?.text,
+       // "isOpen": true.toString()
     };
 
     MultipartFile? multipartCoverFile;

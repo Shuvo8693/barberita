@@ -46,6 +46,7 @@ class UserInfoData {
   final String? updatedAt;
   final Location? location;
   final bool? isLogin;
+        bool? isOpen;
   final String? email;
 
   UserInfoData( {
@@ -72,6 +73,7 @@ class UserInfoData {
     this.updatedAt,
     this.location,
     this.isLogin,
+    this.isOpen,
     this.email,
     this.address,
   });
@@ -103,6 +105,7 @@ class UserInfoData {
       location:
       json['location'] != null ? Location.fromJson(json['location']) : null,
       isLogin: json['isLogin'] as bool?,
+      isOpen: json['isOpen'] as bool?,
       email: json['email'] as String?,
     );
   }
