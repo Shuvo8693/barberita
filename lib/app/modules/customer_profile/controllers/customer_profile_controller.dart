@@ -130,21 +130,27 @@ class CustomerProfileController extends GetxController {
       "about": ?aboutSkillsController?.text,
     };
 
-    final multipartCoverFile = await MultipartFile.fromFile(
-      field: 'barberCover',
-      file: File(coverImagePath??''),
-      contentType: 'image/jpeg',
-    );
+    MultipartFile? multipartCoverFile;
+    if (coverImagePath != null && coverImagePath!.isNotEmpty) {
+      multipartCoverFile = await MultipartFile.fromFile(
+        field: 'barberCover',
+        file: File(coverImagePath!),
+        contentType: 'image/jpeg',
+      );
+    }
 
-    final multipartProfileFile = await MultipartFile.fromFile(
-      field: 'image',
-      file: File(profileImagePath??''),
-      contentType: 'image/jpeg',
-    );
+    MultipartFile? multipartProfileFile;
+    if (profileImagePath != null && profileImagePath!.isNotEmpty) {
+      multipartProfileFile = await MultipartFile.fromFile(
+        field: 'image',
+        file: File(profileImagePath!),
+        contentType: 'image/jpeg',
+      );
+    }
 
     List<MultipartFile> multipartFile = [
-      if (coverImagePath?.isNotEmpty ?? false) multipartCoverFile,
-      if (profileImagePath?.isNotEmpty ?? false) multipartProfileFile,
+      if (coverImagePath?.isNotEmpty ?? false) multipartCoverFile!,
+      if (profileImagePath?.isNotEmpty ?? false) multipartProfileFile!,
     ];
 
     try {
@@ -152,12 +158,14 @@ class CustomerProfileController extends GetxController {
       final response = await _networkCaller.multipart<Map<String, dynamic>>(
         endpoint: role == 'customer'? ApiConstants.customerProfileUpdateUrl : ApiConstants.barberProfileUpdateUrl ,
         fields: fields,
-        files: multipartFile,
+        files: multipartFile.isNotEmpty? multipartFile : null,
         multipartMethodType: MultiPartMethod.patch,
         timeout: Duration(seconds: 10),
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
+        coverImagePath='';
+        profileImagePath ='';
         Get.snackbar('Success', response.message ?? 'Successfully updated the profile');
       } else {
         Get.snackbar('Failed', response.message ?? '');

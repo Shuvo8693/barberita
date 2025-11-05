@@ -1,14 +1,18 @@
+import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/modules/barber_home/views/review_view.dart';
 import 'package:barberita/app/modules/customer_profile/controllers/customer_profile_controller.dart';
+import 'package:barberita/app/modules/customer_profile/model/user_info_model.dart';
 import 'package:barberita/app/modules/customer_profile/views/settings/settings_screen.dart';
 import 'package:barberita/app/modules/customer_profile/views/support_view.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_images/network_image%20.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/bottom_menu/bottom_menu..dart';
+import 'package:barberita/common/jwt_decoder/payload_value.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:barberita/common/widgets/spacing.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -24,13 +28,33 @@ class CustomerProfileView extends StatefulWidget {
 }
 
 class _CustomerProfileViewState extends State<CustomerProfileView> {
-  final profileController = Get.put(CustomerProfileController());
+  final CustomerProfileController _profileController = Get.put(CustomerProfileController());
+  String? _role;
+  String? _myId;
+  bool _isRoleLoaded = false;
 
   @override
   void initState() {
     super.initState();
+    _initializeData();
   }
 
+  // Combine both async calls
+  Future<void> _initializeData() async {
+    await getRole();
+    _profileController.fetchProfile();
+  }
+
+  Future<void> getRole() async {
+    final result = await getPayloadValue();
+    final role = result['userRole'];
+    final myid = result['userId'];
+    setState(() {
+      _role = role;
+      _myId = myid;
+      _isRoleLoaded = true;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,39 +63,51 @@ class _CustomerProfileViewState extends State<CustomerProfileView> {
         child: Column(
           children: [
             // Profile Header
-            Container(
-              padding: EdgeInsets.all(24.w),
-              child: Column(
-                children: [
-                  SizedBox(height: 20.h),
+            Obx((){
+              UserInfoModel userInfoModel = _profileController.userInfoModel.value;
 
-                  // Profile Image
-                  CircleAvatar(
-                    radius: 60.r,
-                    backgroundImage: NetworkImage(
-                      AppNetworkImage.saloonHairMen2Img,
-                    ),
-                    backgroundColor: Colors.grey[600],
-                  ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    'John Cooper',
-                    style: GoogleFontStyles.h3(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+              // Show loading while role or profile is loading
+              if (!_isRoleLoaded || _profileController.isLoadingProfile.value) {
+                return Center(child: CupertinoActivityIndicator());
+              }
 
-                  SizedBox(height: 4.h),
+              if (userInfoModel.data == null) {
+                return Center(child: Text('Reload the screen'));
+              }
+              return Container(
+                padding: EdgeInsets.all(24.w),
+                child: Column(
+                  children: [
+                    SizedBox(height: 20.h),
 
-                  Text(
-                    'willie@example.com',
-                    style: GoogleFontStyles.h6(
-                      color: Colors.white.withOpacity(0.7),
+                    // Profile Image
+                    CircleAvatar(
+                      radius: 60.r,
+                      backgroundImage: NetworkImage('${ApiConstants.baseUrl}${userInfoModel.data?.image??''}'),
+                      backgroundColor: Colors.grey[600],
                     ),
-                  ),
-                ],
-              ),
+                    SizedBox(height: 16.h),
+                    SizedBox(
+                      width: 120.w,
+                      child: Text(userInfoModel.data?.name ?? '',
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        style: GoogleFontStyles.h4(
+                            color: Colors.white, fontWeight: FontWeight.w600),),
+                    ),
+
+                    SizedBox(height: 4.h),
+
+                    Text(
+                      userInfoModel.data?.email ?? '',
+                      style: GoogleFontStyles.h6(
+                          color: Colors.white.withOpacity(0.7)),
+                    ),
+                  ],
+                ),
+              );
+            }
+
             ),
 
             // Menu Options
@@ -125,17 +161,10 @@ class _CustomerProfileViewState extends State<CustomerProfileView> {
                         icon: Icons.reviews,
                         title: 'Review',
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ReviewsScreen(),
-                            ),
-                          );
+                          Get.toNamed(Routes.REVIEW,arguments: {'userId': _myId});
                         },
                       ),
-
                       SizedBox(height: 16.h),
-
                       _buildMenuItem(
                         icon: Icons.switch_right,
                         title: 'Active Status',
@@ -278,11 +307,11 @@ class _CustomerProfileViewState extends State<CustomerProfileView> {
           ),
           Obx((){
             return  CustomButton(
-              loading: profileController.isLoadingLogOut.value,
+              loading: _profileController.isLoadingLogOut.value,
               width: 80.w,
               height: 35.h,
               onTap: () async {
-                await profileController.logout();
+                await _profileController.logout();
               },
               text: 'Log out',
               color: Colors.red,

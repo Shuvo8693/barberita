@@ -1,3 +1,4 @@
+import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/modules/customer_profile/controllers/customer_profile_controller.dart';
 import 'package:barberita/app/modules/customer_profile/model/user_info_model.dart';
 import 'package:barberita/common/app_images/network_image%20.dart';
@@ -78,7 +79,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       children: [
                         // cover image - visible only for barber
                         if (_role == 'barber')
-                          CustomImageProvider.network(AppNetworkImage.saloon2mg).toImage(
+                          CustomImageProvider.network('${ApiConstants.baseUrl}${userInfoModel.data?.barberCover??''}').toImage(
                               height: 152.h,
                               width: double.infinity,
                               fit: BoxFit.cover),
@@ -126,7 +127,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 ),
                                 child: CircleAvatar(
                                   radius: 50.r,
-                                  backgroundImage: NetworkImage(AppNetworkImage.saloonHairMen2Img),
+                                  backgroundImage: NetworkImage('${ApiConstants.baseUrl}${userInfoModel.data?.image??''}'),
                                   backgroundColor: Colors.grey[600],
                                 ),
                               ),
@@ -167,10 +168,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   SizedBox(height: 24.h),
 
-                  Text(
-                    userInfoModel.data?.name ?? '',
-                    style: GoogleFontStyles.h4(
-                        color: Colors.white, fontWeight: FontWeight.w600),
+                  SizedBox(
+                    width: 120.w,
+                    child: Text(userInfoModel.data?.name ?? '',
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      style: GoogleFontStyles.h4(
+                          color: Colors.white, fontWeight: FontWeight.w600),),
                   ),
 
                   SizedBox(height: 4.h),
@@ -187,10 +191,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   SizedBox(height: 16.h),
                   _buildFormField('Email', _profileController.emailController!),
                   SizedBox(height: 16.h),
-                  _buildFormField(
-                      'Mobile Number', _profileController.phoneController!),
-                  SizedBox(height: 16.h),
-                  _buildFormField('Address', _profileController.addressController!),
+                  _buildFormField('Mobile Number', _profileController.phoneController!,readOnly: true),
+                  // SizedBox(height: 16.h),
+                  // _buildFormField('Address', _profileController.addressController!),
 
                   if (_role == 'barber')
                     Column(
@@ -223,7 +226,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       height: 56.h,
                     );
                    }
-
                   ),
                 ],
               ),
@@ -234,7 +236,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  Widget _buildFormField(String label, TextEditingController controller, {int? maxLine}) {
+  Widget _buildFormField(String label, TextEditingController controller, {int? maxLine,bool readOnly = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -247,6 +249,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           controller: controller,
           fillColor: const Color(0xFF2C2C2E),
           maxLines: maxLine ?? 1,
+          readOnly: readOnly,
         ),
       ],
     );
