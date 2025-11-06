@@ -108,9 +108,11 @@ class _ServiceManagementViewState extends State<ServiceManagementView> {
                                 padding: EdgeInsets.only(bottom: index == servicesItem.length - 1 ? 0 : 16.h),
                                 child: ServiceItemCard(
                                   service: serviceIndex,
-                                  onToggle: (value) {
-                                    setState(() {
-                                      servicesItem[index].active = value;
+                                  onToggle: (value) async {
+                                   await _serviceController.toggleServicesStatus(serviceId: serviceIndex.id,voidCallBack: (){
+                                      setState(() {
+                                        servicesItem[index].active = value;
+                                      });
                                     });
                                   },
                                   onEdit: () {

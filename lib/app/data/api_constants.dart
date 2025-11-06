@@ -20,6 +20,7 @@ static String barberDetailsUrl({String? barberId}) =>  '/api/v1/barber/get-barbe
 static String barberReviewUrl({String? barberId}) =>  '/api/v1/review/barber-reviews/$barberId';
 static String barberServiceUrl({String? barberId}) =>  '/api/v1/barber/barber-services?barberId=$barberId';
 static String barberAddedServicesUrl({String? barberId}) =>  '/api/v1/barber/barber-services?barberId=$barberId';
+static String barberServiceToggleUrl({String? serviceId}) =>  '/api/v1/barber/change-service-status/$serviceId';
 static String bookingDetailsUrl({String? bookingGroupId}) =>  '/api/v1/booking/get-booking-details/$bookingGroupId';
 static String markAsDoneCompleteUrl({String? bookingGroupId}) =>  '/api/v1/booking/update-booking-status/$bookingGroupId';
 static String markAsDoneUrl({String? bookingGroupId}) =>  '$baseUrl/api/v1/booking/mark-as-done/$bookingGroupId';  // manual request method
@@ -44,6 +45,7 @@ static String profileUrl = '/api/v1/auth/get-profile-info';
 static String customerProfileUpdateUrl = '/api/v1/auth/profile-update';
 static String barberProfileUpdateUrl = '/api/v1/barber/update-barber';
 static String serviceActivationStatusUrl = '/api/v1/barber/update-available-status';
+static String addBarberServiceUrl = '/api/v1/barber/create-service';
 
 
 }

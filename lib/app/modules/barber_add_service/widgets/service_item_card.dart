@@ -25,7 +25,7 @@ class ServiceItemCard extends StatelessWidget {
         // Service Image
         ClipRRect(
           borderRadius: BorderRadius.circular(8.r),
-          child: Image.asset('${ApiConstants.baseUrl}${service.serviceImage??''}',
+          child: Image.network('${ApiConstants.baseUrl}${service.serviceImage??''}',
             width: 60.w,
             height: 60.h,
             fit: BoxFit.cover,

@@ -1,9 +1,12 @@
 
+import 'package:barberita/app/modules/barber_add_service/controllers/barber_add_service_controller.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/bottom_menu/bottom_menu..dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:barberita/common/app_color/app_colors.dart';
@@ -19,11 +22,7 @@ class BarberAddServiceView extends StatefulWidget {
 }
 
 class _BarberAddServiceViewState extends State<BarberAddServiceView> {
-  final TextEditingController _serviceNameController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-
-  String? _selectedImagePath;
+final BarberAddServiceController _addServiceController = Get.put(BarberAddServiceController());
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +41,12 @@ class _BarberAddServiceViewState extends State<BarberAddServiceView> {
               SizedBox(height: 32.h),
 
               // Service Name Field
-              _buildFormField('Service Name', _serviceNameController, 'e.g. Hair cut'),
+              _buildFormField('Service Name', _addServiceController.serviceNameController, 'e.g. Hair cut'),
 
               SizedBox(height: 20.h),
 
               // Price Field
-              _buildFormField('Price', _priceController, 'e.g. \$15 - \$500'),
+              _buildFormField('Price', _addServiceController.priceController, 'e.g. \$100'),
 
               SizedBox(height: 20.h),
 
@@ -55,7 +54,7 @@ class _BarberAddServiceViewState extends State<BarberAddServiceView> {
               Text('Description', style: GoogleFontStyles.h6(color: Colors.white.withOpacity(0.7))),
               SizedBox(height: 8.h),
               CustomTextField(
-                controller: _descriptionController,
+                controller: _addServiceController.descriptionController,
                 maxLines: 4,
                 fillColor:  const Color(0xFF2C2C2E),
                 hintText: 'Type here ...',
@@ -64,12 +63,17 @@ class _BarberAddServiceViewState extends State<BarberAddServiceView> {
               SizedBox(height: 40.h),
 
               // Save Button
-              CustomButton(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                text: 'Save',
-                textStyle: GoogleFontStyles.h4(color: Colors.white, fontWeight: FontWeight.w600),
+              Obx(() {
+                return CustomButton(
+                  loading: _addServiceController.isLoadingAddService.value,
+                  onTap: () async {
+                    await _addServiceController.addBarberServices();
+                  },
+                  text: 'Save',
+                  textStyle: GoogleFontStyles.h4(
+                      color: Colors.white, fontWeight: FontWeight.w600),
+                );
+               }
               ),
             ],
           ),
@@ -92,13 +96,13 @@ class _BarberAddServiceViewState extends State<BarberAddServiceView> {
             width: 1,
           ),
         ),
-        child: _selectedImagePath != null
+        child: _addServiceController.serviceImagePath != null
             ? Stack(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12.r),
               child: Image.file(
-                File(_selectedImagePath!),
+                File(_addServiceController.serviceImagePath!),
                 width: double.infinity,
                 height: double.infinity,
                 fit: BoxFit.cover,
@@ -240,7 +244,7 @@ class _BarberAddServiceViewState extends State<BarberAddServiceView> {
 
       if (image != null) {
         setState(() {
-          _selectedImagePath = image.path;
+          _addServiceController.serviceImagePath = image.path;
         });
       }
     } catch (e) {
@@ -251,7 +255,7 @@ class _BarberAddServiceViewState extends State<BarberAddServiceView> {
 
   void _removeImage() {
     setState(() {
-      _selectedImagePath = null;
+      _addServiceController.serviceImagePath = null;
     });
   }
 
@@ -281,9 +285,9 @@ class _BarberAddServiceViewState extends State<BarberAddServiceView> {
 
   @override
   void dispose() {
-    _serviceNameController.dispose();
-    _priceController.dispose();
-    _descriptionController.dispose();
+    _addServiceController.serviceNameController.dispose();
+    _addServiceController.priceController.dispose();
+    _addServiceController.descriptionController.dispose();
     super.dispose();
   }
 }

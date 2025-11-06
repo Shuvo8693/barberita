@@ -24,6 +24,7 @@ class UserInfoModel {
 class UserInfoData {
   final String? id;
   final String? userId;
+  final String? barberId;
   final String? residencePath;
   final String? healthCertificate;
   final int? rating;
@@ -52,6 +53,7 @@ class UserInfoData {
   UserInfoData( {
     this.id,
     this.userId,
+    this.barberId,
     this.residencePath,
     this.healthCertificate,
     this.rating,
@@ -82,6 +84,7 @@ class UserInfoData {
     return UserInfoData(
       id: json['_id'] as String?,
       userId: json['userId'] as String?,
+      barberId: json['barberId'] as String?,
       residencePath: json['residencePath'] as String?,
       healthCertificate: json['healthCertificate'] as String?,
       rating: json['rating'] as int?,
