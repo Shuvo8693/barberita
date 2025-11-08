@@ -18,6 +18,7 @@ class BookingManagementWidget extends StatelessWidget {
   final String userRole;
   final bool isReviewHistoryPageActive;
   final bool isOrderCompleted;
+  final bool isOrderInPending;
   final bool isLoadingMarkAsDone;
   final VoidCallback? markAsDoneTap;
 
@@ -29,6 +30,7 @@ class BookingManagementWidget extends StatelessWidget {
     this.markAsDoneTap,
     this.isOrderCompleted = false,
     this.isLoadingMarkAsDone = false,
+     this.isOrderInPending = false,
   });
 
   @override
@@ -52,12 +54,13 @@ class BookingManagementWidget extends StatelessWidget {
                       SizedBox(height: 24.h),
                       if (userRole.isNotEmpty) ...[
                         userRole == 'customer'
-                            ? BookingStatusCard(statuses: booking.statuses)
-                            : _buildOrderConfirmation(context),
+                            ? BookingStatusCard(statuses: booking.statuses) // booking progress card
+                            : isOrderInPending? _buildOrderConfirmation(context): SizedBox.shrink(),
                       ],
                       SizedBox(height: 32.h),
 
                       /// =================> Review Section <==================
+
                       if (isReviewHistoryPageActive)
                         Column(
                           mainAxisSize: MainAxisSize.min,

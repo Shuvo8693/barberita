@@ -16,7 +16,7 @@ class BarberAddServiceController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller.instance;
   Rx<BarberAddedServiceModel> barberAddedServiceModel = BarberAddedServiceModel().obs;
   var isLoadingUserReview = false.obs;
-  CustomerProfileController _customerProfileController = Get.put(CustomerProfileController());
+  final CustomerProfileController _customerProfileController = Get.put(CustomerProfileController());
 
   Future<void> fetchAddedServices() async {
     String token = await PrefsHelper.getString('token');

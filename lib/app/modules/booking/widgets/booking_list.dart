@@ -32,6 +32,7 @@ class _BookingListState extends State<BookingList> {
   void initState() {
     super.initState();
     role();
+    fetchBooking();
   }
 
   String? _userRole;
@@ -50,21 +51,21 @@ class _BookingListState extends State<BookingList> {
     setState(() {});
     switch(widget.statusType){
       case BookingStatusType.active:
-       await _bookingStatusController.fetchBookingStatus(bookingStatus: 'accepted-bookings');
+       await _bookingStatusController.fetchBookingStatus(bookingStatus:_userRole=='customer'? 'accepted-bookings':'barber-accepted-bookings');
         break;
       case BookingStatusType.request:
-       await _bookingStatusController.fetchBookingStatus(bookingStatus: 'pending-bookings' );
+       await _bookingStatusController.fetchBookingStatus(bookingStatus: _userRole=='customer'? 'pending-bookings':'barber-pending-bookings' );
        break;
       case BookingStatusType.history:
-       await _bookingStatusController.fetchBookingStatus(bookingStatus: 'completed-bookings');
+       await _bookingStatusController.fetchBookingStatus(bookingStatus:_userRole=='customer'? 'completed-bookings':'barber-completed-bookings');
         break;
     }
   }
-  @override
-  void didChangeDependencies() async{
-    super.didChangeDependencies();
-    await fetchBooking();
-  }
+  // @override
+  // void didChangeDependencies() async{
+  //   super.didChangeDependencies();
+  //
+  // }
 
   @override
   Widget build(BuildContext context) {

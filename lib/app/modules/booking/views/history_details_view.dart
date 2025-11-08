@@ -51,7 +51,7 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    await _bookingStatusController.fetchBookingDetails();
+    await _bookingStatusController.fetchBarberBookingDetails();
   }
 
   @override
@@ -71,6 +71,7 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
         return BookingManagementWidget(
           userRole: _userRole,
           isReviewHistoryPageActive: true,
+          isOrderInPending: pending,
           isOrderCompleted: completed,
           markAsDoneTap: () {
             if(accepted){

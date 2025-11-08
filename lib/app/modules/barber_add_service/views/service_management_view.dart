@@ -7,6 +7,7 @@ import 'package:barberita/app/modules/barber_add_service/widgets/service_item_ca
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/bottom_menu/bottom_menu..dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
+import 'package:barberita/common/widgets/custom_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,7 +55,7 @@ class _ServiceManagementViewState extends State<ServiceManagementView> {
                       Text('Active Hour: ', style: GoogleFontStyles.h6(color: Colors.white.withOpacity(0.7))),
                       SizedBox(width: 8.w),
                       GestureDetector(
-                        onTap: () => _showEditHourDialog(),
+                        onTap: () => _showEditHourDialog(), //<=============== Active hour dialog =====
                         child: Container(
                           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                           decoration: BoxDecoration(
@@ -162,7 +163,7 @@ class _ServiceManagementViewState extends State<ServiceManagementView> {
     );
   }
 
-  void _showEditHourDialog() {
+  void _showEditHourDialog({BarberAddedServiceData?  addedServices}) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -198,20 +199,19 @@ class _ServiceManagementViewState extends State<ServiceManagementView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: GoogleFontStyles.h6(color: Colors.white.withOpacity(0.7))),
+        Text(
+          label,
+          style: GoogleFontStyles.h6(color: Colors.white.withOpacity(0.7)),
+        ),
         SizedBox(height: 8.h),
-        Container(
-          padding: EdgeInsets.all(12.w),
-          decoration: BoxDecoration(
-            color: const Color(0xFF1C1C1E),
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(color: Colors.white.withOpacity(0.3)),
-          ),
-          child: Row(
-            children: [
-              Expanded(child: Text(time, style: GoogleFontStyles.h5(color: Colors.white))),
-              Icon(Icons.access_time, color: Colors.white.withOpacity(0.5), size: 20.sp),
-            ],
+        CustomTextField(
+          hintText: time,
+          controller: TextEditingController(text: time),
+          readOnly: true,
+          suffixIcon: Icon(
+            Icons.access_time,
+            color: Colors.white.withOpacity(0.5),
+            size: 20.sp,
           ),
         ),
       ],

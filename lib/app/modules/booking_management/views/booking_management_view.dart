@@ -71,6 +71,7 @@ class _BookingManagementViewState extends State<BookingManagementView> {
         return BookingManagementWidget(
           userRole: _userRole,
           isOrderCompleted: completed,
+          isOrderInPending: pending,
           // isLoadingMarkAsDone: _bookingManagementController.isLoadingMarkAsDone.value,
           markAsDoneTap: () async{
             if(accepted){

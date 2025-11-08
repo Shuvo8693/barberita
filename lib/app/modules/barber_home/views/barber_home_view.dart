@@ -13,8 +13,7 @@ class BarberHomeView extends StatefulWidget {
   State<BarberHomeView> createState() => _BarberHomeViewState();
 }
 
-class _BarberHomeViewState extends State<BarberHomeView>
-    with SingleTickerProviderStateMixin {
+class _BarberHomeViewState extends State<BarberHomeView> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override

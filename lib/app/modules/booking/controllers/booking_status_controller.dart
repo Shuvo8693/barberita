@@ -41,12 +41,12 @@ class BookingStatusController extends GetxController {
     }
 
   }
- /// =================== fetch booking details history ===============
+ /// =================== fetch booking details history  at Booking status controller ===============
 
   Rx<BookingDetailsModel> bookingDetailsModel = BookingDetailsModel().obs;
   var isLoadingService = false.obs;
 
-  Future<void> fetchBookingDetails() async {
+  Future<void> fetchBarberBookingDetails() async {
     String bookingGroupId = Get.arguments['bookingGroupId']??'';
     String token = await PrefsHelper.getString('token');
 
