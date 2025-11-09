@@ -168,9 +168,9 @@ class _CustomerProfileViewState extends State<CustomerProfileView> {
                         },
                       ),
                       SizedBox(height: 16.h),
+                      if(_role=='barber')
                       Obx((){
                         UserInfoData userInfoData = _profileController.userInfoModel.value.data?? UserInfoData();
-
                         return _buildMenuItem(
                           icon: Icons.switch_right,
                           title: _settingsController.isLoadingServiceActivation.value? 'Status Updating ....':'Active Status',

@@ -31,8 +31,11 @@ class _BookingListState extends State<BookingList> {
   @override
   void initState() {
     super.initState();
-    role();
-    fetchBooking();
+    WidgetsBinding.instance.addPostFrameCallback((__)async{
+     await role();
+     await fetchBooking();
+    });
+
   }
 
   String? _userRole;

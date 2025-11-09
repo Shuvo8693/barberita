@@ -190,8 +190,7 @@ class _HomeViewState extends State<HomeView> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.w),
                     child: Obx(() {
-                      final favouriteData =
-                          homeController.favouriteBarberModel.value.data ?? [];
+                      final favouriteData = homeController.favouriteBarberModel.value.data ?? [];
                       if (homeController.isLoadingFavouriteBarber.value) {
                         return CupertinoActivityIndicator();
                       } else if (favouriteData.isEmpty) {

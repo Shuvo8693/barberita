@@ -41,6 +41,7 @@ class BookingStatusController extends GetxController {
     }
 
   }
+
  /// =================== fetch booking details history  at Booking status controller ===============
 
   Rx<BookingDetailsModel> bookingDetailsModel = BookingDetailsModel().obs;

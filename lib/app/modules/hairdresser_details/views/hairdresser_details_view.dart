@@ -32,13 +32,10 @@ class _HairdresserDetailsViewState extends State<HairdresserDetailsView> with Si
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+     _hairdresserDetailsController.fetchBarberDetails();
   }
 
-  @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
-    await _hairdresserDetailsController.fetchBarberDetails();
-  }
+
 
 
 
@@ -58,8 +55,8 @@ class _HairdresserDetailsViewState extends State<HairdresserDetailsView> with Si
             Stack(
               children: [
                 Obx((){
-                String? image = _hairdresserDetailsController.barberDetailsModel.value.data?.image;
-                  return CustomNetworkImage(imageUrl: '${ApiConstants.baseUrl}${image??''}', height: 200.h,boxFit: BoxFit.cover,);
+                String? barberCover = _hairdresserDetailsController.barberDetailsModel.value.data?.barberCover;
+                  return CustomNetworkImage(imageUrl: '${ApiConstants.baseUrl}${barberCover??''}', height: 200.h,boxFit: BoxFit.cover,);
                 }),
                 // Back Button
                 SafeArea(
@@ -125,8 +122,7 @@ class _HairdresserDetailsViewState extends State<HairdresserDetailsView> with Si
                           size: 16.sp,
                         ),
                         SizedBox(width: 4.w),
-                        Text(
-                          '4.5',
+                        Text('4.5',
                           style: GoogleFontStyles.h6(
                             color: Colors.black,
                             fontWeight: FontWeight.w600,
