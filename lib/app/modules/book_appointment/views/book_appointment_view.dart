@@ -32,6 +32,40 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
           children: [
             // Select Date Section
             Text(
+              'See All Bookings',
+              style: GoogleFontStyles.h5(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(height: 12.h),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                color: const Color(0xFF2C2C2E),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text('Tap to see this barber bookings',
+                      style: GoogleFontStyles.h5(
+                        color: Colors.white.withOpacity(0.5),
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    Icons.book_outlined,
+                    color: Colors.white.withOpacity(0.7),
+                    size: 24.sp,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 12.h),
+            // Select Date Section
+            Text(
               'Select Date',
               style: GoogleFontStyles.h5(
                 color: Colors.white,
@@ -39,7 +73,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
               ),
             ),
             SizedBox(height: 12.h),
-
+           //====== Date picker ========
             GestureDetector(
               onTap: () {
                 DatePicker.showDatePicker(
@@ -64,6 +98,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     setState(() {
                       _bookingController.selectedDate = date;
                     });
+
                   },
                 );
               },
@@ -80,7 +115,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                       child: Text(
                         _bookingController.selectedDate != null
                             ? DateFormat('dd/MM/yyyy').format(_bookingController.selectedDate!)
-                            : '15/12/2023',
+                            : '15/12/2025',
                         style: GoogleFontStyles.h5(
                           color: _bookingController.selectedDate != null
                               ? Colors.white
@@ -109,7 +144,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
               ),
             ),
             SizedBox(height: 12.h),
-
+            //====== Time picker ========
             GestureDetector(
               onTap: () {
                 DatePicker.showTimePicker(
@@ -126,12 +161,9 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                       color: Color(0xFFE6C4A3),
                       fontWeight: FontWeight.w600,
                     ),
-                    cancelStyle: TextStyle(
-                      color: Colors.grey,
-                    ),
+                    cancelStyle: TextStyle(color: Colors.grey),
                   ),
-                  onConfirm: (time) {
-
+                   onConfirm: (time) {
                     setState(() {
                       _bookingController.selectedTime = TimeOfDay(hour: time.hour, minute: time.minute);
                     });

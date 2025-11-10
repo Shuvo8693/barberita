@@ -173,7 +173,7 @@ class _CustomerProfileViewState extends State<CustomerProfileView> {
                         UserInfoData userInfoData = _profileController.userInfoModel.value.data?? UserInfoData();
                         return _buildMenuItem(
                           icon: Icons.switch_right,
-                          title: _settingsController.isLoadingServiceActivation.value? 'Status Updating ....':'Active Status',
+                          title: _settingsController.isLoadingServiceActivation.value? 'Status Updating ....' : 'Active Status',
                           value: userInfoData.isOpen??false,
                           isActiveSwitch: true,
                           onChanged: (value) async{
@@ -181,15 +181,13 @@ class _CustomerProfileViewState extends State<CustomerProfileView> {
                              if (_profileController.userInfoModel.value.data != null) {
                                _profileController.userInfoModel.value.data?.isOpen = value;
                                _profileController.userInfoModel.refresh();
-                             }
+                              }
                             });
-                          },
+                           },
                           onTap: () {},
                         );
-                      }
-
+                       }
                       ),
-
                       verticalSpacing(40.h),
 
                       // Log Out Button
