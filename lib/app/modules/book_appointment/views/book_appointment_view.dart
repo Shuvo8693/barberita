@@ -1,3 +1,4 @@
+import 'package:barberita/app/modules/book_appointment/widgets/custom_info_container.dart';
 import 'package:barberita/app/modules/booking/controllers/booking_status_controller.dart';
 import 'package:barberita/app/modules/hairdresser_details/controllers/booking_controller.dart';
 import 'package:barberita/app/routes/app_pages.dart';
@@ -74,7 +75,44 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
             ),
             SizedBox(height: 12.h),
            //====== Date picker ========
-            GestureDetector(
+
+            CustomInfoContainer(
+              onTap: (){
+                DatePicker.showDatePicker(
+                  context,
+                  showTitleActions: true,
+                  minTime: DateTime.now(),
+                  maxTime: DateTime.now().add(const Duration(days: 365)),
+                  currentTime: _bookingController.selectedDate ?? DateTime.now(),
+                  locale: LocaleType.en,
+                  theme: const DatePickerTheme(
+                    backgroundColor: Color(0xFF2C2C2E),
+                    itemStyle: TextStyle(color: Colors.white, fontSize: 18),
+                    doneStyle: TextStyle(
+                      color: Color(0xFFE6C4A3),
+                      fontWeight: FontWeight.w600,
+                    ),
+                    cancelStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  onConfirm: (date) {
+                    setState(() {
+                      _bookingController.selectedDate = date;
+                    });
+
+                  },
+                );
+              },
+                text: _bookingController.selectedDate != null
+                    ? DateFormat('dd/MM/yyyy').format(_bookingController.selectedDate!)
+                    : '15/12/2025', icon: Icons.calendar_month,
+              textColor: _bookingController.selectedDate != null
+                  ? Colors.white
+                  : Colors.white.withOpacity(0.5),
+            ),
+
+            /*GestureDetector(
               onTap: () {
                 DatePicker.showDatePicker(
                   context,
@@ -131,7 +169,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                   ],
                 ),
               ),
-            ),
+            ),*/
 
             SizedBox(height: 24.h),
 
@@ -145,7 +183,41 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
             ),
             SizedBox(height: 12.h),
             //====== Time picker ========
-            GestureDetector(
+            CustomInfoContainer(
+              onTap: (){
+                DatePicker.showTimePicker(
+                  context,
+                  showTitleActions: true,
+                  currentTime: _bookingController.selectedTime != null
+                      ? DateTime(2023, 1, 1, _bookingController.selectedTime!.hour, _bookingController.selectedTime!.minute)
+                      : DateTime(2023, 1, 1, 10, 0),
+                  locale: LocaleType.en,
+                  theme: const DatePickerTheme(
+                    backgroundColor: Color(0xFF2C2C2E),
+                    itemStyle: TextStyle(color: Colors.white, fontSize: 18),
+                    doneStyle: TextStyle(
+                      color: Color(0xFFE6C4A3),
+                      fontWeight: FontWeight.w600,
+                    ),
+                    cancelStyle: TextStyle(color: Colors.grey),
+                  ),
+                  onConfirm: (time) {
+                    setState(() {
+                      _bookingController.selectedTime = TimeOfDay(hour: time.hour, minute: time.minute);
+                    });
+                  },
+                );
+              },
+              text:  _bookingController.selectedTime != null
+                  ? _bookingController.selectedTime!.format(context)
+                  : '10:04AM - 12:00PM',
+              textColor: _bookingController.selectedTime != null
+                  ? Colors.white
+                  : Colors.white.withOpacity(0.5),
+              icon: Icons.access_time,
+            ),
+
+           /* GestureDetector(
               onTap: () {
                 DatePicker.showTimePicker(
                   context,
@@ -199,7 +271,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                   ],
                 ),
               ),
-            ),
+            ),*/
 
             SizedBox(height: 24.h),
 
@@ -212,7 +284,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
               ),
             ),
             SizedBox(height: 12.h),
-
+           // =============== Location selection bottom sheet ==============
             GestureDetector(
               onTap: () {
                 // Handle location selection

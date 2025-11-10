@@ -49,6 +49,7 @@ class BookingController extends GetxController {
     }
 
   }
+  /// ================= For book appointment view page ===============
  /// ===================== add booking =============================
 
   LatLng? currentLocation;
@@ -100,6 +101,40 @@ class BookingController extends GetxController {
       throw NetworkException('$e');
     } finally {
       isLoadingBooking.value = false;
+    }
+
+  }
+
+ /// ================= fetch book info fro book appointment view page ===============
+  Future<void> fetchBookedInfo() async {
+    String barberId = Get.arguments['barberId']??'';
+    String token = await PrefsHelper.getString('token');
+
+    _networkCaller.clearInterceptors();
+    _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
+    _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
+    _networkCaller.addResponseInterceptor(LoggingInterceptor());
+
+    try {
+      isLoadingService.value = true;
+      serviceIdList = [];
+      final response = await _networkCaller.get<Map<String, dynamic>>(
+        endpoint:ApiConstants.bookedServiceInfoUrl(barberId: barberId),
+        timeout: Duration(seconds: 10),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+      if (response.isSuccess && response.data != null) {
+        barberServiceModel.value = BarberServicesModel.fromJson( response.data!);
+        print(barberServiceModel.value);
+
+      } else {
+        Get.snackbar('Failed', response.message!);
+      }
+    } catch (e) {
+      print(e);
+      throw NetworkException('$e');
+    } finally {
+      isLoadingService.value = false;
     }
 
   }
