@@ -1,9 +1,12 @@
 import 'package:barberita/app/modules/book_appointment/widgets/custom_info_container.dart';
 import 'package:barberita/app/modules/booking/controllers/booking_status_controller.dart';
 import 'package:barberita/app/modules/hairdresser_details/controllers/booking_controller.dart';
+import 'package:barberita/app/modules/hairdresser_details/model/booked_model.dart';
 import 'package:barberita/app/routes/app_pages.dart';
+import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
+import 'package:barberita/common/widgets/bottomSheet_top_line.dart';
 import 'package:flutter/material.dart' hide DatePickerTheme;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
@@ -20,334 +23,385 @@ class BookAppointmentView extends StatefulWidget {
 }
 
 class _BookAppointmentViewState extends State<BookAppointmentView> {
- final  BookingController _bookingController = Get.put(BookingController());
+  final BookingController _bookingController = Get.put(BookingController());
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((__) async {
+      await _bookingController.fetchBookedInfo();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(title: 'Book Appointment',),
+      appBar: CustomAppBar(title: 'Book Appointment'),
       body: Padding(
         padding: EdgeInsets.all(20.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Select Date Section
-            Text(
-              'See All Bookings',
-              style: GoogleFontStyles.h5(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(height: 12.h),
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(16.w),
-              decoration: BoxDecoration(
-                color: const Color(0xFF2C2C2E),
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text('Tap to see this barber bookings',
-                      style: GoogleFontStyles.h5(
-                        color: Colors.white.withOpacity(0.5),
-                      ),
-                    ),
-                  ),
-                  Icon(
-                    Icons.book_outlined,
-                    color: Colors.white.withOpacity(0.7),
-                    size: 24.sp,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 12.h),
-            // Select Date Section
-            Text(
-              'Select Date',
-              style: GoogleFontStyles.h5(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(height: 12.h),
-           //====== Date picker ========
-
-            CustomInfoContainer(
-              onTap: (){
-                DatePicker.showDatePicker(
-                  context,
-                  showTitleActions: true,
-                  minTime: DateTime.now(),
-                  maxTime: DateTime.now().add(const Duration(days: 365)),
-                  currentTime: _bookingController.selectedDate ?? DateTime.now(),
-                  locale: LocaleType.en,
-                  theme: const DatePickerTheme(
-                    backgroundColor: Color(0xFF2C2C2E),
-                    itemStyle: TextStyle(color: Colors.white, fontSize: 18),
-                    doneStyle: TextStyle(
-                      color: Color(0xFFE6C4A3),
-                      fontWeight: FontWeight.w600,
-                    ),
-                    cancelStyle: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  onConfirm: (date) {
-                    setState(() {
-                      _bookingController.selectedDate = date;
-                    });
-
-                  },
-                );
-              },
-                text: _bookingController.selectedDate != null
-                    ? DateFormat('dd/MM/yyyy').format(_bookingController.selectedDate!)
-                    : '15/12/2025', icon: Icons.calendar_month,
-              textColor: _bookingController.selectedDate != null
-                  ? Colors.white
-                  : Colors.white.withOpacity(0.5),
-            ),
-
-            /*GestureDetector(
-              onTap: () {
-                DatePicker.showDatePicker(
-                  context,
-                  showTitleActions: true,
-                  minTime: DateTime.now(),
-                  maxTime: DateTime.now().add(const Duration(days: 365)),
-                  currentTime: _bookingController.selectedDate ?? DateTime.now(),
-                  locale: LocaleType.en,
-                  theme: const DatePickerTheme(
-                    backgroundColor: Color(0xFF2C2C2E),
-                    itemStyle: TextStyle(color: Colors.white, fontSize: 18),
-                    doneStyle: TextStyle(
-                      color: Color(0xFFE6C4A3),
-                      fontWeight: FontWeight.w600,
-                    ),
-                    cancelStyle: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  onConfirm: (date) {
-                    setState(() {
-                      _bookingController.selectedDate = date;
-                    });
-
-                  },
-                );
-              },
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(16.w),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2C2C2E),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        _bookingController.selectedDate != null
-                            ? DateFormat('dd/MM/yyyy').format(_bookingController.selectedDate!)
-                            : '15/12/2025',
-                        style: GoogleFontStyles.h5(
-                          color: _bookingController.selectedDate != null
-                              ? Colors.white
-                              : Colors.white.withOpacity(0.5),
-                        ),
-                      ),
-                    ),
-                    Icon(
-                      Icons.calendar_month,
-                      color: Colors.white.withOpacity(0.7),
-                      size: 24.sp,
-                    ),
-                  ],
+        child: Obx((){
+          List<BookedData> bookedDataList = _bookingController.bookedModel.value.data??[];
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Select Date Section
+              Text(
+                'See All Bookings',
+                style: GoogleFontStyles.h5(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-            ),*/
-
-            SizedBox(height: 24.h),
-
-            // Select Time Section
-            Text(
-              'Select Time',
-              style: GoogleFontStyles.h5(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(height: 12.h),
-            //====== Time picker ========
-            CustomInfoContainer(
-              onTap: (){
-                DatePicker.showTimePicker(
-                  context,
-                  showTitleActions: true,
-                  currentTime: _bookingController.selectedTime != null
-                      ? DateTime(2023, 1, 1, _bookingController.selectedTime!.hour, _bookingController.selectedTime!.minute)
-                      : DateTime(2023, 1, 1, 10, 0),
-                  locale: LocaleType.en,
-                  theme: const DatePickerTheme(
-                    backgroundColor: Color(0xFF2C2C2E),
-                    itemStyle: TextStyle(color: Colors.white, fontSize: 18),
-                    doneStyle: TextStyle(
-                      color: Color(0xFFE6C4A3),
-                      fontWeight: FontWeight.w600,
-                    ),
-                    cancelStyle: TextStyle(color: Colors.grey),
-                  ),
-                  onConfirm: (time) {
-                    setState(() {
-                      _bookingController.selectedTime = TimeOfDay(hour: time.hour, minute: time.minute);
-                    });
-                  },
-                );
-              },
-              text:  _bookingController.selectedTime != null
-                  ? _bookingController.selectedTime!.format(context)
-                  : '10:04AM - 12:00PM',
-              textColor: _bookingController.selectedTime != null
-                  ? Colors.white
-                  : Colors.white.withOpacity(0.5),
-              icon: Icons.access_time,
-            ),
-
-           /* GestureDetector(
-              onTap: () {
-                DatePicker.showTimePicker(
-                  context,
-                  showTitleActions: true,
-                  currentTime: _bookingController.selectedTime != null
-                      ? DateTime(2023, 1, 1, _bookingController.selectedTime!.hour, _bookingController.selectedTime!.minute)
-                      : DateTime(2023, 1, 1, 10, 0),
-                  locale: LocaleType.en,
-                  theme: const DatePickerTheme(
-                    backgroundColor: Color(0xFF2C2C2E),
-                    itemStyle: TextStyle(color: Colors.white, fontSize: 18),
-                    doneStyle: TextStyle(
-                      color: Color(0xFFE6C4A3),
-                      fontWeight: FontWeight.w600,
-                    ),
-                    cancelStyle: TextStyle(color: Colors.grey),
-                  ),
-                   onConfirm: (time) {
-                    setState(() {
-                      _bookingController.selectedTime = TimeOfDay(hour: time.hour, minute: time.minute);
-                    });
-                  },
-                );
-              },
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(16.w),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2C2C2E),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        _bookingController.selectedTime != null
-                            ? _bookingController.selectedTime!.format(context)
-                            : '10:04AM - 12:00PM',
-                        style: GoogleFontStyles.h5(
-                          color: _bookingController.selectedTime != null
-                              ? Colors.white
-                              : Colors.white.withOpacity(0.5),
-                        ),
-                      ),
-                    ),
-                    Icon(
-                      Icons.access_time,
-                      color: Colors.white.withOpacity(0.7),
-                      size: 24.sp,
-                    ),
-                  ],
-                ),
-              ),
-            ),*/
-
-            SizedBox(height: 24.h),
-
-            // Address Section
-            Text(
-              'Address',
-              style: GoogleFontStyles.h5(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(height: 12.h),
-           // =============== Location selection bottom sheet ==============
-            GestureDetector(
-              onTap: () {
-                // Handle location selection
-                _showLocationBottomSheet();
-              },
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(16.w),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2C2C2E),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.location_on,
-                      color: Colors.white.withOpacity(0.7),
-                      size: 24.sp,
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: Text(
-                        _bookingController.selectedAddress ?? 'Set Your Current Location',
-                        style: GoogleFontStyles.h5(
-                          color: _bookingController.selectedAddress != null
-                              ? Colors.white
-                              : Colors.white.withOpacity(0.5),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            const Spacer(),
-
-            // ===== Continue Button =================
-            Obx(() {
-              return CustomButton(
-                 loading: _bookingController.isLoadingBooking.value,
-                onTap: () async {
-                  if (_bookingController.selectedDate != null && _bookingController.selectedTime != null && _bookingController.selectedAddress !=null) {
-                  await  _bookingController.addBooking();
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please select date, time & address'),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
+              SizedBox(height: 12.h),
+              CustomInfoContainer(
+                onTap: (){
+                  _showDateTimeBottomSheet(context, bookedDataList);
                 },
-                text: 'Book Now',
-              );
-             }
-            ),
-            SizedBox(height: 60.h),
-          ],
+                text: 'Tap to see this barber bookings',
+                icon: Icons.book_outlined,
+              ),
+              SizedBox(height: 12.h),
+              // Select Date Section
+              Text(
+                'Select Date',
+                style: GoogleFontStyles.h5(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 12.h),
+
+              //====== Date picker ========
+              CustomInfoContainer(
+                onTap: () {
+                  DatePicker.showDatePicker(
+                    context,
+                    showTitleActions: true,
+                    minTime: DateTime.now(),
+                    maxTime: DateTime.now().add(const Duration(days: 365)),
+                    currentTime:
+                    _bookingController.selectedDate ?? DateTime.now(),
+                    locale: LocaleType.en,
+                    theme: const DatePickerTheme(
+                      backgroundColor: Color(0xFF2C2C2E),
+                      itemStyle: TextStyle(color: Colors.white, fontSize: 18),
+                      doneStyle: TextStyle(
+                        color: Color(0xFFE6C4A3),
+                        fontWeight: FontWeight.w600,
+                      ),
+                      cancelStyle: TextStyle(color: Colors.grey),
+                    ),
+                    onConfirm: (date) {
+                      setState(() {
+                        _bookingController.selectedDate = date;
+                      });
+                    },
+                  );
+                },
+                text: _bookingController.selectedDate != null
+                    ? DateFormat(
+                  'dd/MM/yyyy',
+                ).format(_bookingController.selectedDate!)
+                    : '15/12/2025',
+                icon: Icons.calendar_month,
+                textColor: _bookingController.selectedDate != null
+                    ? Colors.white
+                    : Colors.white.withOpacity(0.5),
+              ),
+
+              /*GestureDetector(
+                onTap: () {
+                  DatePicker.showDatePicker(
+                    context,
+                    showTitleActions: true,
+                    minTime: DateTime.now(),
+                    maxTime: DateTime.now().add(const Duration(days: 365)),
+                    currentTime: _bookingController.selectedDate ?? DateTime.now(),
+                    locale: LocaleType.en,
+                    theme: const DatePickerTheme(
+                      backgroundColor: Color(0xFF2C2C2E),
+                      itemStyle: TextStyle(color: Colors.white, fontSize: 18),
+                      doneStyle: TextStyle(
+                        color: Color(0xFFE6C4A3),
+                        fontWeight: FontWeight.w600,
+                      ),
+                      cancelStyle: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    onConfirm: (date) {
+                      setState(() {
+                        _bookingController.selectedDate = date;
+                      });
+
+                    },
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16.w),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2C2C2E),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          _bookingController.selectedDate != null
+                              ? DateFormat('dd/MM/yyyy').format(_bookingController.selectedDate!)
+                              : '15/12/2025',
+                          style: GoogleFontStyles.h5(
+                            color: _bookingController.selectedDate != null
+                                ? Colors.white
+                                : Colors.white.withOpacity(0.5),
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        Icons.calendar_month,
+                        color: Colors.white.withOpacity(0.7),
+                        size: 24.sp,
+                      ),
+                    ],
+                  ),
+                ),
+              ),*/
+              SizedBox(height: 24.h),
+
+              // Select Time Section
+              Text(
+                'Select Time',
+                style: GoogleFontStyles.h5(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 12.h),
+              //====== Time picker ========
+              CustomInfoContainer(
+                onTap: () {
+                  DatePicker.showTimePicker(
+                    context,
+                    showTitleActions: true,
+                    currentTime: _bookingController.selectedTime != null ? DateTime(
+                      2023, 1, 1,
+                      _bookingController.selectedTime!.hour,
+                      _bookingController.selectedTime!.minute,
+                    ) : DateTime(2023, 1, 1, 10, 0),
+                    locale: LocaleType.en,
+                    theme:  DatePickerTheme(
+                      backgroundColor: Color(0xFF2C2C2E),
+                      itemStyle: TextStyle(color: Colors.white, fontSize: 18.sp),
+                      doneStyle: TextStyle(
+                        color: Color(0xFFE6C4A3),
+                        fontWeight: FontWeight.w600,
+                      ),
+                      cancelStyle: TextStyle(color: Colors.grey),
+                    ),
+                    onConfirm: (time) {
+                      setState(() {
+                        _bookingController.selectedTime = TimeOfDay(
+                          hour: time.hour,
+                          minute: time.minute,
+                        );
+                      });
+                    },
+                  );
+                },
+                text: _bookingController.selectedTime != null
+                    ? _bookingController.selectedTime!.format(context)
+                    : '10:04AM - 12:00PM',
+                textColor: _bookingController.selectedTime != null
+                    ? Colors.white
+                    : Colors.white.withOpacity(0.5),
+                icon: Icons.access_time,
+              ),
+
+              /* GestureDetector(
+                onTap: () {
+                  DatePicker.showTimePicker(
+                    context,
+                    showTitleActions: true,
+                    currentTime: _bookingController.selectedTime != null
+                        ? DateTime(2023, 1, 1, _bookingController.selectedTime!.hour, _bookingController.selectedTime!.minute)
+                        : DateTime(2023, 1, 1, 10, 0),
+                    locale: LocaleType.en,
+                    theme: const DatePickerTheme(
+                      backgroundColor: Color(0xFF2C2C2E),
+                      itemStyle: TextStyle(color: Colors.white, fontSize: 18),
+                      doneStyle: TextStyle(
+                        color: Color(0xFFE6C4A3),
+                        fontWeight: FontWeight.w600,
+                      ),
+                      cancelStyle: TextStyle(color: Colors.grey),
+                    ),
+                     onConfirm: (time) {
+                      setState(() {
+                        _bookingController.selectedTime = TimeOfDay(hour: time.hour, minute: time.minute);
+                      });
+                    },
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16.w),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2C2C2E),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          _bookingController.selectedTime != null
+                              ? _bookingController.selectedTime!.format(context)
+                              : '10:04AM - 12:00PM',
+                          style: GoogleFontStyles.h5(
+                            color: _bookingController.selectedTime != null
+                                ? Colors.white
+                                : Colors.white.withOpacity(0.5),
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        Icons.access_time,
+                        color: Colors.white.withOpacity(0.7),
+                        size: 24.sp,
+                      ),
+                    ],
+                  ),
+                ),
+              ),*/
+              SizedBox(height: 24.h),
+
+              // Address Section
+              Text(
+                'Address',
+                style: GoogleFontStyles.h5(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 12.h),
+              // =============== Location selection bottom sheet ==============
+              GestureDetector(
+                onTap: () {
+                  // Handle location selection
+                  _showLocationBottomSheet();
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16.w),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2C2C2E),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.location_on,
+                        color: Colors.white.withOpacity(0.7),
+                        size: 24.sp,
+                      ),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: Text(
+                          _bookingController.selectedAddress ??
+                              'Set Your Current Location',
+                          style: GoogleFontStyles.h5(
+                            color: _bookingController.selectedAddress != null
+                                ? Colors.white
+                                : Colors.white.withOpacity(0.5),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const Spacer(),
+
+              // ===== Continue Button =================
+              Obx(() {
+                return CustomButton(
+                  loading: _bookingController.isLoadingBooking.value,
+                  onTap: () async {
+                    if (_bookingController.selectedDate != null &&
+                        _bookingController.selectedTime != null &&
+                        _bookingController.selectedAddress != null) {
+                      await _bookingController.addBooking();
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please select date, time & address'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  },
+                  text: 'Book Now',
+                );
+              }),
+              SizedBox(height: 60.h),
+            ],
+          );
+        }
         ),
       ),
     );
   }
+
+ // ================== Show date time bottom sheet ==============
+
+  void _showDateTimeBottomSheet(BuildContext context, List<BookedData> bookedDataList) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.secondaryAppColor,
+      shape:  RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding:  EdgeInsets.all(16.0.sp),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BottomSheetTopLine(),
+              Text(
+                "Booked Dates & Times",
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+               SizedBox(height: 12.h),
+              Expanded(
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: bookedDataList.length,
+                  separatorBuilder: (_, __) => const Divider(),
+                  itemBuilder: (context, index) {
+                    final item = bookedDataList[index];
+                    return ListTile(
+                      leading: const Icon(Icons.calendar_today_outlined),
+                      title: Text(item.date ?? ''),
+                      subtitle: Text(item.time ?? ''),
+                    );
+                  },
+                ),
+              ),
+               SizedBox(height: 10.h),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+
+  // ================= location selector bottom sheet ====================
 
   void _showLocationBottomSheet() {
     showModalBottomSheet(
@@ -382,8 +436,10 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     'Use Current Location',
                     style: GoogleFontStyles.h5(color: Colors.white),
                   ),
-                  onTap: () async{
-                    final result = await Get.toNamed(Routes.LOCATIONSELECTORMAP);
+                  onTap: () async {
+                    final result = await Get.toNamed(
+                      Routes.LOCATIONSELECTORMAP,
+                    );
                     print(result);
                     _bookingController.currentLocation = result['latLng'];
                     _bookingController.selectedAddress = result['address'];
@@ -401,13 +457,13 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     style: GoogleFontStyles.h5(color: Colors.white),
                   ),
                   onTap: () async {
-                    final result = await Get.toNamed(Routes.LOCATIONSELECTORMAP);
+                    final result = await Get.toNamed(
+                      Routes.LOCATIONSELECTORMAP,
+                    );
                     print(result);
                     _bookingController.currentLocation = result['latLng'];
                     _bookingController.selectedAddress = result['address'];
                     setState(() {});
-                    
-                    
                   },
                 ),
 
@@ -439,7 +495,6 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
             onPressed: () {
               Get.toNamed(Routes.BOOKING_MANAGEMENT);
               Navigator.pop(context);
-
             },
             child: Text(
               'OK',

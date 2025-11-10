@@ -29,6 +29,7 @@ class HomeController extends GetxController {
       if (response.isSuccess && response.data != null) {
         List<dynamic> responseData = response.data!['data'] as List<dynamic>;
           barberTopRatedModel.value = BarberTopRatedModel.fromJson( response.data!);
+          print(barberTopRatedModel.value);
 
       } else {
         Get.snackbar('Failed', response.message ?? 'Resend otp failed');

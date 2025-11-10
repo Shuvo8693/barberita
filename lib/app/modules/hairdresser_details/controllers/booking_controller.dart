@@ -1,6 +1,7 @@
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
 import 'package:barberita/app/modules/hairdresser_details/model/barber_details_model.dart';
+import 'package:barberita/app/modules/hairdresser_details/model/booked_model.dart';
 import 'package:barberita/app/modules/hairdresser_details/model/service_model.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 
@@ -71,7 +72,7 @@ class BookingController extends GetxController {
       "serviceIds" :serviceIdList,
       "barberId" : barberId,
       "date" : date,
-      "time" : "${selectedTime?.hour} : ${selectedTime?.minute} ${selectedTime?.period==DayPeriod.am?'AM':'PM'}",
+      "time" : "${selectedTime?.hour} : ${selectedTime?.minute} ${selectedTime?.period == DayPeriod.am ? 'AM':'PM'}",
       "address" : selectedAddress
     };
 
@@ -106,8 +107,10 @@ class BookingController extends GetxController {
   }
 
  /// ================= fetch book info fro book appointment view page ===============
+
+  Rx<BookedModel> bookedModel = BookedModel().obs;
   Future<void> fetchBookedInfo() async {
-    String barberId = Get.arguments['barberId']??'';
+    String barberId = await PrefsHelper.getString('barberId');
     String token = await PrefsHelper.getString('token');
 
     _networkCaller.clearInterceptors();
@@ -117,15 +120,14 @@ class BookingController extends GetxController {
 
     try {
       isLoadingService.value = true;
-      serviceIdList = [];
       final response = await _networkCaller.get<Map<String, dynamic>>(
         endpoint:ApiConstants.bookedServiceInfoUrl(barberId: barberId),
         timeout: Duration(seconds: 10),
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
-        barberServiceModel.value = BarberServicesModel.fromJson( response.data!);
-        print(barberServiceModel.value);
+        bookedModel.value = BookedModel.fromJson( response.data!);
+        print(bookedModel.value);
 
       } else {
         Get.snackbar('Failed', response.message!);
