@@ -55,7 +55,7 @@ class BookingManagementWidget extends StatelessWidget {
                       if (userRole.isNotEmpty) ...[
                         userRole == 'customer'
                             ? BookingStatusCard(statuses: booking.statuses) // booking progress card
-                            : isOrderInPending? _buildOrderConfirmation(context): SizedBox.shrink(),
+                            : isOrderInPending? _buildOrderConfirmation(context,orderId: booking.orderId): SizedBox.shrink(),
                       ],
                       SizedBox(height: 32.h),
 
@@ -97,7 +97,7 @@ class BookingManagementWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildOrderConfirmation(BuildContext context) {
+  Widget _buildOrderConfirmation(BuildContext context, {String? orderId}) {
     return Row(
       children: [
         Expanded(

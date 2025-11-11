@@ -94,7 +94,8 @@ class BookingController extends GetxController {
        List<dynamic> bookingData = response.data?['data'] as List<dynamic>;
         String bookingGroupId = bookingData.first['bookingGroupId']??'';
         Get.toNamed(Routes.BOOKING_MANAGEMENT,arguments: {'bookingGroupId':bookingGroupId});
-        Get.snackbar('Success', response.message ?? 'Booking created successfully');
+        Get.snackbar('Success', response.message ?? 'Your booking awaits the barber’s approval and will begin once accepted.');
+
       } else {
         Get.snackbar('Failed', response.message ?? '');
       }

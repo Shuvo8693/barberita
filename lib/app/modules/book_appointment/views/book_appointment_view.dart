@@ -175,14 +175,6 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                         });
 
                       }
-
-                      // setState(() {
-                      //   _bookingController.selectedTime = TimeOfDay(
-                      //     hour: dateTime.hour,
-                      //     minute: dateTime.minute,
-                      //   );
-                      // });
-                      // print(_bookingController.selectedTime);
                     },
                   );
                 },
@@ -250,7 +242,9 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                   onTap: () async {
                     if (_bookingController.selectedDate != null &&
                         _bookingController.selectedTime != null &&
-                        _bookingController.selectedAddress != null) {
+                        _bookingController.selectedAddress != null &&
+                        !_hasError
+                    ){
                       await _bookingController.addBooking();
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -271,6 +265,14 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
         ),
       ),
     );
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    _bookingController.selectedDate == null;
+    _bookingController.selectedTime == null;
+    _bookingController.selectedAddress == null;
+    _hasError = false;
   }
 
  // ================== Show date time bottom sheet ==============
