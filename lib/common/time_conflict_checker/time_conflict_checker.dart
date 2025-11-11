@@ -1,39 +1,38 @@
 // Check if selected date and time conflicts with booked slots
+import 'package:barberita/app/modules/hairdresser_details/model/booked_model.dart';
+
 Map<String, dynamic> checkTimeConflict(
-    DateTime? selectedDate,
-    String? selectedTime,
-    List<Map<String, dynamic>> bookedSlots,
+    DateTime? selectedDateTime,
+    List<BookedData> bookedSlots,
     ) {
-  if (selectedDate == null || selectedTime == null) {
+  if (selectedDateTime == null) {
     return {'hasError': false, 'errorMessage': null};
   }
 
   try {
-    // Parse selected time to DateTime
-    DateTime selectedDateTime = _parseDateTime(selectedDate, selectedTime);
+    // Selected time slot: selectedDateTime to selectedDateTime + 1 hour
     DateTime selectedEndTime = selectedDateTime.add(Duration(hours: 1));
 
     // Check each booked slot for conflicts (only accepted bookings)
     for (var slot in bookedSlots) {
-      if (slot['status'] != 'accepted') continue;
+      if (slot.status != 'accepted') continue;
 
       // Parse booked date (format: "22-11-2025")
-      DateTime bookedDate = _parseApiDate(slot['date']);
+      DateTime bookedDate = _parseApiDate(slot.date??'');
 
       // Only check slots on the same date
-      if (!_isSameDate(selectedDate, bookedDate)) continue;
+      if (!_isSameDate(selectedDateTime, bookedDate)) continue;
 
       // Parse booked time (format: "19 : 6 PM")
-      DateTime bookedStartTime = _parseApiDateTime(slot['date'], slot['time']);
+      DateTime bookedStartTime = _parseApiDateTime(slot.date!, slot.time??'');
       DateTime bookedEndTime = bookedStartTime.add(Duration(hours: 1));
 
       // Check for overlap
-      bool hasConflict = (selectedDateTime.isBefore(bookedEndTime) &&
-          selectedEndTime.isAfter(bookedStartTime));
+      bool hasConflict = (selectedDateTime.isBefore(bookedEndTime) && selectedEndTime.isAfter(bookedStartTime));
 
       if (hasConflict) {
         // Format the conflicting time for display
-        String conflictTime = _formatDisplayTime(slot['time']);
+        String conflictTime = _formatDisplayTime(slot.time??'');
         return {
           'hasError': true,
           'errorMessage':
@@ -76,30 +75,9 @@ DateTime _parseApiDateTime(String dateString, String timeString) {
 
   // Convert to 24-hour format
   if (period == 'PM' && hour != 12) {
-    hour += 12;
+    hour += 12;  // 3 + 12 = 15 [24 hr format]
   } else if (period == 'AM' && hour == 12) {
-    hour = 0;
-  }
-
-  return DateTime(date.year, date.month, date.day, hour, minute);
-}
-
-// Parse standard time format for selected time: "10:00 AM"
-DateTime _parseDateTime(DateTime date, String timeString) {
-  timeString = timeString.trim();
-
-  List<String> parts = timeString.split(' ');
-  String time = parts[0];
-  String period = parts.length > 1 ? parts[1].toUpperCase() : 'AM';
-
-  List<String> timeParts = time.split(':');
-  int hour = int.parse(timeParts[0]);
-  int minute = timeParts.length > 1 ? int.parse(timeParts[1]) : 0;
-
-  if (period == 'PM' && hour != 12) {
-    hour += 12;
-  } else if (period == 'AM' && hour == 12) {
-    hour = 0;
+    hour = 0;  // 12 am time = 0 [24 hr format]
   }
 
   return DateTime(date.year, date.month, date.day, hour, minute);
@@ -135,8 +113,13 @@ bool _isSameDate(DateTime date1, DateTime date2) {
       date1.day == date2.day;
 }
 
+//=============== Usage ============
 
-//=============== Example usage ===================
+
+/*// Your selected DateTime from picker
+DateTime selectedDateTime = DateTime(2025, 11, 11, 19, 2, 0); // 2025-11-11 19:02:00
+
+// Booked slots from API
 List<Map<String, dynamic>> bookedSlots = [
   {
     "date": "22-11-2025",
@@ -145,18 +128,32 @@ List<Map<String, dynamic>> bookedSlots = [
     "bookingGroupId": "1c1ceca3"
   },
   {
-    "date": "22-11-2025",
-    "time": "14 : 11 PM",
+    "date": "11-11-2025",
+    "time": "19 : 2 PM",
     "status": "accepted",
     "bookingGroupId": "07c7c7f7"
   }
 ];
 
-var result = checkTimeConflict(
-  DateTime(2025, 11, 22),
-  "7:30 PM",
-  bookedSlots,
-);
+// Check conflict
+var result = checkTimeConflict(selectedDateTime, bookedSlots);
 
-// print(result['hasError']); // true or false
-// print(result['errorMessage']); // Conflict message or null
+print(result['hasError']); // true or false
+print(result['errorMessage']); // Conflict message or null
+
+// In your widget
+onConfirm: (time) {
+  print(time); // 2025-11-11 19:02:00.000
+
+  var conflictCheck = checkTimeConflict(time, bookedSlots);
+
+  if (conflictCheck['hasError']) {
+    // Show error
+    Get.snackbar('Conflict', conflictCheck['errorMessage']);
+  } else {
+    // Proceed with booking
+    setState(() {
+      _bookingController.selectedDateTime = time;
+    });
+  }
+}*/

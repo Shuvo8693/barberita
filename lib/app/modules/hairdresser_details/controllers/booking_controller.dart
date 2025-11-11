@@ -4,6 +4,7 @@ import 'package:barberita/app/modules/hairdresser_details/model/barber_details_m
 import 'package:barberita/app/modules/hairdresser_details/model/booked_model.dart';
 import 'package:barberita/app/modules/hairdresser_details/model/service_model.dart';
 import 'package:barberita/app/routes/app_pages.dart';
+import 'package:barberita/common/date_time_formation/time_format_converter.dart';
 
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:flutter/material.dart';
@@ -66,13 +67,13 @@ class BookingController extends GetxController {
     String barberId = await PrefsHelper.getString('barberId');
 
     final date  = DateFormat('dd-MM-yyyy').format(selectedDate!);
-
+    String time = formatTimeTo12Hour(selectedTime);
 
     final body ={
       "serviceIds" :serviceIdList,
       "barberId" : barberId,
       "date" : date,
-      "time" : "${selectedTime?.hour} : ${selectedTime?.minute} ${selectedTime?.period == DayPeriod.am ? 'AM':'PM'}",
+      "time" : time,
       "address" : selectedAddress
     };
 
@@ -103,7 +104,6 @@ class BookingController extends GetxController {
     } finally {
       isLoadingBooking.value = false;
     }
-
   }
 
  /// ================= fetch book info fro book appointment view page ===============

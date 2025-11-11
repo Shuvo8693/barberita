@@ -6,6 +6,7 @@ import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
+import 'package:barberita/common/time_conflict_checker/time_conflict_checker.dart';
 import 'package:barberita/common/widgets/bottomSheet_top_line.dart';
 import 'package:flutter/material.dart' hide DatePickerTheme;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,6 +25,8 @@ class BookAppointmentView extends StatefulWidget {
 
 class _BookAppointmentViewState extends State<BookAppointmentView> {
   final BookingController _bookingController = Get.put(BookingController());
+  bool _hasError=false;
+  String _errorMessage ='';
 
   @override
   void initState() {
@@ -95,6 +98,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                       setState(() {
                         _bookingController.selectedDate = date;
                       });
+                      print(_bookingController.selectedDate);
                     },
                   );
                 },
@@ -108,67 +112,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     ? Colors.white
                     : Colors.white.withOpacity(0.5),
               ),
-
-              /*GestureDetector(
-                onTap: () {
-                  DatePicker.showDatePicker(
-                    context,
-                    showTitleActions: true,
-                    minTime: DateTime.now(),
-                    maxTime: DateTime.now().add(const Duration(days: 365)),
-                    currentTime: _bookingController.selectedDate ?? DateTime.now(),
-                    locale: LocaleType.en,
-                    theme: const DatePickerTheme(
-                      backgroundColor: Color(0xFF2C2C2E),
-                      itemStyle: TextStyle(color: Colors.white, fontSize: 18),
-                      doneStyle: TextStyle(
-                        color: Color(0xFFE6C4A3),
-                        fontWeight: FontWeight.w600,
-                      ),
-                      cancelStyle: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                    onConfirm: (date) {
-                      setState(() {
-                        _bookingController.selectedDate = date;
-                      });
-
-                    },
-                  );
-                },
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2C2C2E),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          _bookingController.selectedDate != null
-                              ? DateFormat('dd/MM/yyyy').format(_bookingController.selectedDate!)
-                              : '15/12/2025',
-                          style: GoogleFontStyles.h5(
-                            color: _bookingController.selectedDate != null
-                                ? Colors.white
-                                : Colors.white.withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-                      Icon(
-                        Icons.calendar_month,
-                        color: Colors.white.withOpacity(0.7),
-                        size: 24.sp,
-                      ),
-                    ],
-                  ),
-                ),
-              ),*/
               SizedBox(height: 24.h),
-
               // Select Time Section
               Text(
                 'Select Time',
@@ -179,13 +123,16 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
               ),
               SizedBox(height: 12.h),
               //====== Time picker ========
+              if(_bookingController.selectedDate!=null)
               CustomInfoContainer(
+                hasError: _hasError,
+                errorMessage: _errorMessage,
                 onTap: () {
                   DatePicker.showTimePicker(
                     context,
                     showTitleActions: true,
                     currentTime: _bookingController.selectedTime != null ? DateTime(
-                      2023, 1, 1,
+                      _bookingController.selectedDate!.year, _bookingController.selectedDate!.month, _bookingController.selectedDate!.day,
                       _bookingController.selectedTime!.hour,
                       _bookingController.selectedTime!.minute,
                     ) : DateTime(2023, 1, 1, 10, 0),
@@ -199,13 +146,43 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                       ),
                       cancelStyle: TextStyle(color: Colors.grey),
                     ),
-                    onConfirm: (time) {
+
+                    onConfirm: (dateTime) {
                       setState(() {
-                        _bookingController.selectedTime = TimeOfDay(
-                          hour: time.hour,
-                          minute: time.minute,
-                        );
+                        _hasError = false;
+                        _errorMessage = '';
                       });
+                      print(dateTime);
+                      final result = checkTimeConflict(dateTime, bookedDataList);
+                      final isHasError = result['hasError'];
+                      final isErrorMessage = result['errorMessage'];
+                      if(!isHasError && isErrorMessage == null){
+                        setState(() {
+                          _bookingController.selectedTime = TimeOfDay(
+                            hour: dateTime.hour,
+                            minute: dateTime.minute,
+                          );
+                        });
+                        print(_bookingController.selectedTime);
+                      }else{
+                        setState(() {
+                          _bookingController.selectedTime = TimeOfDay(
+                            hour: dateTime.hour,
+                            minute: dateTime.minute,
+                          );
+                          _hasError = isHasError;
+                          _errorMessage = isErrorMessage;
+                        });
+
+                      }
+
+                      // setState(() {
+                      //   _bookingController.selectedTime = TimeOfDay(
+                      //     hour: dateTime.hour,
+                      //     minute: dateTime.minute,
+                      //   );
+                      // });
+                      // print(_bookingController.selectedTime);
                     },
                   );
                 },
@@ -217,64 +194,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     : Colors.white.withOpacity(0.5),
                 icon: Icons.access_time,
               ),
-
-              /* GestureDetector(
-                onTap: () {
-                  DatePicker.showTimePicker(
-                    context,
-                    showTitleActions: true,
-                    currentTime: _bookingController.selectedTime != null
-                        ? DateTime(2023, 1, 1, _bookingController.selectedTime!.hour, _bookingController.selectedTime!.minute)
-                        : DateTime(2023, 1, 1, 10, 0),
-                    locale: LocaleType.en,
-                    theme: const DatePickerTheme(
-                      backgroundColor: Color(0xFF2C2C2E),
-                      itemStyle: TextStyle(color: Colors.white, fontSize: 18),
-                      doneStyle: TextStyle(
-                        color: Color(0xFFE6C4A3),
-                        fontWeight: FontWeight.w600,
-                      ),
-                      cancelStyle: TextStyle(color: Colors.grey),
-                    ),
-                     onConfirm: (time) {
-                      setState(() {
-                        _bookingController.selectedTime = TimeOfDay(hour: time.hour, minute: time.minute);
-                      });
-                    },
-                  );
-                },
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2C2C2E),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          _bookingController.selectedTime != null
-                              ? _bookingController.selectedTime!.format(context)
-                              : '10:04AM - 12:00PM',
-                          style: GoogleFontStyles.h5(
-                            color: _bookingController.selectedTime != null
-                                ? Colors.white
-                                : Colors.white.withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-                      Icon(
-                        Icons.access_time,
-                        color: Colors.white.withOpacity(0.7),
-                        size: 24.sp,
-                      ),
-                    ],
-                  ),
-                ),
-              ),*/
               SizedBox(height: 24.h),
-
               // Address Section
               Text(
                 'Address',
@@ -440,6 +360,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     final result = await Get.toNamed(
                       Routes.LOCATIONSELECTORMAP,
                     );
+                    Get.back();
                     print(result);
                     _bookingController.currentLocation = result['latLng'];
                     _bookingController.selectedAddress = result['address'];
@@ -460,6 +381,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     final result = await Get.toNamed(
                       Routes.LOCATIONSELECTORMAP,
                     );
+                    Get.back();
                     print(result);
                     _bookingController.currentLocation = result['latLng'];
                     _bookingController.selectedAddress = result['address'];
