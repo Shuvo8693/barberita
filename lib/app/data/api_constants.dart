@@ -23,9 +23,10 @@ static String bookedServiceInfoUrl({String? barberId}) =>  '/api/v1/barber/barbe
 static String barberAddedServicesUrl({String? barberId}) =>  '/api/v1/barber/barber-services?barberId=$barberId';
 static String barberServiceToggleUrl({String? serviceId}) =>  '/api/v1/barber/change-service-status/$serviceId';
 static String bookingDetailsUrl({String? bookingGroupId}) =>  '/api/v1/booking/get-booking-details/$bookingGroupId';
-static String markAsDoneCompleteUrl({String? bookingGroupId}) =>  '/api/v1/booking/update-booking-status/$bookingGroupId';
+static String orderConfirmationUrl({String? bookingGroupId}) =>  '/api/v1/booking/update-booking-status/$bookingGroupId';
 static String markAsDoneUrl({String? bookingGroupId}) =>  '$baseUrl/api/v1/booking/mark-as-done/$bookingGroupId';  // manual request method
 static String bookingStatusUrl({String? status}) =>  '/api/v1/booking/$status';
+static String updateBarberServiceUrl({String? serviceId}) =>  '/api/v1/barber/update-service/$serviceId';
 static String userReviewUrl({String? userId}) =>  '/api/v1/review/barber-reviews/$userId';
 static String termsPolicyUrl({String? termsAndPolicy}) =>  '/api/v1/$termsAndPolicy';
 static String allMechanicUrl({int? currentPage, int? limit}) =>  '/api/v1/mechanic/all?currentPage=$currentPage&limit=$limit';

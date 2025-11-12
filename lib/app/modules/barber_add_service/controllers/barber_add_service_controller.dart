@@ -53,6 +53,7 @@ class BarberAddServiceController extends GetxController {
   }
 
   /// ======================add barber service ===================
+
   final TextEditingController serviceNameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -62,6 +63,10 @@ class BarberAddServiceController extends GetxController {
     String token = await PrefsHelper.getString('token');
     final result = await getPayloadValue();
     final myId = result['userId'];
+   String serviceId = Get.arguments['serviceId']??'';
+   bool isEdit = Get.arguments['isEdit']??false;
+
+   print('$serviceId $isEdit');
 
     _networkCaller.clearInterceptors();
     _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
@@ -91,7 +96,7 @@ class BarberAddServiceController extends GetxController {
     try {
       isLoadingAddService.value = true;
       final response = await _networkCaller.multipart<Map<String, dynamic>>(
-        endpoint:ApiConstants.addBarberServiceUrl,
+        endpoint: isEdit ? ApiConstants.updateBarberServiceUrl(serviceId: serviceId) : ApiConstants.addBarberServiceUrl,
         files: serviceImagePath?.isNotEmpty==true ? multipartFile : null,
         fields: fields,
         timeout: Duration(seconds: 10),
@@ -140,4 +145,13 @@ class BarberAddServiceController extends GetxController {
       isLoadingServiceToggle.value = false;
     }
   }
+
+  @override
+  void onClose() {
+    serviceNameController.dispose();
+    priceController.dispose();
+    descriptionController.dispose();
+    super.onClose();
+  }
 }
+

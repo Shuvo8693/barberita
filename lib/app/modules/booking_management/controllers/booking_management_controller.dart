@@ -87,4 +87,41 @@ class BookingManagementController extends GetxController {
 
   }
 
+  /// ============== Order Confirmation/decline ==================
+
+  // var isLoadingConfirmation = false.obs;
+  RxMap<int,bool> isLoadingConfirmation = <int,bool>{}.obs;
+
+  Future<void> confirmOrDeclineOrder({String? bookingGroupId, String? status, int? index}) async {
+    String token = await PrefsHelper.getString('token');
+     final result = await getPayloadValue();
+     String myId = result['userId'];
+
+    _networkCaller.clearInterceptors();
+    _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
+    _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
+    _networkCaller.addResponseInterceptor(LoggingInterceptor());
+
+    try {
+      isLoadingConfirmation[index!] = true;
+      final response = await _networkCaller.patch<Map<String, dynamic>>(
+        endpoint:ApiConstants.orderConfirmationUrl(bookingGroupId: bookingGroupId),
+        body: {"status" : status},
+        timeout: Duration(seconds: 10),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+      if (response.isSuccess && response.data != null) {
+         Get.snackbar('Successfully', response.data?['message'] ?? 'You successfully updated the pending order' );
+      } else {
+        Get.snackbar('Failed', response.message!);
+      }
+    } catch (e) {
+      print(e);
+      throw NetworkException('$e');
+    } finally {
+      isLoadingConfirmation[index!] = false;
+    }
+
+  }
+
 }

@@ -184,6 +184,11 @@ class AppPages {
       page: () => const EditProfileScreen(),
       binding: CustomerProfileBinding(),
     ),
+    GetPage(
+      name: _Paths.UPDATESERVICE,
+      page: () => const BarberAddServiceView(),
+      binding: BarberAddServiceBinding(),
+    ),
 
   ];
 }

@@ -1,4 +1,5 @@
 import 'package:barberita/app/modules/booking/widgets/review_history_card.dart';
+import 'package:barberita/app/modules/booking_management/controllers/booking_management_controller.dart';
 import 'package:barberita/app/modules/booking_management/widgets/order_rejection_dialouge.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:barberita/app/modules/booking_management/model/booking_management_models.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import 'booking_status_card.dart';
 import 'hair_dresser_card.dart';
@@ -55,7 +58,7 @@ class BookingManagementWidget extends StatelessWidget {
                       if (userRole.isNotEmpty) ...[
                         userRole == 'customer'
                             ? BookingStatusCard(statuses: booking.statuses) // booking progress card
-                            : isOrderInPending? _buildOrderConfirmation(context,orderId: booking.orderId): SizedBox.shrink(),
+                            : isOrderInPending? _buildOrderConfirmation(context,orderId: booking.orderId) : SizedBox.shrink(),
                       ],
                       SizedBox(height: 32.h),
 
@@ -98,19 +101,36 @@ class BookingManagementWidget extends StatelessWidget {
   }
 
   Widget _buildOrderConfirmation(BuildContext context, {String? orderId}) {
+     final bookingManagementController = Get.put(BookingManagementController());
     return Row(
       children: [
+        //=== confirm ===
         Expanded(
-          child: CustomButton(onTap: () {}, text: 'Confirm'),
+          child: Obx(() {
+            return CustomButton(
+              loading: bookingManagementController.isLoadingConfirmation[0]??false,
+                onTap: () async {
+                  await bookingManagementController.confirmOrDeclineOrder(
+                      bookingGroupId: orderId, status: 'accepted',index: 0);
+                },
+                text: 'Confirm'
+            );
+          }
+          ),
         ),
         SizedBox(width: 8.w),
+        //=== confirm/decline ===
         Expanded(
           child: CustomButton(
             onTap: () {
               OrderRejectionDialog.show(
                 context,
-                onDecline: () {},
-                onAccept: () {},
+                onDecline: ()async {
+                  await bookingManagementController.confirmOrDeclineOrder( bookingGroupId: orderId , status: 'cancel',index: 1);
+                },
+                onAccept: () async {
+                  await bookingManagementController.confirmOrDeclineOrder(bookingGroupId: orderId,status: 'accepted',index: 1);
+                },
               );
             },
             text: 'Decline',

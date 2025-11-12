@@ -4,6 +4,7 @@ import 'package:barberita/app/modules/barber_add_service/model/barber_added_serv
 import 'package:barberita/app/modules/barber_add_service/model/service_item.dart';
 import 'package:barberita/app/modules/barber_add_service/views/barber_add_service_view.dart';
 import 'package:barberita/app/modules/barber_add_service/widgets/service_item_card.dart';
+import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/bottom_menu/bottom_menu..dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
@@ -118,6 +119,7 @@ class _ServiceManagementViewState extends State<ServiceManagementView> {
                                   },
                                   onEdit: () {
                                     // Handle edit
+                                     Get.toNamed(Routes.UPDATESERVICE,arguments: {'serviceId':serviceIndex.id,'isEdit':true});
                                     print('Edit service: ${serviceIndex.serviceName}');
                                   },
                                 ),
@@ -137,7 +139,7 @@ class _ServiceManagementViewState extends State<ServiceManagementView> {
             // Add More Service Button
             GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BarberAddServiceView()));
+                Get.toNamed(Routes.UPDATESERVICE,arguments: {'serviceId':'','isEdit':false});
               },
               child: Container(
                 width: double.infinity,

@@ -6,10 +6,8 @@ import 'package:barberita/common/custom_appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:barberita/common/widgets/custom_text_field.dart';
 
@@ -282,12 +280,4 @@ final BarberAddServiceController _addServiceController = Get.put(BarberAddServic
     );
   }
 
-
-  @override
-  void dispose() {
-    _addServiceController.serviceNameController.dispose();
-    _addServiceController.priceController.dispose();
-    _addServiceController.descriptionController.dispose();
-    super.dispose();
-  }
 }
