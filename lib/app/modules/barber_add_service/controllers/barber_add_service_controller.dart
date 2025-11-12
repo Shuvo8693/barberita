@@ -99,11 +99,12 @@ class BarberAddServiceController extends GetxController {
         endpoint: isEdit ? ApiConstants.updateBarberServiceUrl(serviceId: serviceId) : ApiConstants.addBarberServiceUrl,
         files: serviceImagePath?.isNotEmpty==true ? multipartFile : null,
         fields: fields,
+        multipartMethodType: isEdit? MultiPartMethod.put : MultiPartMethod.post,
         timeout: Duration(seconds: 10),
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
-        Get.snackbar('Successful', response.message?? ' Successfully added service');
+        Get.snackbar('Successful', response.message??  (!isEdit ?' Successfully added service':'Successfully updated service'));
       } else {
         Get.snackbar('Failed', response.message!);
       }

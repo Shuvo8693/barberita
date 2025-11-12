@@ -51,31 +51,32 @@ class _ServiceManagementViewState extends State<ServiceManagementView> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Text('Active Hour: ', style: GoogleFontStyles.h6(color: Colors.white.withOpacity(0.7))),
-                      SizedBox(width: 8.w),
-                      GestureDetector(
-                        onTap: () => _showEditHourDialog(), //<=============== Active hour dialog =====
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF2C2C2E),
-                            borderRadius: BorderRadius.circular(6.r),
-                            border: Border.all(color: Colors.white.withOpacity(0.3)),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(addedServices?.workingHours??'', style: GoogleFontStyles.h6(color: Colors.white)),
-                              SizedBox(width: 8.w),
-                              Icon(Icons.edit, color: const Color(0xFFE6C4A3), size: 16.sp),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  /// ========= working hour =======
+                  // Row(
+                  //   children: [
+                  //     Text('Active Hour: ', style: GoogleFontStyles.h6(color: Colors.white.withOpacity(0.7))),
+                  //     SizedBox(width: 8.w),
+                  //     GestureDetector(
+                  //       onTap: () => _showEditHourDialog(), //<=============== Active hour dialog =====
+                  //       child: Container(
+                  //         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                  //         decoration: BoxDecoration(
+                  //           color: const Color(0xFF2C2C2E),
+                  //           borderRadius: BorderRadius.circular(6.r),
+                  //           border: Border.all(color: Colors.white.withOpacity(0.3)),
+                  //         ),
+                  //         child: Row(
+                  //           mainAxisSize: MainAxisSize.min,
+                  //           children: [
+                  //             Text(addedServices?.workingHours??'', style: GoogleFontStyles.h6(color: Colors.white)),
+                  //             SizedBox(width: 8.w),
+                  //             Icon(Icons.edit, color: const Color(0xFFE6C4A3), size: 16.sp),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
 
                   SizedBox(height: 24.h),
 
