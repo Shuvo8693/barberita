@@ -1,14 +1,16 @@
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
 import 'package:barberita/app/modules/barber_home/model/user_review_model.dart';
+import 'package:barberita/app/modules/notification/model/notification_model.dart';
 
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:get/get.dart';
 
 class NotificationController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller.instance;
-  Rx<UserReviewModel> userReviewModel = UserReviewModel().obs;
-  var isLoadingUserReview = false.obs;
+  Rx<NotificationModel> notificationModel = NotificationModel().obs;
+  var isLoadingNotification = false.obs;
+
 
   Future<void> fetchNotification() async {
     String token = await PrefsHelper.getString('token');
@@ -19,15 +21,15 @@ class NotificationController extends GetxController {
     _networkCaller.addResponseInterceptor(LoggingInterceptor());
 
     try {
-      isLoadingUserReview.value = true;
+      isLoadingNotification.value = true;
       final response = await _networkCaller.get<Map<String, dynamic>>(
         endpoint:ApiConstants.notificationUrl,
         timeout: Duration(seconds: 10),
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
-        userReviewModel.value = UserReviewModel.fromJson( response.data!);
-        print(userReviewModel.value);
+        notificationModel.value = NotificationModel.fromJson( response.data!);
+        print(notificationModel.value);
 
       } else {
         Get.snackbar('Failed', response.message!);
@@ -36,7 +38,13 @@ class NotificationController extends GetxController {
       print(e);
       throw NetworkException('$e');
     } finally {
-      isLoadingUserReview.value = false;
+      isLoadingNotification.value = false;
     }
+  }
+
+  @override
+  void onReady() async {
+    await fetchNotification();
+    super.onReady();
   }
 }

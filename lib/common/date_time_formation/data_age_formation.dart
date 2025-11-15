@@ -1,13 +1,12 @@
 import 'difference_formation.dart';
 
 class DateAgeFormation extends DifferenceFormation {
-  String formatAge(DateTime dateTime) {
-   Duration difference = formatDifference(dateTime);
+ static String formatAge(DateTime dateTime) {
+   Duration difference = DifferenceFormation.formatDifference(dateTime);
     return formatContentAge(difference);
   }
 
-
-  String formatContentAge(Duration difference) {
+ static String formatContentAge(Duration difference) {
     if (difference.inMinutes < 1) {
       return 'Just now';
     } else if (difference.inMinutes == 1) {

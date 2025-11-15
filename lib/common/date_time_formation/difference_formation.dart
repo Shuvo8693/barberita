@@ -1,5 +1,6 @@
 class DifferenceFormation {
-  Duration formatDifference(DateTime dateTime) {
+
+ static Duration formatDifference(DateTime dateTime) {
     return DateTime.now().difference(dateTime);
   }
 }
