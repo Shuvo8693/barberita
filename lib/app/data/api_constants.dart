@@ -49,6 +49,7 @@ static String barberProfileUpdateUrl = '/api/v1/barber/update-barber';
 static String serviceActivationStatusUrl = '/api/v1/barber/update-available-status';
 static String addBarberServiceUrl = '/api/v1/barber/create-service';
 static String notificationUrl = '/api/v1/notification';
+static String badgeCountUrl = '/api/v1/notification/badge-count';
 
 
 }
