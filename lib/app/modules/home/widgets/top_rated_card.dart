@@ -20,26 +20,6 @@ class TopRatedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // List of hairdressers data
-    List<Map<String, dynamic>> hairdressers = [
-      {
-        'name': 'Marty\'s Hairdresser',
-        'image': AppNetworkImage.saloonHairMen3Img,
-        'rating': '4.5',
-        'type': 'Braided',
-        'status': 'Open Now',
-        'price': '\$2.99-\$100',
-      },
-      {
-        'name': 'Marty\'s Hairdresser',
-        'image': AppNetworkImage.saloonHairMen4Img,
-        'rating': '4.5',
-        'type': 'Flathead',
-        'status': 'Open Now',
-        'price': '\$2.99-\$100',
-      },
-    ];
-
-    var data = hairdressers[index];
 
     return Container(
       width: 160.w,
@@ -86,8 +66,7 @@ class TopRatedCard extends StatelessWidget {
                     ),
                     Icon(Icons.star, color: Colors.amber, size: 14.sp),
                     SizedBox(width: 2.w),
-                    Text(
-                      barberTopRated.averageRating.toStringAsFixed(1),
+                    Text(barberTopRated.averageRating.toStringAsFixed(1),
                       style: GoogleFontStyles.customSize(
                         size: 10.sp,
                         color: Colors.white.withOpacity(0.7),

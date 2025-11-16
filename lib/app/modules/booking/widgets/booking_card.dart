@@ -1,4 +1,5 @@
 import 'package:barberita/common/app_text_style/google_app_style.dart';
+import 'package:barberita/common/date_time_formation/format_date_level.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -103,7 +104,7 @@ class BookingCard extends StatelessWidget {
 
                 // Date ===
                 Text(
-                  date,
+                  formatDateLabel(date),
                   style: GoogleFontStyles.h6(
                     color: Colors.white.withOpacity(0.7),
                   ),

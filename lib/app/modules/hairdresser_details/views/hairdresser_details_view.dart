@@ -104,33 +104,38 @@ class _HairdresserDetailsViewState extends State<HairdresserDetailsView> with Si
                   ),
                 ),
                 // Rating Badge
-                Positioned(
-                  bottom: 16.h,
-                  right: 16.w,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                          size: 16.sp,
-                        ),
-                        SizedBox(width: 4.w),
-                        Text('4.5',
-                          style: GoogleFontStyles.h6(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
+                Obx((){
+                  int? barberRating = _hairdresserDetailsController.barberDetailsModel.value.data?.rating;
+
+                  return Positioned(
+                    bottom: 16.h,
+                    right: 16.w,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                            size: 16.sp,
                           ),
-                        ),
-                      ],
+                          SizedBox(width: 4.w),
+                          Text('${barberRating?.toDouble()??'...'}',
+                            style: GoogleFontStyles.h6(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                  );
+                }
                 ),
               ],
             ),

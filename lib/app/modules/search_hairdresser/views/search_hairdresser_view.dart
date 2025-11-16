@@ -12,7 +12,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/widgets/custom_text_field.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class SearchHairdresserView extends StatefulWidget {
   const SearchHairdresserView({super.key});
@@ -40,8 +39,17 @@ class _SearchHairdresserViewState extends State<SearchHairdresserView> {
     });
   }
 
+  fetchBarber(){
+    if (selectedFilterIndex == 0) {
+      _searchHairdresserController.fetchBarber(name: '', isNearby: false);
+    } else if (selectedFilterIndex == 1) {
+      _searchHairdresserController.fetchBarber(name: '', isNearby: true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    fetchBarber();
     return Scaffold(
       appBar: AppBar(
         backgroundColor:AppColors.darkJungleGreenBGColor,
