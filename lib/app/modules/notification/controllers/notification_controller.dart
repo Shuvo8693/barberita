@@ -75,14 +75,13 @@ class NotificationController extends GetxController {
     }
   }
 
-  @override
-  void onReady()  {
-    super.onReady();
-    _loadData();
-  }
-
-  Future<void> _loadData() async {
-    await fetchBadgeCount();
-    await fetchNotification();
-  }
+  // @override
+  // void onReady() {
+  //   super.onReady();
+  //  _loadData();
+  // }
+  //
+  // Future<void> _loadData() async {
+  //   await fetchNotification();
+  // }
 }

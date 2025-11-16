@@ -20,6 +20,12 @@ class _NotificationViewState extends State<NotificationView> {
   // Get your controller
   final _notificationCtrl = Get.find<NotificationController>();
 
+  @override
+  void initState() {
+    super.initState();
+    _notificationCtrl.fetchNotification();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +83,7 @@ class _NotificationViewState extends State<NotificationView> {
                 title: notificationItem.msg ?? "Notification",
                 time: DateAgeFormation.formatAge(DateTime.parse(notificationItem.createdAt??'')),
                 notificationItems: notificationItem,
+                index: index,
                 // isUnread: notificationItem.isUnread ?? false,
               ),
             );

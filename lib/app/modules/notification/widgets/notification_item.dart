@@ -1,9 +1,11 @@
+import 'package:barberita/app/modules/booking_management/controllers/booking_management_controller.dart';
 import 'package:barberita/app/modules/notification/model/notification_model.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:barberita/common/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class NotificationItem extends StatelessWidget {
   final IconData icon;
@@ -12,6 +14,7 @@ class NotificationItem extends StatelessWidget {
   final bool isUnread;
   final bool isMarkAsDone;
   final NotificationItems notificationItems;
+  final int index;
 
   const NotificationItem({
     super.key,
@@ -21,10 +24,12 @@ class NotificationItem extends StatelessWidget {
     this.isUnread = false,
     this.isMarkAsDone = false,
     required this.notificationItems,
+    required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
+    final bookingMngCtrl = Get.put(BookingManagementController());
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -91,12 +96,18 @@ class NotificationItem extends StatelessWidget {
           if(notificationItems.status != null &&  notificationItems.status!.contains('mark_as_done'))
           Padding(
             padding: EdgeInsets.only(top: 8.h),
-            child: CustomButton(
-                onTap: (){
-                  print(notificationItems);
-                },
-                height: 40.h,
-                text: 'Accept'
+            child: Obx(()=>
+              CustomButton(
+                loading: bookingMngCtrl.isLoadingConfirmation[index]??false,
+                  onTap: ()async{
+                    print(notificationItems);
+                    if(notificationItems.bookingId !=null){
+                      await bookingMngCtrl.confirmOrDeclineOrder(bookingGroupId: notificationItems.bookingId,status: 'completed', index: index );
+                    }
+                  },
+                  height: 40.h,
+                  text: 'Accept'
+              ),
             ),
           )
         ],
