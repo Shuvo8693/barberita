@@ -24,11 +24,10 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-
   final homeController = Get.put(HomeController());
   final NotificationController _notificationController = Get.put(NotificationController());
-  final TextEditingController _searchController = TextEditingController();
 
+  final TextEditingController _searchController = TextEditingController();
   int selectedFilterIndex = 0;
   List<String> recentSearch = [
     'The Blind Sa',
@@ -39,7 +38,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    _notificationController.fetchBadgeCount();
+    await _notificationController.fetchBadgeCount();
     await homeController.fetchTopBarber();
     await homeController.fetchFavouriteBarber();
   }
@@ -52,68 +51,126 @@ class _HomeViewState extends State<HomeView> {
         child: Column(
           children: [
             //  ============== Header Section ====================
-            Obx((){
-              UnreadLatestData? unreadLatestData = _notificationController.unreadAndLatestNotificationModel.value.data;
-              final badgeCount =unreadLatestData?.unreadCount??0;
-              return Padding(
-                padding: EdgeInsets.all(12.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Profile Header
-                    Row(
-                      children: [
-                        CustomNetworkImage(
-                          imageUrl: "${ApiConstants.baseUrl}${unreadLatestData?.userInfo?.image??''}",
-                          boxShape: BoxShape.circle,
-                          height: 38.h,
-                          width: 38.w,
-                        ),
-                        SizedBox(width: 12.w),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+            Padding(
+              padding: EdgeInsets.all(12.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Profile Header
+                  Obx((){
+                    UnreadLatestData? unreadLatestData = _notificationController.unreadAndLatestNotificationModel.value.data;
+                    final badgeCount =unreadLatestData?.unreadCount??0;
+                    return Padding(
+                      padding: EdgeInsets.all(12.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Profile Header
+                          Row(
                             children: [
-                              Text(
-                                unreadLatestData?.userInfo?.name??'',
-                                style: GoogleFontStyles.h5(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
+                              CustomNetworkImage(
+                                imageUrl: "${ApiConstants.baseUrl}${unreadLatestData?.userInfo?.image??''}",
+                                boxShape: BoxShape.circle,
+                                height: 38.h,
+                                width: 38.w,
+                              ),
+                              SizedBox(width: 12.w),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      unreadLatestData?.userInfo?.name??'',
+                                      style: GoogleFontStyles.h5(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    // Text(
+                                    //   '112/23 Park Street',
+                                    //   style: GoogleFontStyles.h6(
+                                    //     color: Colors.white.withOpacity(0.7),
+                                    //   ),
+                                    // ),
+                                  ],
                                 ),
                               ),
-                              // Text(
-                              //   '112/23 Park Street',
-                              //   style: GoogleFontStyles.h6(
-                              //     color: Colors.white.withOpacity(0.7),
-                              //   ),
-                              // ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(Routes.NOTIFICATION);
+                                },
+                                child:badgeCount < 1 ? Icon(
+                                  Icons.notifications_outlined,
+                                  color: Colors.white,
+                                  size: 24.sp,
+                                ): Badge.count(
+                                  count: badgeCount ,
+                                  child: Icon(
+                                    Icons.notifications_outlined,
+                                    color: Colors.white,
+                                    size: 24.sp,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
+                          SizedBox(height: 8.h),
+                        ],
+                      ),
+                    );
+                  }
+                  ),
+                  SizedBox(height: 20.h),
+                  // Search Bar ===================
+                  GestureDetector(
+                    onTap: () {
+                      //==== Nav to search screen ===
+                      Get.toNamed(Routes.SEARCH_HAIRDRESSER);
+                    },
+                    child: AbsorbPointer(
+                      child: CustomTextField(
+                        controller: _searchController,
+                        hintText: 'Search',
+                        hintStyle: GoogleFontStyles.h5(
+                          color: Colors.white.withOpacity(0.5),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed(Routes.NOTIFICATION);
-                          },
-                          child:badgeCount < 1 ? Icon(
-                            Icons.notifications_outlined,
-                            color: Colors.white,
-                            size: 24.sp,
-                          ): Badge.count(
-                            count: badgeCount ,
-                            child: Icon(
-                              Icons.notifications_outlined,
-                              color: Colors.white,
-                              size: 24.sp,
-                            ),
-                          ),
+                        fillColor: const Color(0xFF2C2C2E),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Colors.white.withOpacity(0.5),
+                          size: 20.sp,
                         ),
-                      ],
+                        suffixIcon: Icon(
+                          Icons.tune,
+                          color: Colors.white.withOpacity(0.5),
+                          size: 20.sp,
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 20.h),
-                  ],
-                ),
-              );
-            }
+                  ),
+
+                  // SizedBox(height: 20.h),
+
+                  //=========== Recent Search Section =============
+                  // Text(
+                  //   'Recent Search Hairdresser',
+                  //   style: GoogleFontStyles.h5(fontWeight: FontWeight.w600),
+                  // ),
+                  // SizedBox(height: 12.h),
+                  // Recent Search Tags
+                  // SingleChildScrollView(
+                  //   scrollDirection: Axis.horizontal,
+                  //   child: Row(
+                  //     children: recentSearch.map((value) {
+                  //       return Padding(
+                  //         padding: EdgeInsets.only(right: 8.w),
+                  //         child: _buildSearchTag(value),
+                  //       );
+                  //     }).toList(),
+                  //   ),
+                  // ),
+                ],
+              ),
             ),
 
             // ================= Content Section ===================
