@@ -14,6 +14,7 @@ class ApiConstants{
 static String registerUrl= '/api/v1/auth/register';
 static String registerBarberUrl= '/api/v1/barber/add-barber';
 static String verifyOtpUrl= '/api/v1/auth/verify-otp';
+static String addBiometricUrl= '/api/v1/auth/add-device-id';
 static String verifyForgotOtpUrl(String userMail) =>  '/api/v1/user/verify-forget-otp?email=$userMail';
 static String searchMechanicUrl(String service) =>  '/api/v1/mechanic/all?serviceName=$service';
 static String barberDetailsUrl({String? barberId}) =>  '/api/v1/barber/get-barber-information-as-customer/$barberId';

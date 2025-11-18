@@ -7,6 +7,7 @@ class SplashController extends GetxController {
   navigateTo()async{
    await Future.delayed(Duration(seconds: 3)).then((v)async{
      String token = await PrefsHelper.getString('token');
+     if(token.isEmpty) Get.toNamed(Routes.SIGNIN);
      final payload = decodeJWT(token);
      print(payload);
     String role = payload['role']??'';

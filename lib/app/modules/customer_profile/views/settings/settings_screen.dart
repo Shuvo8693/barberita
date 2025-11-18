@@ -1,3 +1,4 @@
+import 'package:barberita/app/data/biometric/biometric_auth_service.dart';
 import 'package:barberita/app/modules/customer_profile/views/settings/privacy_policy_screen.dart';
 import 'package:barberita/app/modules/customer_profile/views/settings/terms_service_screen.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
@@ -53,6 +54,20 @@ class SettingsScreen extends StatelessWidget {
                 title: 'Privacy Policy',
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const PrivacyPolicyScreen()));
+                },
+              ),
+              SizedBox(height: 16.h),
+              _buildMenuItem(
+                icon: Icons.fingerprint,
+                title: 'Set Touch id or face id ',
+                onTap: () async {
+                final  result =  await BiometricAuthService.enableBiometric('shuvo');
+               String deviceId = result?['device_id']??'';
+               if(deviceId.isNotEmpty){
+                 print(deviceId);
+
+
+                 }
                 },
               ),
 

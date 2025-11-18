@@ -34,14 +34,17 @@ class _HomeViewState extends State<HomeView> {
     'Marty\'s Hairdresser',
     'Fellow Hairdresser',
   ];
-
   @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
-    await _notificationController.fetchBadgeCount();
-    await homeController.fetchTopBarber();
-    await homeController.fetchFavouriteBarber();
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((__)async{
+      await homeController.fetchTopBarber();
+      await homeController.fetchFavouriteBarber();
+      await _notificationController.fetchBadgeCount();
+    });
+
   }
+
 
   @override
   Widget build(BuildContext context) {

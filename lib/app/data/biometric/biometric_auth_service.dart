@@ -1,16 +1,16 @@
+import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:uuid/uuid.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'dart:io';
 
 class BiometricAuthService {
-  final LocalAuthentication _auth = LocalAuthentication();
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
-  final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
+ static final LocalAuthentication _auth = LocalAuthentication();
+ static final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
+
 
   // Check if biometric is available
-  Future<bool> isBiometricAvailable() async {
+ static Future<bool> isBiometricAvailable() async {
     try {
       bool canCheck = await _auth.canCheckBiometrics;
       bool isSupported = await _auth.isDeviceSupported();
@@ -22,13 +22,13 @@ class BiometricAuthService {
   }
 
   // Check if biometric is already enabled
-  Future<bool> isBiometricEnabled() async {
-    String? token = await _storage.read(key: 'device_biometric_token');
-    return token != null;
+ static Future<bool> isBiometricEnabled() async {
+    String? deviceId = await PrefsHelper.getString('deviceId');
+    return deviceId.isNotEmpty;
   }
 
   // Get biometric type for display
-  Future<String> getBiometricType() async {
+ static Future<String> getBiometricType() async {
     try {
       List<BiometricType> types = await _auth.getAvailableBiometrics();
       if (types.contains(BiometricType.face)) {
@@ -45,13 +45,13 @@ class BiometricAuthService {
   }
 
   // Enable biometric for first time
-  Future<Map<String, dynamic>?> enableBiometric(String userId) async {
+static  Future<Map<String, dynamic>?> enableBiometric(String userId) async {
     try {
       // Check if already enabled
-      if (await isBiometricEnabled()) {
-        print('Biometric already enabled');
-        return null;
-      }
+      // if (await isBiometricEnabled()) {
+      //   print('Biometric already enabled');
+      //   return null;
+      // }
 
       // Authenticate
       bool authenticated = await _auth.authenticate(
@@ -71,10 +71,11 @@ class BiometricAuthService {
         String deviceName = await _getDeviceName();
         String biometricType = await getBiometricType();
 
-        // Store locally
-        await _storage.write(key: 'device_biometric_token', value: deviceToken);
-        await _storage.write(key: 'biometric_user_id', value: userId);
-        await _storage.write(key: 'biometric_enabled_at', value: DateTime.now().toIso8601String());
+        // Store locally using SharedPreferences
+        await PrefsHelper.setString('device_id', deviceId);
+        await PrefsHelper.setString('device_biometric_token', deviceToken);
+        await PrefsHelper.setString('biometric_user_id', userId);
+        await PrefsHelper.setString('biometric_enabled_at', DateTime.now().toIso8601String());
 
         // Return data to send to backend
         return {
@@ -89,6 +90,7 @@ class BiometricAuthService {
         };
       }
 
+
       return null;
     } catch (e) {
       print('Error enabling biometric: $e');
@@ -97,13 +99,17 @@ class BiometricAuthService {
   }
 
   // Authenticate and get token (for login)
-  Future<String?> authenticateAndGetToken() async {
+ static Future<String?> authenticateAndGetToken() async {
     try {
       // Check if biometric is enabled
-      String? deviceToken = await _storage.read(key: 'device_biometric_token');
-      if (deviceToken == null) {
+      await PrefsHelper.remove('device_id'); //<============ remove this =============
+
+      String? deviceId = await PrefsHelper.getString('device_id');
+      if (deviceId.isEmpty) {
         print('Biometric not enabled. Please enable first.');
-        return null;
+        final result = await enableBiometric('shuvo15');
+        String deviceId = result?['device_id']??'';
+        return deviceId;
       }
 
       // Authenticate with biometric
@@ -119,12 +125,12 @@ class BiometricAuthService {
 
       if (authenticated) {
         // Update last used timestamp
-        await _storage.write(
-          key: 'biometric_last_used',
-          value: DateTime.now().toIso8601String(),
+        await PrefsHelper.setString(
+          'biometric_last_used',
+          DateTime.now().toIso8601String(),
         );
 
-        return deviceToken; // Send this to backend
+        return deviceId; // Send this to backend
       }
 
       return null;
@@ -135,22 +141,23 @@ class BiometricAuthService {
   }
 
   // Get stored user ID
-  Future<String?> getStoredUserId() async {
-    return await _storage.read(key: 'biometric_user_id');
+ static Future<String?> getStoredUserId() async {
+
+    return await PrefsHelper.getString('biometric_user_id');
   }
 
   // Get stored device token
-  Future<String?> getStoredDeviceToken() async {
-    return await _storage.read(key: 'device_biometric_token');
+ static Future<String?> getStoredDeviceToken() async {
+    return await PrefsHelper.getString('device_biometric_token');
   }
 
   // Disable biometric
-  Future<bool> disableBiometric() async {
+ static  Future<bool> disableBiometric() async {
     try {
-      await _storage.delete(key: 'device_biometric_token');
-      await _storage.delete(key: 'biometric_user_id');
-      await _storage.delete(key: 'biometric_enabled_at');
-      await _storage.delete(key: 'biometric_last_used');
+      await PrefsHelper.remove('device_biometric_token');
+      await PrefsHelper.remove('biometric_user_id');
+      await PrefsHelper.remove('biometric_enabled_at');
+      await PrefsHelper.remove('biometric_last_used');
       return true;
     } catch (e) {
       print('Error disabling biometric: $e');
@@ -159,7 +166,7 @@ class BiometricAuthService {
   }
 
   // Get unique device ID
-  Future<String> _getDeviceId() async {
+ static Future<String> _getDeviceId() async {
     try {
       if (Platform.isAndroid) {
         AndroidDeviceInfo androidInfo = await _deviceInfo.androidInfo;
@@ -175,7 +182,7 @@ class BiometricAuthService {
   }
 
   // Get device name
-  Future<String> _getDeviceName() async {
+ static Future<String> _getDeviceName() async {
     try {
       if (Platform.isAndroid) {
         AndroidDeviceInfo androidInfo = await _deviceInfo.androidInfo;

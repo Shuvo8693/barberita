@@ -1,4 +1,5 @@
 
+import 'package:barberita/app/data/biometric/biometric_auth_service.dart';
 import 'package:barberita/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:barberita/app/modules/authentication/views/verify_phone_view.dart';
 import 'package:barberita/app/routes/app_pages.dart';
@@ -24,6 +25,7 @@ class SignInView extends StatefulWidget {
 
 class _SignInViewState extends State<SignInView> {
   final AuthenticationController _authenticationController = Get.put(AuthenticationController());
+  BiometricAuthService _biometricAuthService = BiometricAuthService();
   final _formKey = GlobalKey<FormState>();
 
 @override
@@ -157,32 +159,12 @@ class _SignInViewState extends State<SignInView> {
 
                   SizedBox(height: 24.h),
 
-                  // Face-ID Button
-                  CustomTextButtonWithIcon(
-                    onTap: () {},
-                    text: 'Face-ID',
-                    color: AppColors.secondaryAppColor,
-                    height: 50.h,
-                    icon: Icon(Icons.face, color: Colors.white, size: 24.sp),
-                  ),
-
-                  SizedBox(height: 16.h),
-
-                  // OR
-                  Text(
-                    'OR',
-                    style: GoogleFontStyles.h5(
-                      color: Colors.white.withOpacity(0.7),
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-
-                  SizedBox(height: 16.h),
-
                   // Touch-ID Button
                   CustomTextButtonWithIcon(
-                    onTap: () {},
-                    text: 'Face-ID',
+                    onTap: () async {
+                     await BiometricAuthService.authenticateAndGetToken();
+                    },
+                    text: 'Touch-ID or Face-ID',
                     height: 50.h,
                     color: AppColors.secondaryAppColor,
                     icon: Icon(
@@ -191,12 +173,9 @@ class _SignInViewState extends State<SignInView> {
                       size: 24.sp,
                     ),
                   ),
-
                   SizedBox(height: 16.h),
-
                   // Sign Up Link
                   DontHaveAnAccount(onTap: () {Get.toNamed(Routes.ROLESELECTION);}),
-
                   SizedBox(height: 40.h),
                 ],
               ),
