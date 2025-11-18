@@ -1,10 +1,12 @@
 import 'package:barberita/app/data/biometric/biometric_auth_service.dart';
+import 'package:barberita/app/modules/authentication/controllers/biometric_controller.dart';
 import 'package:barberita/app/modules/customer_profile/views/settings/privacy_policy_screen.dart';
 import 'package:barberita/app/modules/customer_profile/views/settings/terms_service_screen.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import 'about_screen.dart';
 import 'change_password_screen.dart';
@@ -15,6 +17,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final biometricCtrl =Get.put(BiometricController());
     return Scaffold(
       appBar: CustomAppBar(title: 'Settings',),
       body: SafeArea(
@@ -65,7 +68,7 @@ class SettingsScreen extends StatelessWidget {
                String deviceId = result?['device_id']??'';
                if(deviceId.isNotEmpty){
                  print(deviceId);
-
+                await biometricCtrl.biometricSignup(deviceId: deviceId);
 
                  }
                 },

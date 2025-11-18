@@ -7,7 +7,7 @@ import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class OtpController extends GetxController {
+class BiometricController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller.instance;
 
   var isLoadingOtp = false.obs;
@@ -15,7 +15,6 @@ class OtpController extends GetxController {
   Future<void> biometricSignup({String? deviceId}) async {
     String token = await PrefsHelper.getString('token');
     final payload = decodeJWT(token);
-    print(payload);
     String phone = payload['phone'];
 
     final body = {
@@ -53,12 +52,11 @@ class OtpController extends GetxController {
     super.onClose();
   }
 
-
   /// ======================== biometric signin =======================
 
   var isLoadingBiometricSignin = false.obs;
 
-  Future<void> biometricSignIn() async {
+  Future<void> biometricSignIn({String? deviceId}) async {
     String token = await PrefsHelper.getString('token');
 
 
@@ -69,9 +67,9 @@ class OtpController extends GetxController {
     try {
       isLoadingBiometricSignin.value = true;
       final response = await _networkCaller.post<Map<String, dynamic>>(
-        endpoint: ApiConstants.resendOtpUrl,
+        endpoint: ApiConstants.loginBiometricUrl,
         body:{
-          "deviceId" : "sdafasd54fsdfsd45fsd45f4"
+          "deviceId" : deviceId
         },
         timeout: Duration(seconds: 10),
         fromJson: (json) => json as Map<String, dynamic>,
