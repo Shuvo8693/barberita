@@ -98,11 +98,11 @@ static  Future<Map<String, dynamic>?> enableBiometric(String userId) async {
     }
   }
 
-  // Authenticate and get token (for login)
- static Future<String?> authenticateAndGetToken() async {
+  // Authenticate and get deviceId (for login)
+ static Future<String?> authenticateAndGetId() async {
     try {
       // Check if biometric is enabled
-      await PrefsHelper.remove('device_id'); //<============ remove this =============
+      // await PrefsHelper.remove('device_id'); //<============ remove this =============
 
       String? deviceId = await PrefsHelper.getString('device_id');
       if (deviceId.isEmpty) {

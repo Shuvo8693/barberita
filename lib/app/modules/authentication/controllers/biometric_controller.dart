@@ -75,14 +75,23 @@ class BiometricController extends GetxController {
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null){
-        String role = response.data!['data']['role'];
+        String role = response.data!['data']['user']['role'];
+        bool isLogIn = response.data!['data']['user']['isLogin']??false;
         String token = response.data!['data']['token'];
         print("Check ===== Role: $role Token: $token");
         await PrefsHelper.setString('role',role);
-        await PrefsHelper.setString('token',token);
-        Get.snackbar('Success', response.message??'');
+        await PrefsHelper.setString('token',token).then((v){
+          if(role =='customer' && isLogIn){
+            Get.toNamed(Routes.HOME);
+          } else if(role =='barber' && isLogIn){
+            Get.toNamed(Routes.BARBER_HOME);
+          }else{
+            Get.snackbar('Failed to route', ' Login again or set your biometric from settings');
+          }
+        });
+
       } else {
-        Get.snackbar('Failed', response.message ?? 'Resend otp failed');
+        Get.snackbar('Failed', response.message ?? 'Failed to login with biometric');
       }
     } catch (e) {
       print(e);

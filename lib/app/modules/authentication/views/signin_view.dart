@@ -1,6 +1,7 @@
 
 import 'package:barberita/app/data/biometric/biometric_auth_service.dart';
 import 'package:barberita/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:barberita/app/modules/authentication/controllers/biometric_controller.dart';
 import 'package:barberita/app/modules/authentication/views/verify_phone_view.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_logo/app_logo.dart';
@@ -25,7 +26,8 @@ class SignInView extends StatefulWidget {
 
 class _SignInViewState extends State<SignInView> {
   final AuthenticationController _authenticationController = Get.put(AuthenticationController());
-  BiometricAuthService _biometricAuthService = BiometricAuthService();
+  final BiometricController _biometricController =Get.put(BiometricController());
+  final BiometricAuthService _biometricAuthService = BiometricAuthService();
   final _formKey = GlobalKey<FormState>();
 
 @override
@@ -162,7 +164,11 @@ class _SignInViewState extends State<SignInView> {
                   // Touch-ID Button
                   CustomTextButtonWithIcon(
                     onTap: () async {
-                     await BiometricAuthService.authenticateAndGetToken();
+                     String? deviceId =  await BiometricAuthService.authenticateAndGetId();
+                     if(deviceId != null && deviceId.isNotEmpty){
+                       print(deviceId);
+                       await _biometricController.biometricSignIn(deviceId: deviceId);
+                     }
                     },
                     text: 'Touch-ID or Face-ID',
                     height: 50.h,
@@ -175,7 +181,11 @@ class _SignInViewState extends State<SignInView> {
                   ),
                   SizedBox(height: 16.h),
                   // Sign Up Link
-                  DontHaveAnAccount(onTap: () {Get.toNamed(Routes.ROLESELECTION);}),
+                  DontHaveAnAccount(
+                      onTap: () {
+                    Get.toNamed(Routes.ROLESELECTION);
+                   }
+                  ),
                   SizedBox(height: 40.h),
                 ],
               ),
