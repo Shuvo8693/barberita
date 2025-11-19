@@ -3,6 +3,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:uuid/uuid.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'dart:io';
+import 'package:get/get.dart';
 
 class BiometricAuthService {
  static final LocalAuthentication _auth = LocalAuthentication();
@@ -94,6 +95,9 @@ static  Future<Map<String, dynamic>?> enableBiometric(String userId) async {
       return null;
     } catch (e) {
       print('Error enabling biometric: $e');
+      if(!Get.isSnackbarOpen){
+        Get.snackbar('Failed to detect biometric ', "Maybe your device doesn't have biometric");
+      }
       return null;
     }
   }

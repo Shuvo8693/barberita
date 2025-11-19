@@ -5,6 +5,7 @@ import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_logo/app_logo.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
+import 'package:barberita/common/widgets/custom_phone_field.dart';
 import 'package:barberita/common/widgets/have_an_account.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,7 +28,6 @@ class _SignUpViewState extends State<SignUpView> {
  final AuthenticationController _authenticationController = Get.put(AuthenticationController());
 
   String? selectedAddress;
-
 
   @override
   Widget build(BuildContext context) {
@@ -93,21 +93,33 @@ class _SignUpViewState extends State<SignUpView> {
                         ),
                       ),
                       SizedBox(height: 8.h),
-                      CustomTextField(
+                      CustomPhoneField(
                         controller: _authenticationController.phoneController,
-                        hintText: 'Enter Your phone Number',
-                        inputFormatters: [
-                          // FilteringTextInputFormatter.digitsOnly,
-                          // LengthLimitingTextInputFormatter(11)
-                        ],
-                        hintStyle: GoogleFontStyles.h5(
-                          color: Colors.white.withOpacity(0.5),
-                        ),
-                        fillColor: Colors.transparent,
-                        keyboardType: TextInputType.phone,
+                        initialCountry: "BD",
+                        onChanged: (phone) {
+                          print("Complete number: ${phone.completeNumber}");
+                          _authenticationController.phoneNumber = phone.completeNumber;
+                          setState(() {});
+                        },
+                        onCountryChanged: (country) {
+                          print("Country: ${country}");
+                        },
                       ),
+                      // CustomTextField(
+                      //   controller: _authenticationController.phoneController,
+                      //   hintText: 'Enter Your phone Number',
+                      //   inputFormatters: [
+                      //     // FilteringTextInputFormatter.digitsOnly,
+                      //     // LengthLimitingTextInputFormatter(11)
+                      //   ],
+                      //   hintStyle: GoogleFontStyles.h5(
+                      //     color: Colors.white.withOpacity(0.5),
+                      //   ),
+                      //   fillColor: Colors.transparent,
+                      //   keyboardType: TextInputType.phone,
+                      // ),
 
-                      SizedBox(height: 24.h),
+                      SizedBox(height: 8.h),
 
                       // Password Field
                       Text(
@@ -236,6 +248,7 @@ class _SignUpViewState extends State<SignUpView> {
 
   @override
   void dispose() {
+    _authenticationController.phoneNumber = '';
     _authenticationController.nameController.dispose();
     _authenticationController.phoneController.dispose();
     _authenticationController.passwordController.dispose();

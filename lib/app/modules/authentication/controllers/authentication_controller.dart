@@ -17,6 +17,7 @@ class AuthenticationController extends GetxController {
   RxBool isLoading = false.obs;
   LatLng? currentLocation;
   String? currentAddress;
+  String? phoneNumber;
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -27,7 +28,7 @@ class AuthenticationController extends GetxController {
     final role = await PrefsHelper.getString('role');
     final body = {
       "name" : nameController.text,
-      "phone" : phoneController.text,
+      "phone" : phoneNumber,
       "password" : confirmPasswordController.text,
       "longitude": currentLocation?.longitude,
       "latitude" : currentLocation?.latitude
@@ -75,7 +76,7 @@ class AuthenticationController extends GetxController {
 
     Map<String,String> body = {
       "name" : nameController.text,
-      "phone" : phoneController.text,
+      "phone" : phoneNumber??'',
       "password" : confirmPasswordController.text,
       "longitude": currentLocation?.longitude.toString()??'',
       "latitude" : currentLocation?.latitude.toString()??''
@@ -183,7 +184,7 @@ class AuthenticationController extends GetxController {
   Future<void> signIn() async {
 
     final body = {
-      "phone": phoneLoginCtrl.text.trim(),
+      "phone": phoneNumber,
       "password": passLoginCtrl.text.trim()
     };
 
