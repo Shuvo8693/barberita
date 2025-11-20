@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
@@ -18,7 +17,7 @@ class BookingManagementController extends GetxController {
   var isLoadingService = false.obs;
 
   Future<void> fetchBookingDetails() async {
-     String bookingGroupId = Get.arguments['bookingGroupId']??'';
+    String bookingGroupId = Get.arguments['bookingGroupId'] ?? '' ;
     String token = await PrefsHelper.getString('token');
 
     _networkCaller.clearInterceptors();

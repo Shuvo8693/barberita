@@ -37,7 +37,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
           }else if(userReviewData?.reviews?.isEmpty==true){
             return Center(child: Text('No review is found'));
           }
-         final userReviewGroupData = userReviewData?.reviews?.first;
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -45,7 +45,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
               Padding(
                 padding: EdgeInsets.all(20.w),
                 child: Text(
-                  'Review (${userReviewGroupData?.totalReviews??0})',
+                  'Review (${userReviewData?.totalReviews??0})',
                   style: GoogleFontStyles.h5(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
@@ -57,9 +57,9 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
               Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  itemCount: userReviewGroupData?.reviews?.length??0, // Sample count
+                  itemCount: userReviewData?.reviews?.length??0, // Sample count
                   itemBuilder: (context, index) {
-                   final  userReviewGroupIndex = userReviewGroupData?.reviews?[index];
+                   final  userReviewGroupIndex = userReviewData?.reviews?[index];
                     return Padding(
                       padding: EdgeInsets.only(bottom: 20.h),
                       child: ReviewCard(

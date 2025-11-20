@@ -13,40 +13,35 @@ class UserReviewModel {
 
   factory UserReviewModel.fromJson(Map<String, dynamic> json) {
     return UserReviewModel(
-      success: json['success'] ?? false,
-      status: json['status'] ?? 0,
-      message: json['message'] ?? '',
-      data: json['data'] != null ? UserReviewData.fromJson(json['data']) : null,
+      success: json['success'] as bool?,
+      status: json['status'] as int?,
+      message: json['message'] as String?,
+      data: json['data'] != null
+          ? UserReviewData.fromJson(json['data'])
+          : null,
     );
   }
 }
 
 class UserReviewData {
-  final List<ReviewGroup>? reviews;
+  final int? totalReviews;
+  final String? barberId;
+  final List<UserReview>? reviews;
 
-  UserReviewData({this.reviews});
+  UserReviewData({
+    this.totalReviews,
+    this.barberId,
+    this.reviews,
+  });
 
   factory UserReviewData.fromJson(Map<String, dynamic> json) {
     return UserReviewData(
+      totalReviews: json['totalReviews'] as int?,
+      barberId: json['barberId'] as String?,
       reviews: (json['reviews'] as List<dynamic>?)
-          ?.map((item) => ReviewGroup.fromJson(item))
-          .toList() ??
-          [],
-    );
-  }
-}
-
-class ReviewGroup {
-  final int? totalReviews;
-  final List<UserReview>? reviews;
-
-  ReviewGroup({this.totalReviews, this.reviews});
-
-  factory ReviewGroup.fromJson(Map<String, dynamic> json) {
-    return ReviewGroup(
-      totalReviews: json['totalReviews'] ?? 0,
-      reviews: (json['reviews'] as List<dynamic>?)
-          ?.map((item) => UserReview.fromJson(item)).toList() ?? [],
+          ?.map((e) => UserReview.fromJson(e))
+          .toList()
+          ?? [],
     );
   }
 }
@@ -72,13 +67,13 @@ class UserReview {
 
   factory UserReview.fromJson(Map<String, dynamic> json) {
     return UserReview(
-      id: json['_id'] ?? '',
-      barberId: json['barberId'] ?? '',
-      rating: json['rating'] ?? 0,
-      comment: json['comment'] ?? '',
-      createdAt: json['createdAt'] ?? '',
-      name: json['name'] ?? '',
-      image: json['image'] ?? '',
+      id: json['_id'] as String?,
+      barberId: json['barberId'] as String?,
+      rating: json['rating'] as int?,
+      comment: json['comment'] as String?,
+      createdAt: json['createdAt'] as String?,
+      name: json['name'] as String?,
+      image: json['image'] as String?,
     );
   }
 }
