@@ -13,6 +13,7 @@ class FavouriteHairdresserCard extends StatelessWidget {
   final String rating;
   final String price;
   final VoidCallback onTap;
+  final bool isShowFavourite;
 
   const FavouriteHairdresserCard({
     super.key,
@@ -23,6 +24,7 @@ class FavouriteHairdresserCard extends StatelessWidget {
     required this.rating,
     required this.price,
     required this.onTap,
+     this.isShowFavourite = false,
   });
 
   @override
@@ -58,6 +60,7 @@ class FavouriteHairdresserCard extends StatelessWidget {
                         ),
                       ),
                     ),
+                    if(isShowFavourite)
                     Icon(Icons.favorite, color: Colors.red, size: 20.sp),
                   ],
                 ),

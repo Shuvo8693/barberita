@@ -36,6 +36,9 @@ class HomeController extends GetxController {
       }
     } catch (e) {
       print(e);
+      if(!Get.isSnackbarOpen){
+        Get.snackbar('Failed to load', e.toString());
+      }
       throw NetworkException('$e');
     } finally {
       isLoadingTopBarber.value = false;
@@ -65,7 +68,7 @@ class HomeController extends GetxController {
         favouriteBarberModel.value = FavoriteBarbersModel.fromJson(response.data!);
         print(favouriteBarberModel.value);
       } else {
-        Get.snackbar('Failed', response.message ?? 'Resend otp failed');
+        // Get.snackbar('Failed', response.message ?? 'Resend otp failed');
       }
     } catch (e) {
       print(e);

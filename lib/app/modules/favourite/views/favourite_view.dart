@@ -48,6 +48,7 @@ class _FavouriteViewState extends State<FavouriteView> {
               status: favoriteDataIndex?.barberId?.isOpen == true ? 'Open now' : 'Closed now',
               rating: favoriteDataIndex?.barberId?.rating?.toStringAsFixed(1) ?? '',
               price: '\$${favoriteDataIndex?.barberId?.minPrice}-\$${favoriteDataIndex?.barberId?.maxPrice}',
+                isShowFavourite: true,
               onTap: () {
                 // Handle booking action
                 if (favoriteDataIndex?.barberId?.isOpen == false) {

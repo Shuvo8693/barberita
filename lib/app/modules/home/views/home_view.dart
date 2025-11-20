@@ -231,6 +231,7 @@ class _HomeViewState extends State<HomeView> {
                         status: favouriteFirstData?.barberId?.isOpen == true ? 'Open now' : 'Closed now',
                         rating: favouriteFirstData?.barberId?.rating?.toStringAsFixed(1) ?? '',
                         price: '\$${favouriteFirstData?.barberId?.minPrice}-\$${favouriteFirstData?.barberId?.maxPrice}',
+                        isShowFavourite: true,
                         onTap: () {
                           // Handle booking action
                           if (favouriteFirstData?.barberId?.isOpen == false) {

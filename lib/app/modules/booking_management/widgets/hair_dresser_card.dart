@@ -54,6 +54,7 @@ class BarberCard extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         // Handle tap action
+                        print(booking.userId);
                         Get.toNamed(Routes.REVIEW,arguments: {'userId':booking.userId});
                       },
                       child: buildRating(booking.rating),
