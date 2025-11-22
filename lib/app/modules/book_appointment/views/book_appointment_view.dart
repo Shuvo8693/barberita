@@ -291,6 +291,8 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
       builder: (context) {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
+
+
             return Padding(
               padding:  EdgeInsets.all(16.0.sp),
               child: Column(
@@ -327,8 +329,11 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                                   setState(() {
                                      setDataAtInitial();
                                     _bookingController.selectedDate = date;
+                                    bookedDataList = bookedDataList.where((item)=> item.date == "${date.day}/${date.month}/${date.year}" || item.date == "${date.day}-${date.month}-${date.year}" ).toList();
+
                                   });
                                   print(_bookingController.selectedDate);
+                                  print(bookedDataList);
                                 },
                               );
                             },
