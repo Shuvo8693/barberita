@@ -66,7 +66,7 @@ class CustomInfoContainer extends StatelessWidget {
             ),
           ),
         ),
-        if (hasError && errorMessage != null) ...[
+       /* if (hasError && errorMessage != null) ...[
           SizedBox(height: 8.h),
           Row(
             children: [
@@ -86,7 +86,7 @@ class CustomInfoContainer extends StatelessWidget {
               ),
             ],
           ),
-        ],
+        ],*/
       ],
     );
   }

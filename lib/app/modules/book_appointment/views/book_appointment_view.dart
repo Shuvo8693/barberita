@@ -8,6 +8,7 @@ import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
 import 'package:barberita/common/time_conflict_checker/time_conflict_checker.dart';
 import 'package:barberita/common/widgets/bottomSheet_top_line.dart';
+import 'package:barberita/common/widgets/spacing.dart';
 import 'package:flutter/material.dart' hide DatePickerTheme;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
@@ -65,7 +66,8 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
               ),
               SizedBox(height: 12.h),
               // Select Date Section
-              Text(
+
+            /*  Text(
                 'Select Date',
                 style: GoogleFontStyles.h5(
                   color: Colors.white,
@@ -102,19 +104,17 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     },
                   );
                 },
-                text: _bookingController.selectedDate != null
-                    ? DateFormat(
-                  'dd/MM/yyyy',
-                ).format(_bookingController.selectedDate!)
-                    : '15/12/2025',
+                text: _bookingController.selectedDate != null ? DateFormat('dd/MM/yyyy',
+                ).format(_bookingController.selectedDate!):'15/12/2025',
                 icon: Icons.calendar_month,
                 textColor: _bookingController.selectedDate != null
                     ? Colors.white
                     : Colors.white.withOpacity(0.5),
               ),
-              SizedBox(height: 24.h),
+              SizedBox(height: 24.h),*/
               // Select Time Section
-              Text(
+
+            /*  Text(
                 'Select Time',
                 style: GoogleFontStyles.h5(
                   color: Colors.white,
@@ -122,7 +122,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                 ),
               ),
               SizedBox(height: 12.h),
-              //====== Time picker ========
+             // ====== Time picker ========
               if(_bookingController.selectedDate!=null)
               CustomInfoContainer(
                 hasError: _hasError,
@@ -180,13 +180,13 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                 },
                 text: _bookingController.selectedTime != null
                     ? _bookingController.selectedTime!.format(context)
-                    : '10:04AM - 12:00PM',
+                    : '10:04AM',
                 textColor: _bookingController.selectedTime != null
                     ? Colors.white
                     : Colors.white.withOpacity(0.5),
                 icon: Icons.access_time,
               ),
-              SizedBox(height: 24.h),
+              SizedBox(height: 24.h),*/
               // Address Section
               Text(
                 'Address',
@@ -269,14 +269,18 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
   @override
   void dispose() {
     super.dispose();
-    _bookingController.selectedDate == null;
-    _bookingController.selectedTime == null;
-    _bookingController.selectedAddress == null;
+    _bookingController.selectedDate = null;
+    _bookingController.selectedTime = null;
+    _bookingController.selectedAddress = null;
     _hasError = false;
   }
 
  // ================== Show date time bottom sheet ==============
-
+  setDataAtInitial(){
+    _bookingController.selectedTime = null ;
+    _errorMessage ='';
+    _hasError =false;
+  }
   void _showDateTimeBottomSheet(BuildContext context, List<BookedData> bookedDataList) {
     showModalBottomSheet(
       context: context,
@@ -285,38 +289,178 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (context) {
-        return Padding(
-          padding:  EdgeInsets.all(16.0.sp),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BottomSheetTopLine(),
-              Text(
-                "Booked Dates & Times",
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+        return StatefulBuilder(
+          builder: (BuildContext context, void Function(void Function()) setState) {
+            return Padding(
+              padding:  EdgeInsets.all(16.0.sp),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  BottomSheetTopLine(),
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      children: [
+                        // =========== Date picker ==========
+                        Expanded(
+                          child: CustomInfoContainer(
+                            onTap: () {
+                              DatePicker.showDatePicker(
+                                context,
+                                showTitleActions: true,
+                                minTime: DateTime.now(),
+                                maxTime: DateTime.now().add(const Duration(days: 365)),
+                                currentTime:
+                                _bookingController.selectedDate ?? DateTime.now(),
+                                locale: LocaleType.en,
+                                theme: const DatePickerTheme(
+                                  backgroundColor: Color(0xFF2C2C2E),
+                                  itemStyle: TextStyle(color: Colors.white, fontSize: 18),
+                                  doneStyle: TextStyle(
+                                    color: Color(0xFFE6C4A3),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  cancelStyle: TextStyle(color: Colors.grey),
+                                ),
+                                onConfirm: (date) {
+                                  setState(() {
+                                     setDataAtInitial();
+                                    _bookingController.selectedDate = date;
+                                  });
+                                  print(_bookingController.selectedDate);
+                                },
+                              );
+                            },
+                            text: _bookingController.selectedDate != null ? DateFormat('dd/MM/yyyy',
+                            ).format(_bookingController.selectedDate!) : '15/12/2025',
+                            icon: Icons.calendar_month,
+                            textColor: _bookingController.selectedDate != null
+                                ? Colors.white
+                                : Colors.white.withOpacity(0.5),
+                          ),
+                        ),
+                        SizedBox(width: 8.w),
+                        // =========== Time picker ==========
+                        if(_bookingController.selectedDate!=null)
+                          Expanded(
+                            child: CustomInfoContainer(
+                              hasError: _hasError,
+                              errorMessage: _errorMessage,
+                              onTap: () {
+                                DatePicker.showTimePicker(
+                                  context,
+                                  showTitleActions: true,
+                                  currentTime:  _bookingController.selectedTime != null ? DateTime(
+                                    _bookingController.selectedDate!.year, _bookingController.selectedDate!.month,
+                                    _bookingController.selectedDate!.day,_bookingController.selectedTime?.hour??0,0,
+                                  ) : DateTime(_bookingController.selectedDate!.year, _bookingController.selectedDate!.month,
+                                      _bookingController.selectedDate!.day,_bookingController.selectedTime?.hour??0,0),
+                                  locale: LocaleType.en,
+                                  theme:  DatePickerTheme(
+                                    backgroundColor: Color(0xFF2C2C2E),
+                                    itemStyle: TextStyle(color: Colors.white, fontSize: 18.sp),
+                                    doneStyle: TextStyle(
+                                      color: Color(0xFFE6C4A3),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    cancelStyle: TextStyle(color: Colors.grey),
+                                  ),
+
+                                  onConfirm: (dateTime) {
+                                    setState(() {
+                                      _hasError = false;
+                                      _errorMessage = '';
+                                    });
+                                    print(dateTime);
+                                    final result = checkTimeConflict(DateTime(dateTime.year,dateTime.month,dateTime.day,dateTime.hour), bookedDataList);
+                                    final isHasError = result['hasError'];
+                                    final isErrorMessage = result['errorMessage'];
+                                    if(!isHasError && isErrorMessage == null){
+                                      setState(() {
+                                        _bookingController.selectedTime = TimeOfDay(
+                                          hour: dateTime.hour,
+                                          minute: 0,
+                                        );
+                                      });
+                                      print(_bookingController.selectedTime);
+                                    }else{
+                                      setState(() {
+                                        _bookingController.selectedTime = TimeOfDay(
+                                          hour: dateTime.hour,
+                                          minute: 0,
+                                        );
+                                        _hasError = isHasError;
+                                        _errorMessage = isErrorMessage;
+                                      });
+
+                                    }
+                                  },
+                                );
+                              },
+                              text: _bookingController.selectedTime != null
+                                  ? _bookingController.selectedTime!.format(context)
+                                  : '00 :00 AM',
+                              textColor: _bookingController.selectedTime != null
+                                  ? Colors.white
+                                  : Colors.white.withOpacity(0.5),
+                              icon: Icons.access_time,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  if (_hasError && _errorMessage.isNotEmpty) ...[
+                    SizedBox(height: 8.h),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          color: Colors.red,
+                          size: 16.sp,
+                        ),
+                        SizedBox(width: 4.w),
+                        Expanded(
+                          child: Text(
+                            _errorMessage,
+                            style: GoogleFontStyles.h5(
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                  verticalSpacing(5.h),
+                  Text(
+                    "Booked Dates & Times",
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  // SizedBox(height: 8.h),
+                  Expanded(
+                    flex: 4,
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: bookedDataList.length,
+                      separatorBuilder: (_, __) => const Divider(),
+                      itemBuilder: (context, index) {
+                        final item = bookedDataList[index];
+                        return ListTile(
+                          leading: const Icon(Icons.calendar_today_outlined),
+                          title: Text(item.date ?? ''),
+                          subtitle: Text(item.time ?? ''),
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                ],
               ),
-               SizedBox(height: 12.h),
-              Expanded(
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  itemCount: bookedDataList.length,
-                  separatorBuilder: (_, __) => const Divider(),
-                  itemBuilder: (context, index) {
-                    final item = bookedDataList[index];
-                    return ListTile(
-                      leading: const Icon(Icons.calendar_today_outlined),
-                      title: Text(item.date ?? ''),
-                      subtitle: Text(item.time ?? ''),
-                    );
-                  },
-                ),
-              ),
-               SizedBox(height: 10.h),
-            ],
-          ),
+            );
+          },
         );
       },
     );

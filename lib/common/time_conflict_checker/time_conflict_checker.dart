@@ -4,14 +4,14 @@ import 'package:barberita/app/modules/hairdresser_details/model/booked_model.dar
 Map<String, dynamic> checkTimeConflict(
     DateTime? selectedDateTime,
     List<BookedData> bookedSlots,
-    ) {
+    ){
   if (selectedDateTime == null) {
     return {'hasError': false, 'errorMessage': null};
   }
 
   try {
     // Selected time slot: selectedDateTime to selectedDateTime + 1 hour
-    DateTime selectedEndTime = selectedDateTime.add(Duration(hours: 1));
+    DateTime selectedEndTime = selectedDateTime.add(Duration(hours: 2));
 
     // Check each booked slot for conflicts (only accepted bookings)
     for (var slot in bookedSlots) {
@@ -36,7 +36,7 @@ Map<String, dynamic> checkTimeConflict(
         return {
           'hasError': true,
           'errorMessage':
-          'This time slot conflicts with an existing booking at $conflictTime. Service requires 1 hour.'
+          'This time slot conflicts with an existing booking at $conflictTime. Service requires 2 hour.'
         };
       }
     }
