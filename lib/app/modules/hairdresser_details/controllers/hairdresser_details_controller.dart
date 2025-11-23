@@ -1,3 +1,5 @@
+
+import 'dart:ui';
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
 import 'package:barberita/app/modules/hairdresser_details/model/barber_details_model.dart';
@@ -79,4 +81,39 @@ class HairdresserDetailsController extends GetxController {
       isLoadingBarberReview.value = false;
     }
   }
+
+  /// ============================ favourite toggle ==========================
+
+  var isLoadingFavourite = false.obs;
+  bool isFavourite = false;
+
+  Future<void> toggleFavourite({VoidCallback? onTap}) async {
+    String barberId = Get.arguments['barberId']??'';
+    String token = await PrefsHelper.getString('token');
+
+    _networkCaller.clearInterceptors();
+    _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
+    _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
+    _networkCaller.addResponseInterceptor(LoggingInterceptor());
+
+    try {
+      isLoadingFavourite.value = true;
+      final response = await _networkCaller.post<Map<String, dynamic>>(
+        endpoint:ApiConstants.favouriteToggleUrl(barberId: barberId),
+        timeout: Duration(seconds: 10),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+      if (response.isSuccess && response.data != null) {
+        onTap?.call();
+      } else {
+        Get.snackbar('Failed', response.message??'');
+      }
+    } catch (e) {
+      print(e);
+      throw NetworkException('$e');
+    } finally {
+      isLoadingFavourite.value = false;
+    }
+  }
+
 }

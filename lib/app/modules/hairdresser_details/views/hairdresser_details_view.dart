@@ -36,9 +36,6 @@ class _HairdresserDetailsViewState extends State<HairdresserDetailsView> with Si
   }
 
 
-
-
-
   @override
   void dispose() {
     _tabController.dispose();
@@ -81,10 +78,13 @@ class _HairdresserDetailsViewState extends State<HairdresserDetailsView> with Si
                         ),
                         const Spacer(),
                         GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isFavorite = !isFavorite;
+                          onTap: () async{
+                           await _hairdresserDetailsController.toggleFavourite(onTap: (){
+                              setState(() {
+                                isFavorite = !isFavorite;
+                              });
                             });
+
                           },
                           child: Container(
                             padding: EdgeInsets.all(8.w),

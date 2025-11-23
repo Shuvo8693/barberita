@@ -59,7 +59,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
               SizedBox(height: 12.h),
               CustomInfoContainer(
                 onTap: (){
-                  _showDateTimeBottomSheet(context, bookedDataList);
+                  _showDateTimeBottomSheet(context);
                 },
                 text: 'Tap to see this barber bookings',
                 icon: Icons.book_outlined,
@@ -281,7 +281,8 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
     _errorMessage ='';
     _hasError =false;
   }
-  void _showDateTimeBottomSheet(BuildContext context, List<BookedData> bookedDataList) {
+  void _showDateTimeBottomSheet(BuildContext context) {
+    List<BookedData> bookedDataList = [] ;
     showModalBottomSheet(
       context: context,
       backgroundColor: AppColors.secondaryAppColor,
@@ -291,8 +292,6 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
       builder: (context) {
         return StatefulBuilder(
           builder: (BuildContext context, void Function(void Function()) setState) {
-
-
             return Padding(
               padding:  EdgeInsets.all(16.0.sp),
               child: Column(
@@ -329,7 +328,8 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                                   setState(() {
                                      setDataAtInitial();
                                     _bookingController.selectedDate = date;
-                                    bookedDataList = bookedDataList.where((item)=> item.date == "${date.day}/${date.month}/${date.year}" || item.date == "${date.day}-${date.month}-${date.year}" ).toList();
+                                      bookedDataList = _bookingController.bookedModel.value.data??[];
+                                    bookedDataList = bookedDataList.where((item)=> item.date == "${date.day.toString().padLeft(2,'0')}/${date.month.toString().padLeft(2,'0')}/${date.year}" || item.date == "${date.day.toString().padLeft(2,'0')}-${date.month.toString().padLeft(2,'0')}-${date.year}" ).toList();
 
                                   });
                                   print(_bookingController.selectedDate);

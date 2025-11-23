@@ -20,6 +20,7 @@ static String verifyForgotOtpUrl(String userMail) =>  '/api/v1/user/verify-forge
 static String searchMechanicUrl(String service) =>  '/api/v1/mechanic/all?serviceName=$service';
 static String barberDetailsUrl({String? barberId}) =>  '/api/v1/barber/get-barber-information-as-customer/$barberId';
 static String barberReviewUrl({String? barberId}) =>  '/api/v1/review/barber-reviews/$barberId';
+static String favouriteToggleUrl({String? barberId}) =>  '/api/v1/favorite/toggle-fav-barber/$barberId';
 static String barberServiceUrl({String? barberId}) =>  '/api/v1/barber/barber-services?barberId=$barberId';
 static String bookedServiceInfoUrl({String? barberId}) =>  '/api/v1/barber/barber-not-available/$barberId';
 static String barberAddedServicesUrl({String? barberId}) =>  '/api/v1/barber/barber-services?barberId=$barberId';
