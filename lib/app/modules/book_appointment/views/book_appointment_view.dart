@@ -498,26 +498,26 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                 ),
                 SizedBox(height: 20.h),
 
-                ListTile(
-                  leading: Icon(
-                    Icons.my_location,
-                    color: const Color(0xFFE6C4A3),
-                  ),
-                  title: Text(
-                    'Use Current Location',
-                    style: GoogleFontStyles.h5(color: Colors.white),
-                  ),
-                  onTap: () async {
-                    final result = await Get.toNamed(
-                      Routes.LOCATIONSELECTORMAP,
-                    );
-                    Get.back();
-                    print(result);
-                    _bookingController.currentLocation = result['latLng'];
-                    _bookingController.selectedAddress = result['address'];
-                    setState(() {});
-                  },
-                ),
+                // ListTile(
+                //   leading: Icon(
+                //     Icons.my_location,
+                //     color: const Color(0xFFE6C4A3),
+                //   ),
+                //   title: Text(
+                //     'Use Current Location',
+                //     style: GoogleFontStyles.h5(color: Colors.white),
+                //   ),
+                //   onTap: () async {
+                //     final result = await Get.toNamed(
+                //       Routes.LOCATIONSELECTORMAP,
+                //     );
+                //     Get.back();
+                //     print(result);
+                //     _bookingController.currentLocation = result['latLng'];
+                //     _bookingController.selectedAddress = result['address'];
+                //     setState(() {});
+                //   },
+                // ),
 
                 ListTile(
                   leading: Icon(
@@ -526,7 +526,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                   ),
                   title: Text(
                     'Choose on Map',
-                    style: GoogleFontStyles.h5(color: Colors.white),
+                    style: GoogleFontStyles.h4(color: Colors.white),
                   ),
                   onTap: () async {
                     final result = await Get.toNamed(
