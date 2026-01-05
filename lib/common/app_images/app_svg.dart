@@ -1,6 +1,7 @@
 class AppSvg{
   static String baseUrl="assets/svg";
-  static String barbaritaLogoSvg="$baseUrl/barbaritalogo.svg";
+  // static String barbaritaLogoSvg="$baseUrl/barbaritalogo.svg";
+  static String barbaritaLogoSvg="$baseUrl/barber_logoSvg.svg";
   static String appointmentSvg="$baseUrl/appointment_view.svg";
   static String enjoy_viewSvg="$baseUrl/enjoy_view.svg";
   static String explore_viewSvg="$baseUrl/explore_view.svg";

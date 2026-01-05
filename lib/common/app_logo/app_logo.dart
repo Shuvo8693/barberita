@@ -10,7 +10,8 @@ class AppLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(50.r),
+        borderRadius: BorderRadius.circular(35.r),
+        clipBehavior: Clip.antiAlias,
         child: ExtractBase64ImageWidget(svgAssetPath: AppSvg.barbaritaLogoSvg,height: height ?? 120.h));
   }
 }

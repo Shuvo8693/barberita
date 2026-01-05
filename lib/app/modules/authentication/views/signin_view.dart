@@ -1,9 +1,11 @@
 
+import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/biometric/biometric_auth_service.dart';
 import 'package:barberita/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:barberita/app/modules/authentication/controllers/biometric_controller.dart';
 import 'package:barberita/app/modules/authentication/views/verify_phone_view.dart';
 import 'package:barberita/app/routes/app_pages.dart';
+import 'package:barberita/common/app_images/app_images.dart';
 import 'package:barberita/common/app_logo/app_logo.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
@@ -16,7 +18,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:barberita/common/widgets/custom_text_field.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+
+import '../../../../common/app_images/app_svg.dart';
 
 class SignInView extends StatefulWidget {
   const SignInView({super.key});
@@ -58,6 +63,7 @@ class _SignInViewState extends State<SignInView> {
                 children: [
                   SizedBox(height: 30.h),
                   // Logo
+                  // Image.asset(AppImage.barberLogoImg,height: 120.h),
                   AppLogo(),
                   SizedBox(height: 50.h),
                   // Form Fields

@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return GetBuilder<ThemeController>(
         builder: (themeController) {
           return ScreenUtilInit(

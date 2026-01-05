@@ -13,7 +13,6 @@ import 'package:flutter/material.dart' hide DatePickerTheme;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 
