@@ -6,6 +6,7 @@ import 'package:barberita/app/data/network_caller.dart';
 import 'package:barberita/app/modules/customer_profile/model/user_info_model.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/file_picker/file_picker_service.dart';
+import 'package:barberita/common/jwt_decoder/jwt_decoder.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide MultipartFile;
@@ -17,15 +18,19 @@ class CustomerProfileController extends GetxController {
 
   Future<void> logout() async {
     String token = await PrefsHelper.getString('token');
+    final response = decodeJWT(token);
+    String  userId = response['id'];
 
+
+    _networkCaller.clearInterceptors();
     _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
     _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
     _networkCaller.addResponseInterceptor(LoggingInterceptor());
     try {
       isLoadingLogOut.value = true;
       final response = await _networkCaller.get<Map<String, dynamic>>(
-        endpoint: ApiConstants.logOutUrl,
-        timeout: Duration(seconds: 10),
+        endpoint: ApiConstants.logOutUrl(userId: userId),
+        timeout: Duration(seconds: 15),
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
@@ -35,7 +40,7 @@ class CustomerProfileController extends GetxController {
           Get.offAllNamed(Routes.SPLASH);
         });
       } else {
-        String message = response.data!['message'];
+        String message = response.data?['message']??'';
         if(message.contains('expired')){
           Get.offAllNamed(Routes.SIGNIN);
         }else{

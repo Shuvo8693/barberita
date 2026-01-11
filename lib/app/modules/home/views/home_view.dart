@@ -89,12 +89,12 @@ class _HomeViewState extends State<HomeView> {
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                    // Text(
-                                    //   '112/23 Park Street',
-                                    //   style: GoogleFontStyles.h6(
-                                    //     color: Colors.white.withOpacity(0.7),
-                                    //   ),
-                                    // ),
+                                    Text(
+                                      '112/23 Park Street', ///=============================
+                                      style: GoogleFontStyles.h6(
+                                        color: Colors.white.withOpacity(0.7),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),

@@ -36,7 +36,7 @@ static String allMechanicUrl({int? currentPage, int? limit}) =>  '/api/v1/mechan
 static String nearbyBarbersUrl({String? name, bool? isNearby}) =>  '/api/v1/barber/get-barbers?search=$name&nearby=$isNearby';
 
 static String phoneSendUrl= '/api/v1/auth/forget-password';
-static String logOutUrl= '/api/v1/auth/logout';
+static String logOutUrl({String? userId})=> '/api/v1/auth/logout/$userId';
 static String verifyEmailWithOtpUrl= '/api/v1/auth/verify-email';
 static String resendOtpUrl= '/api/v1/auth/resend-otp';
 static String logInUrl= '/api/v1/auth/login';
