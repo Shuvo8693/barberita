@@ -85,7 +85,7 @@ class _BottomMenuState extends State<BottomMenu> {
             type: BottomNavigationBarType.fixed, // Prevents shifting behavior
             backgroundColor: Colors.transparent ,
             selectedItemColor: AppColors.white,
-            unselectedItemColor: Colors.white, // Inactive item color
+            unselectedItemColor: AppColors.primaryColor, // Inactive item color
             showUnselectedLabels: true,
             showSelectedLabels: true,
             unselectedIconTheme: IconThemeData(color: Colors.black),
@@ -111,7 +111,7 @@ class _BottomMenuState extends State<BottomMenu> {
         iconPath,
         height: 28.0.h,
         width: 28.0.w,
-        colorFilter: const ColorFilter.mode(AppColors.greyColor, BlendMode.srcIn), // Inactive icon color
+        colorFilter: const ColorFilter.mode(AppColors.primaryColor, BlendMode.srcIn), // Inactive icon color
       ),
       activeIcon: SvgPicture.asset(
         iconPath,

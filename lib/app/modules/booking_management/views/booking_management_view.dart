@@ -7,9 +7,7 @@ import 'package:barberita/common/jwt_decoder/payload_value.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:barberita/common/widgets/custom_page_loading.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class BookingManagementView extends StatefulWidget {
   const BookingManagementView({super.key});
