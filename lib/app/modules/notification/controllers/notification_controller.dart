@@ -31,6 +31,7 @@ class NotificationController extends GetxController {
       if (response.isSuccess && response.data != null) {
         notificationModel.value = NotificationModel.fromJson( response.data!);
         print(notificationModel.value);
+       await fetchBadgeCount();
 
       } else {
         Get.snackbar('Failed', response.message!);

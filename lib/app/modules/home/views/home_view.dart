@@ -61,7 +61,7 @@ class _HomeViewState extends State<HomeView> {
                   // Profile Header
                   Obx((){
                     UnreadLatestData? unreadLatestData = _notificationController.unreadAndLatestNotificationModel.value.data;
-                    final badgeCount =unreadLatestData?.unreadCount??0;
+                    final badgeCount = unreadLatestData?.unreadCount??0;
                     return Padding(
                       padding: EdgeInsets.all(12.w),
                       child: Column(
