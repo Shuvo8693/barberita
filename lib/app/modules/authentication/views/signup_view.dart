@@ -36,7 +36,12 @@ class _SignUpViewState extends State<SignUpView> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            if (Get.currentRoute == Routes.SIGNUP) {
+              _authenticationController.clearFields();
+                Get.back();
+            }
+          } ,
           icon: Icon(
             Icons.arrow_back_ios,
             color: Colors.white,
@@ -246,16 +251,6 @@ class _SignUpViewState extends State<SignUpView> {
     );
   }
 
-  @override
-  void dispose() {
-    _authenticationController.phoneNumber = '';
-    _authenticationController.nameController.dispose();
-    _authenticationController.phoneController.dispose();
-    _authenticationController.passwordController.dispose();
-    _authenticationController.confirmPasswordController.dispose();
-    super.dispose();
-  }
-
 
   void _showLocationBottomSheet() {
     showModalBottomSheet(
@@ -267,17 +262,17 @@ class _SignUpViewState extends State<SignUpView> {
       builder: (context) {
         return LocationSelectorBottomSheet(
           buttons: [
-            ListTile(
-              leading: Icon(Icons.my_location, color: Color(0xFFE6C4A3)),
-              title: Text('Use Current Location', style: GoogleFontStyles.h5(color: Colors.white)),
-              onTap: () async{
-               final result = await Get.toNamed(Routes.LOCATIONSELECTORMAP);
-               print(result);
-               _authenticationController.currentLocation = result['latLng'];
-               _authenticationController.currentAddress = result['address'];
-               setState(() {});
-              },
-            ),
+            // ListTile(
+            //   leading: Icon(Icons.my_location, color: Color(0xFFE6C4A3)),
+            //   title: Text('Use Current Location', style: GoogleFontStyles.h5(color: Colors.white)),
+            //   onTap: () async{
+            //    final result = await Get.toNamed(Routes.LOCATIONSELECTORMAP);
+            //    print(result);
+            //    _authenticationController.currentLocation = result['latLng'];
+            //    _authenticationController.currentAddress = result['address'];
+            //    setState(() {});
+            //   },
+            // ),
             ListTile(
               leading: Icon(Icons.location_on, color: Color(0xFFE6C4A3)),
               title: Text('Choose on Map', style: GoogleFontStyles.h5(color: Colors.white)),

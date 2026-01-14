@@ -125,7 +125,24 @@ class AuthenticationController extends GetxController {
       isLoading.value = false;
     }
   }
+  @override
+  void onClose() {
+    // Dispose here instead
+    phoneNumber = '';
+    nameController.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.onClose();
+  }
 
+  void clearFields() {
+    phoneNumber = '';
+    nameController.clear();
+    phoneController.clear();
+    passwordController.clear();
+    confirmPasswordController.clear();
+  }
   /// ====================== Verify phone =================================
 
   TextEditingController verifyPhoneCtrl = TextEditingController();
