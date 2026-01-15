@@ -14,6 +14,7 @@ class BookingStatusController extends GetxController {
   Future<void> fetchBookingStatus({String? bookingStatus}) async {
     String token = await PrefsHelper.getString('token');
 
+
     _networkCaller.clearInterceptors();
     _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
     _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));

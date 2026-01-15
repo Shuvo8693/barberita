@@ -1,3 +1,4 @@
+import 'package:barberita/app/modules/booking/controllers/booking_status_controller.dart';
 import 'package:barberita/app/modules/booking/widgets/review_history_card.dart';
 import 'package:barberita/app/modules/booking_management/controllers/booking_management_controller.dart';
 import 'package:barberita/app/modules/booking_management/widgets/order_rejection_dialouge.dart';
@@ -55,10 +56,15 @@ class BookingManagementWidget extends StatelessWidget {
                       SizedBox(height: 24.h),
                       OrderDetailsCard(booking: booking),
                       SizedBox(height: 24.h),
+                      // if (userRole.isNotEmpty) ...[
+                      //   userRole == 'customer'
+                      //       ? BookingStatusCard(statuses: booking.statuses) // booking progress card
+                      //       : isOrderInPending? _buildOrderConfirmation(context,orderId: booking.orderId) : SizedBox.shrink(),
+                      // ],
+                      /// ============ booking progress card and order confirmation ============
                       if (userRole.isNotEmpty) ...[
-                        userRole == 'customer'
-                            ? BookingStatusCard(statuses: booking.statuses) // booking progress card
-                            : isOrderInPending? _buildOrderConfirmation(context,orderId: booking.orderId) : SizedBox.shrink(),
+                             isOrderInPending? _buildOrderConfirmation(context,orderId: booking.orderId)
+                                 : BookingStatusCard(statuses: booking.statuses), // ====== booking progress card =====
                       ],
                       SizedBox(height: 32.h),
 
@@ -102,6 +108,7 @@ class BookingManagementWidget extends StatelessWidget {
 
   Widget _buildOrderConfirmation(BuildContext context, {String? orderId}) {
      final bookingManagementController = Get.put(BookingManagementController());
+
     return Row(
       children: [
         //=== confirm ===

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
+import 'package:barberita/app/modules/booking/controllers/booking_status_controller.dart';
 import 'package:barberita/app/modules/booking_management/model/booking_details_model.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/jwt_decoder/payload_value.dart';
@@ -110,9 +111,13 @@ class BookingManagementController extends GetxController {
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
+         await Get.put(BookingStatusController()).fetchBookingStatus(bookingStatus: 'barber-pending-bookings');
          Get.snackbar('Successfully', response.data?['message'] ?? 'You successfully updated the pending order' );
+         Get.offAllNamed(Routes.BARBER_HOME);
       } else {
-        Get.snackbar('Failed', response.message!);
+        if(!Get.isSnackbarOpen){
+          Get.snackbar('Failed', response.message!);
+        }
       }
     } catch (e) {
       print(e);

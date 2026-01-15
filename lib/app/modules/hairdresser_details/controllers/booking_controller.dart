@@ -95,7 +95,7 @@ class BookingController extends GetxController {
         String bookingGroupId = bookingData.first['bookingGroupId']??'';
         Get.toNamed(Routes.BOOKING_MANAGEMENT,arguments: {'bookingGroupId':bookingGroupId});
         Get.snackbar('Success', response.message ?? 'Your booking awaits the barber’s approval and will begin once accepted.');
-
+         clearData();
       } else {
         Get.snackbar('Failed', response.message ?? '');
       }
@@ -105,6 +105,11 @@ class BookingController extends GetxController {
     } finally {
       isLoadingBooking.value = false;
     }
+  }
+
+  clearData(){
+    selectedDate = null;
+    selectedTime = null;
   }
 
  /// ================= fetch book info fro book appointment view page ===============
