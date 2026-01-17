@@ -4,8 +4,10 @@ import 'dart:ui';
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
 import 'package:barberita/app/modules/barber_add_service/model/barber_added_service_model.dart';
+import 'package:barberita/app/modules/barber_add_service/model/service_response_model.dart';
 import 'package:barberita/app/modules/barber_home/model/user_review_model.dart';
 import 'package:barberita/app/modules/customer_profile/controllers/customer_profile_controller.dart';
+import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/jwt_decoder/payload_value.dart';
 
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
@@ -52,6 +54,53 @@ class BarberAddServiceController extends GetxController {
     }
   }
 
+  /// ================= fetch baber service ===================
+  Rx<ServiceResponseModel> serviceResponseModel = ServiceResponseModel().obs;
+  var isLoadingService = false.obs;
+
+  Future<void> fetchService() async {
+    String token = await PrefsHelper.getString('token');
+    final result = await getPayloadValue();
+    final myId = result['userId'];
+
+    String serviceId = Get.arguments['serviceId']??'';
+    // bool isEdit = Get.arguments['isEdit']??false;
+
+    _networkCaller.clearInterceptors();
+    _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
+    _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
+    _networkCaller.addResponseInterceptor(LoggingInterceptor());
+
+    try {
+      isLoadingService.value = true;
+      final response = await _networkCaller.get<Map<String, dynamic>>(
+        endpoint:ApiConstants.barberServicesUrl(serviceId: serviceId),
+        timeout: Duration(seconds: 15),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+      if (response.isSuccess && response.data != null) {
+        serviceResponseModel.value = ServiceResponseModel.fromJson(response.data!);
+        Service? service = serviceResponseModel.value.data?.service;
+        if (service != null) {
+          serviceNameController.text = service.serviceName ?? '';
+          priceController.text = service.price.toString();
+          descriptionController.text = service.description ?? '';
+          serviceImagePath = service.serviceImage;
+        }
+
+      } else {
+        if(!Get.isSnackbarOpen){
+          Get.snackbar('Failed', response.message!);
+        }
+      }
+    } catch (e) {
+      print(e);
+      throw NetworkException('$e');
+    } finally {
+      isLoadingService.value = false;
+    }
+  }
+
   /// ======================add barber service ===================
 
   final TextEditingController serviceNameController = TextEditingController();
@@ -59,6 +108,7 @@ class BarberAddServiceController extends GetxController {
   final TextEditingController descriptionController = TextEditingController();
    String? serviceImagePath;
   var isLoadingAddService = false.obs;
+
   Future<void> addBarberServices() async {
     String token = await PrefsHelper.getString('token');
     final result = await getPayloadValue();
@@ -105,6 +155,9 @@ class BarberAddServiceController extends GetxController {
       );
       if (response.isSuccess && response.data != null) {
         Get.snackbar('Successful', response.message??  (!isEdit ?' Successfully added service':'Successfully updated service'));
+        await fetchAddedServices();
+        clearController();
+        Get.offAllNamed(Routes.SERVICEMANAGEMENT);
       } else {
         Get.snackbar('Failed', response.message!);
       }
@@ -115,6 +168,8 @@ class BarberAddServiceController extends GetxController {
       isLoadingAddService.value = false;
     }
   }
+
+
   /// ==================== toggleBarber individual service status ==========
   var isLoadingServiceToggle = false.obs;
   Future<void> toggleServicesStatus({String? serviceId,VoidCallback? voidCallBack}) async {
@@ -147,12 +202,14 @@ class BarberAddServiceController extends GetxController {
     }
   }
 
-  @override
-  void onClose() {
-    serviceNameController.dispose();
-    priceController.dispose();
-    descriptionController.dispose();
-    super.onClose();
+  clearController() {
+    serviceNameController.clear();
+    priceController.clear();
+    descriptionController.clear();
+    serviceImagePath = null;
   }
+
+
+
 }
 

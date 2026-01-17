@@ -24,6 +24,7 @@ static String favouriteToggleUrl({String? barberId}) =>  '/api/v1/favorite/toggl
 static String barberServiceUrl({String? barberId}) =>  '/api/v1/barber/barber-services?barberId=$barberId';
 static String bookedServiceInfoUrl({String? barberId}) =>  '/api/v1/barber/barber-not-available/$barberId';
 static String barberAddedServicesUrl({String? barberId}) =>  '/api/v1/barber/barber-services?barberId=$barberId';
+static String barberServicesUrl({String? serviceId}) =>  '/api/v1/barber/service/$serviceId';
 static String barberServiceToggleUrl({String? serviceId}) =>  '/api/v1/barber/change-service-status/$serviceId';
 static String bookingDetailsUrl({String? bookingGroupId}) =>  '/api/v1/booking/get-booking-details/$bookingGroupId';
 static String orderConfirmationUrl({String? bookingGroupId}) =>  '/api/v1/booking/update-booking-status/$bookingGroupId';

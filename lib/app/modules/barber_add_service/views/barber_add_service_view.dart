@@ -20,7 +20,20 @@ class BarberAddServiceView extends StatefulWidget {
 }
 
 class _BarberAddServiceViewState extends State<BarberAddServiceView> {
-final BarberAddServiceController _addServiceController = Get.put(BarberAddServiceController());
+final _addServiceController = Get.find<BarberAddServiceController>();
+
+  @override
+  void initState() {
+    super.initState();
+    serviceUpdate();
+  }
+ serviceUpdate()async{
+   bool isEdit = Get.arguments['isEdit']??false;
+   if(isEdit){
+    await _addServiceController.fetchService();
+   }
+ }
+
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +92,14 @@ final BarberAddServiceController _addServiceController = Get.put(BarberAddServic
       ),
     );
   }
- /// === todo: Need to placement this method and also refactored
+@override
+void dispose() {
+  _addServiceController.clearController();
+  super.dispose();
+}
+
+
+/// === todo: Need to placement this method and also refactored
   Widget _buildImagePickerContainer() {
     return GestureDetector(
       onTap: _pickImage,
