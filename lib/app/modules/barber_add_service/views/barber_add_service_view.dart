@@ -1,8 +1,10 @@
 
+import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/modules/barber_add_service/controllers/barber_add_service_controller.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/bottom_menu/bottom_menu..dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -25,7 +27,10 @@ final _addServiceController = Get.find<BarberAddServiceController>();
   @override
   void initState() {
     super.initState();
-    serviceUpdate();
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
+     await serviceUpdate();
+    });
+
   }
  serviceUpdate()async{
    bool isEdit = Get.arguments['isEdit']??false;
@@ -114,43 +119,103 @@ void dispose() {
             width: 1,
           ),
         ),
-        child: _addServiceController.serviceImagePath != null
-            ? Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12.r),
-              child: Image.file(
-                File(_addServiceController.serviceImagePath!),
-                width: double.infinity,
-                height: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return _buildEmptyContainer();
-                },
-              ),
-            ),
-            Positioned(
-              top: 12.h,
-              right: 12.w,
-              child: GestureDetector(
-                onTap: _removeImage,
-                child: Container(
-                  padding: EdgeInsets.all(8.w),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.7),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(Icons.close, color: Colors.white, size: 20.sp),
-                ),
-              ),
-            ),
-          ],
-        )
-            : _buildEmptyContainer(),
+        child: Obx((){
+          if(_addServiceController.isLoadingService.value){
+            return Center(child: CupertinoActivityIndicator());
+          }
+          // Check if user selected a new local image
+          String? localImage = _addServiceController.localServiceImagePath;
+          // Check if there's an existing image from server
+          String? serverImage = _addServiceController.serviceImageUrl?.value;
+
+          // Priority: Show local image if selected, otherwise show server image
+          if (localImage != null && localImage.isNotEmpty) {
+            return _buildLocalImage(localImage);
+          } else if (serverImage != null && serverImage.isNotEmpty) {
+            return _buildNetworkImage(serverImage);
+          } else {
+            return _buildEmptyContainer();
+          }
+        })
+
       ),
     );
   }
+// Widget for local file image
+  Widget _buildLocalImage(String imagePath) {
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12.r),
+          child: Image.file(
+            File(imagePath),
+            width: double.infinity,
+            height: double.infinity,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return _buildEmptyContainer();
+            },
+          ),
+        ),
+        Positioned(
+          top: 12.h,
+          right: 12.w,
+          child: GestureDetector(
+            onTap: _removeImage,
+            child: Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.7),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.close, color: Colors.white, size: 20.sp),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
+// Widget for network URL image
+  Widget _buildNetworkImage(String imageUrl) {
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12.r),
+          child: Image.network(
+            "${ApiConstants.baseUrl}$imageUrl",
+            width: double.infinity,
+            height: double.infinity,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Center(
+                child: CupertinoActivityIndicator(),
+              );
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return _buildEmptyContainer();
+            },
+          ),
+        ),
+        // Positioned(
+        //   top: 12.h,
+        //   right: 12.w,
+        //   child: GestureDetector(
+        //     onTap: _removeImage,
+        //     child: Container(
+        //       padding: EdgeInsets.all(8.w),
+        //       decoration: BoxDecoration(
+        //         color: Colors.black.withOpacity(0.7),
+        //         shape: BoxShape.circle,
+        //       ),
+        //       child: Icon(Icons.close, color: Colors.white, size: 20.sp),
+        //     ),
+        //   ),
+        // ),
+      ],
+    );
+  }
   Widget _buildEmptyContainer() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -262,7 +327,7 @@ void dispose() {
 
       if (image != null) {
         setState(() {
-          _addServiceController.serviceImagePath = image.path;
+          _addServiceController.localServiceImagePath = image.path;
         });
       }
     } catch (e) {
@@ -273,7 +338,7 @@ void dispose() {
 
   void _removeImage() {
     setState(() {
-      _addServiceController.serviceImagePath = null;
+      _addServiceController.localServiceImagePath = null;
     });
   }
 

@@ -140,6 +140,7 @@ class _ServiceManagementViewState extends State<ServiceManagementView> {
             // Add More Service Button
             GestureDetector(
               onTap: () {
+                _serviceController.serviceImageUrl?.value = '';
                 Get.toNamed(Routes.UPDATESERVICE,arguments: {'serviceId':'','isEdit':false});
               },
               child: Container(

@@ -57,7 +57,7 @@ class BarberAddServiceController extends GetxController {
   /// ================= fetch baber service ===================
   Rx<ServiceResponseModel> serviceResponseModel = ServiceResponseModel().obs;
   var isLoadingService = false.obs;
-
+  RxString? serviceImageUrl = ''.obs ;
   Future<void> fetchService() async {
     String token = await PrefsHelper.getString('token');
     final result = await getPayloadValue();
@@ -85,7 +85,8 @@ class BarberAddServiceController extends GetxController {
           serviceNameController.text = service.serviceName ?? '';
           priceController.text = service.price.toString();
           descriptionController.text = service.description ?? '';
-          serviceImagePath = service.serviceImage;
+          serviceImageUrl?.value = service.serviceImage??'';
+          print(serviceImageUrl);
         }
 
       } else {
@@ -106,7 +107,7 @@ class BarberAddServiceController extends GetxController {
   final TextEditingController serviceNameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-   String? serviceImagePath;
+   String? localServiceImagePath ;
   var isLoadingAddService = false.obs;
 
   Future<void> addBarberServices() async {
@@ -131,23 +132,23 @@ class BarberAddServiceController extends GetxController {
 
 
     MultipartFile? multipartProfileFile;
-    if (serviceImagePath != null && serviceImagePath!.isNotEmpty) {
+    if (localServiceImagePath != null && localServiceImagePath!.isNotEmpty) {
       multipartProfileFile = await MultipartFile.fromFile(
         field: 'serviceImage',
-        file: File(serviceImagePath!),
+        file: File(localServiceImagePath!),
         contentType: 'image/jpeg',
       );
     }
 
     List<MultipartFile> multipartFile = [
-      if (serviceImagePath?.isNotEmpty ?? false) multipartProfileFile!,
+      if (localServiceImagePath?.isNotEmpty ?? false) multipartProfileFile!,
     ];
 
     try {
       isLoadingAddService.value = true;
       final response = await _networkCaller.multipart<Map<String, dynamic>>(
         endpoint: isEdit ? ApiConstants.updateBarberServiceUrl(serviceId: serviceId) : ApiConstants.addBarberServiceUrl,
-        files: serviceImagePath?.isNotEmpty==true ? multipartFile : null,
+        files: localServiceImagePath?.isNotEmpty==true ? multipartFile : null,
         fields: fields,
         multipartMethodType: isEdit? MultiPartMethod.put : MultiPartMethod.post,
         timeout: Duration(seconds: 10),
@@ -206,7 +207,7 @@ class BarberAddServiceController extends GetxController {
     serviceNameController.clear();
     priceController.clear();
     descriptionController.clear();
-    serviceImagePath = null;
+    localServiceImagePath = null;
   }
 
 
