@@ -173,6 +173,7 @@ class CustomerProfileController extends GetxController {
         coverImagePath='';
         profileImagePath ='';
         Get.snackbar('Success', response.message ?? 'Successfully updated the profile');
+       await fetchProfile();
       } else {
         Get.snackbar('Failed', response.message ?? '');
       }

@@ -257,11 +257,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   void dispose() {
-    _profileController.nameController!.dispose();
-    _profileController.emailController!.dispose();
-    _profileController.genderController!.dispose();
-    _profileController.phoneController!.dispose();
-    _profileController.addressController!.dispose();
+    _profileController.nameController?.dispose();
+    _profileController.emailController?.dispose();
+    _profileController.genderController?.dispose();
+    _profileController.phoneController?.dispose();
+    _profileController.addressController?.dispose();
     super.dispose();
   }
 }
