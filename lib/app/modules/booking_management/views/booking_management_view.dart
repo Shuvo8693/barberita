@@ -19,7 +19,7 @@ class BookingManagementView extends StatefulWidget {
 class _BookingManagementViewState extends State<BookingManagementView> {
   final BookingManagementController _bookingManagementController = Get.put(BookingManagementController());
 
-  String _userRole = '';
+  String _userRole = '' ;
   bool _isLoading = true;
 
   @override
@@ -66,6 +66,7 @@ class _BookingManagementViewState extends State<BookingManagementView> {
         bool pending = bookingDetailsData.status=='pending';
         bool accepted = bookingDetailsData.status=='accepted';
         bool completed = bookingDetailsData.status=='completed';
+        bool markAsDone = bookingDetailsData.status=='mark_as_done';
         return BookingManagementWidget(
           userRole: _userRole,
           isOrderCompleted: completed,
@@ -79,7 +80,7 @@ class _BookingManagementViewState extends State<BookingManagementView> {
             }
           },
           booking: BookingData(
-            userId: _userRole=='customer'? bookingDetailsData.barberId??'': bookingDetailsData.customerId??'',
+            userId: _userRole =='customer'? bookingDetailsData.barberId??'': bookingDetailsData.customerId??'',
             name: bookingDetailsData.name??'',
             service: 'Hair Cut',
             address: bookingDetailsData.address??'',
@@ -95,13 +96,13 @@ class _BookingManagementViewState extends State<BookingManagementView> {
             subtotal: 0,
             total:bookingDetailsData.totalPrice??0,
             statuses: [
-              BookingStatus(title: 'Booking Placed', timestamp: '',isCompleted: pending || accepted || completed ? true : false),
-              BookingStatus(title: 'In progress', timestamp: '', isCompleted: accepted || completed ? true : false),
+              BookingStatus(title: 'Booking Placed', timestamp: '',isCompleted: pending || accepted || completed || markAsDone ? true : false),
+              BookingStatus(title: 'In progress', timestamp: '', isCompleted: accepted || completed || markAsDone ? true : false),
               BookingStatus(title: 'Worked Done', timestamp: '', isCompleted: completed ? true : false),
             ],
           ),
-        );
-       }
+         );
+        }
       ),
     );
   }

@@ -4,6 +4,8 @@ import 'package:barberita/app/modules/notification/widgets/notification_item.dar
 import 'package:barberita/app/modules/notification/widgets/payment_card.dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
 import 'package:barberita/common/date_time_formation/data_age_formation.dart';
+import 'package:barberita/common/jwt_decoder/payload_value.dart';
+import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:barberita/common/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,15 +19,20 @@ class NotificationView extends StatefulWidget {
 }
 
 class _NotificationViewState extends State<NotificationView> {
-  // Get your controller
+
   final _notificationCtrl = Get.find<NotificationController>();
 
   @override
   void initState() {
     super.initState();
     _notificationCtrl.fetchNotification();
+    getUserInfo();
   }
 
+  getUserInfo()async{
+    final result = await getPayloadValue();
+    print(result['userRole']);
+  }
 
   @override
   Widget build(BuildContext context) {

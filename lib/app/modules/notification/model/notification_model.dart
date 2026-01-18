@@ -1,17 +1,14 @@
 // notification_model.dart
 
+import 'dart:ffi';
+
 class NotificationModel {
   final bool? success;
   final int? status;
   final String? message;
   final NotificationData? data;
 
-  NotificationModel({
-    this.success,
-    this.status,
-    this.message,
-    this.data,
-  });
+  NotificationModel({this.success, this.status, this.message, this.data});
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
     return NotificationModel(
@@ -30,11 +27,7 @@ class NotificationData {
   final List<NotificationItems>? notifications;
   final Pagination? pagination;
 
-  NotificationData({
-    this.userInfo,
-    this.notifications,
-    this.pagination,
-  });
+  NotificationData({this.userInfo, this.notifications, this.pagination});
 
   factory NotificationData.fromJson(Map<String, dynamic> json) {
     return NotificationData(
@@ -57,12 +50,7 @@ class UserInfo {
   final String? image;
   final String? email;
 
-  UserInfo({
-    this.id,
-    this.name,
-    this.image,
-    this.email,
-  });
+  UserInfo({this.id, this.name, this.image, this.email});
 
   factory UserInfo.fromJson(Map<String, dynamic> json) {
     return UserInfo(
@@ -76,6 +64,9 @@ class UserInfo {
 
 class NotificationItems {
   final String? id;
+  final String? customerName;
+  final String? barberName;
+  final int? quantity;
   final String? msg;
   final String? status;
   final String? bookingId;
@@ -84,6 +75,9 @@ class NotificationItems {
 
   NotificationItems({
     this.id,
+    this.customerName,
+    this.barberName,
+    this.quantity,
     this.msg,
     this.status,
     this.bookingId,
@@ -94,6 +88,9 @@ class NotificationItems {
   factory NotificationItems.fromJson(Map<String, dynamic> json) {
     return NotificationItems(
       id: json['_id'] as String?,
+      customerName : json['customerName'] as String?,
+      barberName: json['barberName'] as String?,
+      quantity : json['quantity'] as int?,
       msg: json['msg'] as String?,
       status: json['status'] as String?,
       bookingId: json['bookingId'] as String?,

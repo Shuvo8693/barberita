@@ -11,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
 import 'package:barberita/app/modules/booking_management/model/booking_management_models.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import 'booking_status_card.dart';
 import 'hair_dresser_card.dart';
@@ -62,10 +61,13 @@ class BookingManagementWidget extends StatelessWidget {
                       //       : isOrderInPending? _buildOrderConfirmation(context,orderId: booking.orderId) : SizedBox.shrink(),
                       // ],
                       /// ============ booking progress card and order confirmation ============
+                      BookingStatusCard(statuses: booking.statuses),
+                      SizedBox(height: 25.h),
                       if (userRole.isNotEmpty) ...[
-                             isOrderInPending? _buildOrderConfirmation(context,orderId: booking.orderId)
-                                 : BookingStatusCard(statuses: booking.statuses), // ====== booking progress card =====
+                        userRole != 'customer' && isOrderInPending? _buildOrderConfirmation(context,orderId: booking.orderId)
+                                 : SizedBox.shrink(),
                       ],
+
                       SizedBox(height: 32.h),
 
                       /// =================> Review Section <==================
