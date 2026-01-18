@@ -67,6 +67,7 @@ class _BookingManagementViewState extends State<BookingManagementView> {
         bool accepted = bookingDetailsData.status=='accepted';
         bool completed = bookingDetailsData.status=='completed';
         bool markAsDone = bookingDetailsData.status=='mark_as_done';
+        bool cancel = bookingDetailsData.status=='cancel';
         return BookingManagementWidget(
           userRole: _userRole,
           isOrderCompleted: completed,

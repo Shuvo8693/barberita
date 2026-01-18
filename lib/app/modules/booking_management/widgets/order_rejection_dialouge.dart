@@ -93,7 +93,7 @@ class OrderRejectionDialog extends StatelessWidget {
       }) {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (BuildContext context) {
         return OrderRejectionDialog(
           onDecline: onDecline,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
@@ -91,8 +92,9 @@ class BookingManagementController extends GetxController {
 
   // var isLoadingConfirmation = false.obs;
   RxMap<int,bool> isLoadingConfirmation = <int,bool>{}.obs;
+  RxMap<int,bool> isLoadingCancel = <int,bool>{}.obs;
 
-  Future<void> confirmOrDeclineOrder({String? bookingGroupId, String? status, int? index}) async {
+  Future<void> confirmOrDeclineOrder({String? bookingGroupId, String? status, int? index,VoidCallback? callback}) async {
     String token = await PrefsHelper.getString('token');
      final result = await getPayloadValue();
      String myId = result['userId'];
@@ -103,7 +105,7 @@ class BookingManagementController extends GetxController {
     _networkCaller.addResponseInterceptor(LoggingInterceptor());
 
     try {
-      isLoadingConfirmation[index!] = true;
+      status?.contains('cancel') == true ? isLoadingCancel[index!] = true : isLoadingConfirmation[index!] = true;
       final response = await _networkCaller.patch<Map<String, dynamic>>(
         endpoint:ApiConstants.orderConfirmationUrl(bookingGroupId: bookingGroupId),
         body: {"status" : status},
@@ -113,7 +115,8 @@ class BookingManagementController extends GetxController {
       if (response.isSuccess && response.data != null) {
          await Get.put(BookingStatusController()).fetchBookingStatus(bookingStatus: 'barber-pending-bookings');
          Get.snackbar('Successfully', response.data?['message'] ?? 'You successfully updated the pending order' );
-         Get.offAllNamed(Routes.BARBER_HOME);
+         callback?.call();
+         // Get.offAllNamed(Routes.BARBER_HOME);
       } else {
         if(!Get.isSnackbarOpen){
           Get.snackbar('Failed', response.message!);
@@ -123,7 +126,7 @@ class BookingManagementController extends GetxController {
       print(e);
       throw NetworkException('$e');
     } finally {
-      isLoadingConfirmation[index!] = false;
+      status?.contains('cancel') == true ? isLoadingCancel[index!] = true : isLoadingConfirmation[index!] = true;
     }
 
   }

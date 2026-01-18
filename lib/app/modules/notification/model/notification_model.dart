@@ -68,7 +68,7 @@ class NotificationItems {
   final String? barberName;
   final int? quantity;
   final String? msg;
-  final String? status;
+        String? status;
   final String? bookingId;
   final String? createdAt;
   final String? updatedAt;
