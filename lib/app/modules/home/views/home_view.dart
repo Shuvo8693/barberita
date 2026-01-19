@@ -1,4 +1,5 @@
 import 'package:barberita/app/data/api_constants.dart';
+import 'package:barberita/app/data/google_api_service.dart';
 import 'package:barberita/app/modules/home/controllers/home_controller.dart';
 import 'package:barberita/app/modules/home/widgets/top_rated_card.dart';
 import 'package:barberita/app/modules/notification/controllers/notification_controller.dart';
@@ -8,11 +9,14 @@ import 'package:barberita/common/app_images/network_image%20.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/bottom_menu/bottom_menu..dart';
 import 'package:barberita/common/widgets/casess_network_image.dart';
+import 'package:barberita/common/widgets/spacing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/widgets/custom_text_field.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../widgets/favourite_hairdresser_card.dart';
 
@@ -61,7 +65,8 @@ class _HomeViewState extends State<HomeView> {
                   // Profile Header
                   Obx((){
                     UnreadLatestData? unreadLatestData = _notificationController.unreadAndLatestNotificationModel.value.data;
-                    final badgeCount = unreadLatestData?.unreadCount??0;
+                    final badgeCount = unreadLatestData?.unreadCount ?? 0;
+                   String? locationName = _notificationController.placeMark.value.isNotEmpty? _notificationController.placeMark.value.first.name ?? '' : 'Loading...';
                     return Padding(
                       padding: EdgeInsets.all(12.w),
                       child: Column(
@@ -88,8 +93,7 @@ class _HomeViewState extends State<HomeView> {
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                    Text(
-                                      '112/23 Park Street', ///=============================
+                                    Text(locationName, /// =======  location ============
                                       style: GoogleFontStyles.h6(
                                         color: Colors.white.withOpacity(0.7),
                                       ),
@@ -97,6 +101,7 @@ class _HomeViewState extends State<HomeView> {
                                   ],
                                 ),
                               ),
+                              horizontalSpacing(5.w),
                               GestureDetector(
                                 onTap: () {
                                   Get.toNamed(Routes.NOTIFICATION);

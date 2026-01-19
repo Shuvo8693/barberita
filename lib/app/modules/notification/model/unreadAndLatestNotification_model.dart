@@ -54,12 +54,14 @@ class UnreadLatestUserInfo {
   final String? name;
   final String? phone;
   final String? image;
+  final List<dynamic>? location;
 
   UnreadLatestUserInfo({
     this.id,
     this.name,
     this.phone,
     this.image,
+    this.location
   });
 
   factory UnreadLatestUserInfo.fromJson(Map<String, dynamic> json) {
@@ -68,6 +70,7 @@ class UnreadLatestUserInfo {
       name: json['name'] as String?,
       phone: json['phone'] as String?,
       image: json['image'] as String?,
+      location: json['location'] as List<dynamic>?,
     );
   }
 }

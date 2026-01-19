@@ -86,4 +86,78 @@ static String? _componentsPlaceMark(List components, String type) {
   return null;
 }
 
+
+
+/*static Future<List<Placemark>> placeMarkFromCoordinate(LatLng location) async {
+  final String url = 'https://maps.googleapis.com/maps/api/geocode/json'
+      '?latlng=${location.latitude},${location.longitude}'
+      '&key=${SKey.googleApiKey}'
+      '&result_type=locality|administrative_area_level_1|administrative_area_level_2'  // Add this
+      '&language=en';  // Add this for English results
+
+  List<Placemark> placeMarks = [];
+
+  try {
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+
+      if (data['status'] == 'OK' && data['results'].isNotEmpty) {
+        // Try to find the best result
+        for (var result in data['results']) {
+          final components = result['address_components'] as List;
+
+          // Look for locality, administrative area, or any meaningful location
+          String? locality;
+          String? adminArea;
+          String? country;
+
+          for (var component in components) {
+            final types = component['types'] as List;
+
+            if (types.contains('locality')) {
+              locality = component['long_name'];
+            }
+            if (types.contains('administrative_area_level_1')) {
+              adminArea = component['long_name'];
+            }
+            if (types.contains('administrative_area_level_2') && locality == null) {
+              locality = component['long_name'];
+            }
+            if (types.contains('country')) {
+              country = component['long_name'];
+            }
+          }
+
+          if (locality != null || adminArea != null) {
+            placeMarks.add(Placemark(
+              name: locality ?? adminArea ?? country ?? 'Unknown',
+              locality: locality,
+              administrativeArea: adminArea,
+              country: country,
+            ));
+            break;  // Use the first good result
+          }
+        }
+
+        // If still no good results, use the first result's formatted address
+        if (placeMarks.isEmpty && data['results'].isNotEmpty) {
+          final firstResult = data['results'][0];
+          placeMarks.add(Placemark(
+            name: firstResult['formatted_address'] ?? 'Unknown Location',
+          ));
+        }
+      }
+
+      return placeMarks.isNotEmpty ? placeMarks : [Placemark(name: 'Unknown Location')];
+    } else {
+      return [Placemark(name: 'Unknown Location')];
+    }
+  } catch (e) {
+    print('Error fetching placemark: $e');
+    return [Placemark(name: 'Unknown Location')];
+  }
+}*/
+
 }
