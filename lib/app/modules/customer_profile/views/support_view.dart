@@ -1,3 +1,4 @@
+import 'package:barberita/common/All_launcher/all_launcher.dart';
 import 'package:barberita/common/app_images/app_svg.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
@@ -37,8 +38,13 @@ class SupportScreen extends StatelessWidget {
             _buildContactButton(
               icon: Icons.email_outlined,
               label: 'Email',
-              onTap: () {
+              onTap: () async{
                 // Handle email contact
+               await LauncherHelper.sendEmail(
+                     email: 'shuvo.office52@gmail.com',
+                     subject: 'Hello',
+                     body: 'This is the email body',
+                   );
               },
             ),
 
@@ -49,6 +55,7 @@ class SupportScreen extends StatelessWidget {
               label: 'Call',
               onTap: () {
                 // Handle call contact
+                LauncherHelper.makePhoneCall('+1234567890');
               },
             ),
 
