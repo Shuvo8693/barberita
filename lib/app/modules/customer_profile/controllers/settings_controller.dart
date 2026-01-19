@@ -6,6 +6,7 @@ import 'package:barberita/app/data/network_caller.dart';
 import 'package:barberita/app/modules/customer_profile/model/terms_and_policy_model.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide MultipartFile;
 
 
@@ -100,6 +101,59 @@ class SettingsController extends GetxController {
     }
 
   }
+
+  /// =================== Change Password ==================
+
+
+  TextEditingController oldPassCtrl = TextEditingController();
+  TextEditingController newPassCtrl = TextEditingController();
+  TextEditingController confirmPassCtrl = TextEditingController();
+  var isLoadingChangePass = false.obs;
+
+  Future<void> changePassword({ Function( String)? responseMessage}) async {
+    String token = await PrefsHelper.getString('token');
+    var body = {
+      "oldPassword": oldPassCtrl.text,
+      "newPassword": newPassCtrl.text,
+      "confirmPassword": confirmPassCtrl.text
+    };
+
+     _networkCaller.clearInterceptors();
+    _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
+    _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
+    _networkCaller.addResponseInterceptor(LoggingInterceptor());
+
+    try {
+      isLoadingChangePass.value = true;
+      final response = await _networkCaller.post<Map<String, dynamic>>(
+        endpoint:ApiConstants.changePasswordUrl,
+        body: body,
+        timeout: Duration(seconds: 10),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+      if (response.isSuccess && response.data != null) {
+        String message = response.data!['message'];
+        Get.snackbar('Successfully', message );
+        clearController();
+      } else {
+        Get.snackbar('Failed', response.message ?? 'Resend otp failed');
+      }
+    } catch (e) {
+      print(e);
+      throw NetworkException('$e');
+    } finally {
+      isLoadingChangePass.value = false;
+    }
+
+  }
+
+
+  clearController(){
+     oldPassCtrl.clear() ;
+     newPassCtrl.clear() ;
+     confirmPassCtrl.clear() ;
+  }
+
 
 }
 
