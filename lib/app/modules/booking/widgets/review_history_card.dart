@@ -1,3 +1,5 @@
+import 'package:barberita/app/data/api_constants.dart';
+import 'package:barberita/app/data/user_info.dart';
 import 'package:barberita/app/modules/booking/model/feedback_response_model.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_images/network_image%20.dart';
@@ -8,12 +10,12 @@ import 'package:get/get.dart';
 
 class ReviewHistoryCard extends StatelessWidget {
   final FeedbackData? feedbackData;
-  const ReviewHistoryCard({
-    super.key, this.feedbackData,
-  });
+
+  const ReviewHistoryCard({super.key, this.feedbackData});
 
   @override
   Widget build(BuildContext context) {
+    String? userRole = UserData().userRole;
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -28,7 +30,9 @@ class ReviewHistoryCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 20.r,
-                backgroundImage:  NetworkImage(AppNetworkImage.saloonHairMen3Img),
+                backgroundImage: NetworkImage(
+                  "${ApiConstants.baseUrl}${userRole?.contains('customer') == true ? feedbackData?.customerInfo?.image : feedbackData?.barberInfo?.image}",
+                ),
                 backgroundColor: Colors.grey[600],
               ),
 
@@ -39,22 +43,18 @@ class ReviewHistoryCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'John Perkins',
+                      '${userRole?.contains('customer') == true ? feedbackData?.customerInfo?.name : feedbackData?.barberInfo?.name}',
                       style: GoogleFontStyles.h5(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
+                    if(feedbackData?.reviewInfo?.rating != null)
                     Row(
                       children: [
-                        Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                          size: 16.sp,
-                        ),
+                        Icon(Icons.star, color: Colors.amber, size: 16.sp),
                         SizedBox(width: 4.w),
-                        Text(
-                          '4.5',
+                        Text(feedbackData?.reviewInfo?.rating?.toStringAsFixed(1)??'',
                           style: GoogleFontStyles.h6(
                             color: Colors.white.withOpacity(0.7),
                           ),
@@ -66,6 +66,7 @@ class ReviewHistoryCard extends StatelessWidget {
               ),
 
               // Edit Button
+              if(feedbackData?.reviewInfo?.comment!=null)
               GestureDetector(
                 onTap: () {
                   // Handle edit review
@@ -83,11 +84,7 @@ class ReviewHistoryCard extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                        size: 14.sp,
-                      ),
+                      Icon(Icons.edit, color: Colors.white, size: 14.sp),
                       SizedBox(width: 4.w),
                       Text(
                         'Edit',
@@ -106,24 +103,19 @@ class ReviewHistoryCard extends StatelessWidget {
           SizedBox(height: 16.h),
 
           // Review Text
-          Text(
-            'The barbers are highly skilled, offering everything from sharp, contemporary cuts to classic styles. The atmosphere is welcoming, with a nostalgic old-school vibe that makes it feel like you\'ve stepped into a time capsule of barbering excellence.....',
+          Text( feedbackData?.reviewInfo?.comment ??'',
             style: GoogleFontStyles.h6(
               color: Colors.white.withOpacity(0.8),
               height: 1.5,
             ),
           ),
-
           SizedBox(height: 12.h),
-
           // Review Date
           Align(
             alignment: Alignment.centerRight,
             child: Text(
               '1 days ago',
-              style: GoogleFontStyles.h6(
-                color: Colors.white.withOpacity(0.5),
-              ),
+              style: GoogleFontStyles.h6(color: Colors.white.withOpacity(0.5)),
             ),
           ),
         ],

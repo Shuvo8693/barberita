@@ -1,42 +1,48 @@
 class FeedbackResponseModel {
-  final bool? success;
-  final int? status;
-  final String? message;
-  final FeedbackData? data;
+  bool? success;
+  int? status;
+  String? message;
+  FeedbackData? data;
 
-  FeedbackResponseModel({
-    this.success,
-    this.status,
-    this.message,
-    this.data,
-  });
+  FeedbackResponseModel({this.success, this.status, this.message, this.data});
 
-  factory FeedbackResponseModel.fromJson(Map<String, dynamic> json) {
+  factory FeedbackResponseModel.fromMap(Map<String, dynamic> map) {
     return FeedbackResponseModel(
-      success: json['success'] as bool?,
-      status: json['status'] as int?,
-      message: json['message'] as String?,
-      data: json['data'] != null
-          ? FeedbackData.fromJson(json['data'])
-          : null,
+      success: map['success'],
+      status: map['status'],
+      message: map['message'],
+      data: map['data'] != null ? FeedbackData.fromMap(map['data']) : null,
     );
   }
 }
 
 class FeedbackData {
-  final String? id;
-  final String? barberId;
-  final String? customerId;
-  final String? bookingGroupId;
-  final String? reviewFor;
-  final int? rating;
-  final String? comment;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? version;
+  ReviewInfo? reviewInfo;
+  CustomerInfo? customerInfo;
+  BarberInfo? barberInfo;
 
-  FeedbackData({
-    this.id,
+  FeedbackData({this.reviewInfo, this.customerInfo, this.barberInfo});
+
+  factory FeedbackData.fromMap(Map<String, dynamic> map) {
+    return FeedbackData(
+      reviewInfo: map['reviewInfo'] != null ? ReviewInfo.fromMap(map['reviewInfo']) : null,
+      customerInfo: map['customerInfo'] != null ? CustomerInfo.fromMap(map['customerInfo']) : null,
+      barberInfo: map['barberInfo'] != null ? BarberInfo.fromMap(map['barberInfo']) : null,
+    );
+  }
+}
+
+class ReviewInfo {
+  String? barberId;
+  String? customerId;
+  String? bookingGroupId;
+  String? reviewFor;
+  int? rating;
+  String? comment;
+  String? createdAt;
+  String? updatedAt;
+
+  ReviewInfo({
     this.barberId,
     this.customerId,
     this.bookingGroupId,
@@ -45,25 +51,50 @@ class FeedbackData {
     this.comment,
     this.createdAt,
     this.updatedAt,
-    this.version,
   });
 
-  factory FeedbackData.fromJson(Map<String, dynamic> json) {
-    return FeedbackData(
-      id: json['_id'] as String?,
-      barberId: json['barberId'] as String?,
-      customerId: json['customerId'] as String?,
-      bookingGroupId: json['bookingGroupId'] as String?,
-      reviewFor: json['reviewFor'] as String?,
-      rating: json['rating'] as int?,
-      comment: json['comment'] as String?,
-      createdAt: json['createdAt'] != null
-          ? DateTime.tryParse(json['createdAt'])
-          : null,
-      updatedAt: json['updatedAt'] != null
-          ? DateTime.tryParse(json['updatedAt'])
-          : null,
-      version: json['__v'] as int?,
+  factory ReviewInfo.fromMap(Map<String, dynamic> map) {
+    return ReviewInfo(
+      barberId: map['barberId'],
+      customerId: map['customerId'],
+      bookingGroupId: map['bookingGroupId'],
+      reviewFor: map['reviewFor'],
+      rating: map['rating'],
+      comment: map['comment'],
+      createdAt: map['createdAt'],
+      updatedAt: map['updatedAt'],
+    );
+  }
+}
+
+class CustomerInfo {
+  String? name;
+  String? image;
+  String? phone;
+
+  CustomerInfo({this.name, this.image, this.phone});
+
+  factory CustomerInfo.fromMap(Map<String, dynamic> map) {
+    return CustomerInfo(
+      name: map['name'],
+      image: map['image'],
+      phone: map['phone'],
+    );
+  }
+}
+
+class BarberInfo {
+  String? name;
+  String? image;
+  String? phone;
+
+  BarberInfo({this.name, this.image, this.phone});
+
+  factory BarberInfo.fromMap(Map<String, dynamic> map) {
+    return BarberInfo(
+      name: map['name'],
+      image: map['image'],
+      phone: map['phone'],
     );
   }
 }

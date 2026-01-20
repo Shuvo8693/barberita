@@ -50,7 +50,10 @@ class _BookingManagementWidgetState extends State<BookingManagementWidget> {
     getFeedback();
   }
   getFeedback()async{
-   await _feedbackController.getFeedback();
+    if(widget.isReviewHistoryPageActive){
+      await _feedbackController.getFeedback();
+    }
+
   }
   @override
   Widget build(BuildContext context) {
@@ -120,7 +123,7 @@ class _BookingManagementWidgetState extends State<BookingManagementWidget> {
                                 ],
                               ),
                               SizedBox(height: 8.h),
-                              ReviewHistoryCard(),
+                              ReviewHistoryCard(feedbackData: feedbackData,),
                               SizedBox(height: 16.h),
                             ],
                           );

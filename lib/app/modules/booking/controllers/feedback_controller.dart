@@ -1,6 +1,7 @@
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
 import 'package:barberita/app/modules/booking/model/feedback_response_model.dart';
+import 'package:barberita/common/jwt_decoder/payload_value.dart';
 
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,8 @@ class FeedbackController extends GetxController {
      final myId  = Get.arguments['myId'] ?? '';
      final barberId  = Get.arguments['barberId'] ?? '';
     String token = await PrefsHelper.getString('token');
-
+     // var result = await getPayloadValue();
+     // final myRole = result["userRole"];
 
     _networkCaller.clearInterceptors();
     _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
@@ -82,7 +84,7 @@ class FeedbackController extends GetxController {
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
-        feedbackResponseModel.value = FeedbackResponseModel.fromJson(response.data!);
+        feedbackResponseModel.value = FeedbackResponseModel.fromMap(response.data!);
         callBack?.call();
       } else {
         if(!Get.isSnackbarOpen){
