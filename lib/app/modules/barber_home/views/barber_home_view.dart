@@ -49,6 +49,7 @@ class _BarberHomeViewState extends State<BarberHomeView> with SingleTickerProvid
             Obx((){
               UnreadLatestData? unreadLatestData = _notificationController.unreadAndLatestNotificationModel.value.data;
                final badgeCount =unreadLatestData?.unreadCount??0;
+              String? locationName = _notificationController.placeMark.value.isNotEmpty? _notificationController.placeMark.value.first.name ?? '' : 'Loading...';
               return Padding(
                 padding: EdgeInsets.all(12.w),
                 child: Column(
@@ -75,12 +76,14 @@ class _BarberHomeViewState extends State<BarberHomeView> with SingleTickerProvid
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              // Text(
-                              //   '112/23 Park Street',
-                              //   style: GoogleFontStyles.h6(
-                              //     color: Colors.white.withOpacity(0.7),
-                              //   ),
-                              // ),
+                              SizedBox(
+                                width: 150.w,
+                                child: Text(locationName,
+                                  style: GoogleFontStyles.h6(
+                                    color: Colors.white.withOpacity(0.7),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),

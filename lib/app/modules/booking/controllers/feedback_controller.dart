@@ -1,5 +1,6 @@
 import 'package:barberita/app/data/api_constants.dart';
 import 'package:barberita/app/data/network_caller.dart';
+import 'package:barberita/app/modules/booking/model/feedback_response_model.dart';
 
 import 'package:barberita/common/prefs_helper/prefs_helpers.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,46 @@ class FeedbackController extends GetxController {
       throw NetworkException('$e');
     } finally {
       isLoadingBookingStatus.value = false;
+    }
+
+  }
+
+ /// ================== get review ========================
+ Rx<FeedbackResponseModel> feedbackResponseModel = Rx(FeedbackResponseModel()) ;
+  var isLoadingFeedback = false.obs;
+  Future<void> getFeedback({VoidCallback? callBack}) async {
+    //{'bookingGroupId':bookingGroupId,'myId':myId,'barberId':barberId}
+     final bookingGroupId  = Get.arguments['bookingGroupId'] ?? '';
+     final myId  = Get.arguments['myId'] ?? '';
+     final barberId  = Get.arguments['barberId'] ?? '';
+    String token = await PrefsHelper.getString('token');
+
+
+    _networkCaller.clearInterceptors();
+    _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
+    _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
+    _networkCaller.addResponseInterceptor(LoggingInterceptor());
+
+    try {
+      isLoadingFeedback.value = true;
+      final response = await _networkCaller.get<Map<String, dynamic>>(
+        endpoint:ApiConstants.getReviewUrl(orderId: bookingGroupId),
+        timeout: Duration(seconds: 10),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+      if (response.isSuccess && response.data != null) {
+        feedbackResponseModel.value = FeedbackResponseModel.fromJson(response.data!);
+        callBack?.call();
+      } else {
+        if(!Get.isSnackbarOpen){
+          Get.snackbar('Failed', response.message!);
+        }
+      }
+    } catch (e) {
+      print(e);
+      throw NetworkException('$e');
+    } finally {
+      isLoadingFeedback.value = false;
     }
 
   }

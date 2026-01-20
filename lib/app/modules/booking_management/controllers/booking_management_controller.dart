@@ -21,6 +21,7 @@ class BookingManagementController extends GetxController {
   Future<void> fetchBookingDetails() async {
     String bookingGroupId = Get.arguments['bookingGroupId'] ?? '' ;
     String token = await PrefsHelper.getString('token');
+    print(token);
 
     _networkCaller.clearInterceptors();
     _networkCaller.addRequestInterceptor(ContentTypeInterceptor());

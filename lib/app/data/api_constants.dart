@@ -48,6 +48,7 @@ static String favouriteBarberUrl= '/api/v1/favorite/get-favorite-barber';
 static String addBookingUrl = '/api/v1/booking/add-booking';
 static String allServicesUrl = '/api/v1/barber/all-services';
 static String addReviewUrl = '/api/v1/review/add-review';
+static String getReviewUrl({String? orderId}) => '/api/v1/review/get-review-by-booking/$orderId';
 static String profileUrl = '/api/v1/auth/get-profile-info';
 static String customerProfileUpdateUrl = '/api/v1/auth/profile-update';
 static String barberProfileUpdateUrl = '/api/v1/barber/update-barber';

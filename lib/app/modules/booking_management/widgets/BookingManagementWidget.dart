@@ -1,4 +1,5 @@
 import 'package:barberita/app/modules/booking/controllers/booking_status_controller.dart';
+import 'package:barberita/app/modules/booking/controllers/feedback_controller.dart';
 import 'package:barberita/app/modules/booking/widgets/review_history_card.dart';
 import 'package:barberita/app/modules/booking_management/controllers/booking_management_controller.dart';
 import 'package:barberita/app/modules/booking_management/widgets/order_rejection_dialouge.dart';
@@ -6,6 +7,7 @@ import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
 import 'package:barberita/common/custom_appbar/custom_appbar.dart';
 import 'package:barberita/common/widgets/spacing.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
@@ -16,7 +18,7 @@ import 'booking_status_card.dart';
 import 'hair_dresser_card.dart';
 import 'order_details_card.dart';
 
-class BookingManagementWidget extends StatelessWidget {
+class BookingManagementWidget extends StatefulWidget {
   final BookingData booking;
   final String userRole;
   final bool isReviewHistoryPageActive;
@@ -33,9 +35,23 @@ class BookingManagementWidget extends StatelessWidget {
     this.markAsDoneTap,
     this.isOrderCompleted = false,
     this.isLoadingMarkAsDone = false,
-     this.isOrderInPending = false,
+    this.isOrderInPending = false,
   });
 
+  @override
+  State<BookingManagementWidget> createState() => _BookingManagementWidgetState();
+}
+
+class _BookingManagementWidgetState extends State<BookingManagementWidget> {
+  final _feedbackController = Get.put(FeedbackController());
+  @override
+  void initState() {
+    super.initState();
+    getFeedback();
+  }
+  getFeedback()async{
+   await _feedbackController.getFeedback();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,9 +67,9 @@ class BookingManagementWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       //==== barber card =====
-                      BarberCard(booking: booking),
+                      BarberCard(booking: widget.booking),
                       SizedBox(height: 24.h),
-                      OrderDetailsCard(booking: booking),
+                      OrderDetailsCard(booking: widget.booking),
                       SizedBox(height: 24.h),
                       // if (userRole.isNotEmpty) ...[
                       //   userRole == 'customer'
@@ -61,45 +77,67 @@ class BookingManagementWidget extends StatelessWidget {
                       //       : isOrderInPending? _buildOrderConfirmation(context,orderId: booking.orderId) : SizedBox.shrink(),
                       // ],
                       /// ============ booking progress card and order confirmation ============
-                      BookingStatusCard(statuses: booking.statuses),
+                      BookingStatusCard(statuses: widget.booking.statuses),
                       SizedBox(height: 25.h),
-                      if (userRole.isNotEmpty) ...[
-                        userRole != 'customer' && isOrderInPending? _buildOrderConfirmation(context,orderId: booking.orderId)
-                                 : SizedBox.shrink(),
+                      if (widget.userRole.isNotEmpty) ...[
+                        widget.userRole != 'customer' && widget.isOrderInPending
+                            ? _buildOrderConfirmation(context,
+                                orderId: widget.booking.orderId) : SizedBox.shrink(),
                       ],
-
                       SizedBox(height: 32.h),
-
                       /// =================> Review Section <==================
-
-                      if (isReviewHistoryPageActive)
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Review',
-                              style: GoogleFontStyles.h5(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
+                      if (widget.isReviewHistoryPageActive)
+                        Obx((){
+                        final feedbackData =  _feedbackController.feedbackResponseModel.value.data;
+                        if(_feedbackController.isLoadingFeedback.value){
+                          return const Center(child: CupertinoActivityIndicator());
+                        }
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'Review',
+                                    style: GoogleFontStyles.h5(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.toNamed(Routes.FEEDBACK);
+                                    },
+                                    child: Text(
+                                      'Add Review',
+                                      style: GoogleFontStyles.h5(
+                                        color: Colors.blueAccent,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            SizedBox(height: 16.h),
-                            ReviewHistoryCard(),
-                            SizedBox(height: 16.h),
-                          ],
+                              SizedBox(height: 8.h),
+                              ReviewHistoryCard(),
+                              SizedBox(height: 16.h),
+                            ],
+                          );
+                         }
+
                         ),
                     ],
                   ),
                 ),
               ),
             ),
-            if (userRole == 'customer' && !isOrderCompleted)
+            if (widget.userRole == 'customer' && !widget.isOrderCompleted)
               Container(
                 padding: EdgeInsets.all(12.sp),
                 child: CustomButton(
-                  onTap: markAsDoneTap ?? () {},
-                  text: isLoadingMarkAsDone ? 'Processing...' : 'Mark as Done',
+                  onTap: widget.markAsDoneTap ?? () {},
+                  text: widget.isLoadingMarkAsDone ? 'Processing...' : 'Mark as Done',
                 ),
               ),
           ],
@@ -109,7 +147,7 @@ class BookingManagementWidget extends StatelessWidget {
   }
 
   Widget _buildOrderConfirmation(BuildContext context, {String? orderId}) {
-     final bookingManagementController = Get.put(BookingManagementController());
+    final bookingManagementController = Get.put(BookingManagementController());
 
     return Row(
       children: [
@@ -117,15 +155,18 @@ class BookingManagementWidget extends StatelessWidget {
         Expanded(
           child: Obx(() {
             return CustomButton(
-              loading: bookingManagementController.isLoadingConfirmation[0]??false,
-                onTap: () async {
-                  await bookingManagementController.confirmOrDeclineOrder(
-                      bookingGroupId: orderId, status: 'accepted',index: 0);
-                },
-                text: 'Confirm'
+              loading:
+                  bookingManagementController.isLoadingConfirmation[0] ?? false,
+              onTap: () async {
+                await bookingManagementController.confirmOrDeclineOrder(
+                  bookingGroupId: orderId,
+                  status: 'accepted',
+                  index: 0,
+                );
+              },
+              text: 'Confirm',
             );
-          }
-          ),
+          }),
         ),
         SizedBox(width: 8.w),
         //=== confirm/decline ===
@@ -134,11 +175,19 @@ class BookingManagementWidget extends StatelessWidget {
             onTap: () {
               OrderRejectionDialog.show(
                 context,
-                onDecline: ()async {
-                  await bookingManagementController.confirmOrDeclineOrder( bookingGroupId: orderId , status: 'cancel',index: 1);
+                onDecline: () async {
+                  await bookingManagementController.confirmOrDeclineOrder(
+                    bookingGroupId: orderId,
+                    status: 'cancel',
+                    index: 1,
+                  );
                 },
                 onAccept: () async {
-                  await bookingManagementController.confirmOrDeclineOrder(bookingGroupId: orderId,status: 'accepted',index: 1);
+                  await bookingManagementController.confirmOrDeclineOrder(
+                    bookingGroupId: orderId,
+                    status: 'accepted',
+                    index: 1,
+                  );
                 },
               );
             },

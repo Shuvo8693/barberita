@@ -1,3 +1,4 @@
+import 'package:barberita/app/modules/booking/model/feedback_response_model.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_images/network_image%20.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
@@ -6,8 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ReviewHistoryCard extends StatelessWidget {
+  final FeedbackData? feedbackData;
   const ReviewHistoryCard({
-    super.key,
+    super.key, this.feedbackData,
   });
 
   @override
