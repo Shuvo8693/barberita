@@ -29,7 +29,6 @@ class _FeedbackViewState extends State<FeedbackView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 40.h),
-
               // Service Info Card
               // Container(
               //   padding: EdgeInsets.all(16.w),
@@ -167,6 +166,10 @@ class _FeedbackViewState extends State<FeedbackView> {
                   if (_feedbackController.selectedRating > 0) {
                    await _feedbackController.postReview(callBack: (){
                      _submitFeedback();
+                     setState(() {
+                       _feedbackController.selectedRating = 0;
+                       _feedbackController.commentCtrl.clear();
+                     });
                    });
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(

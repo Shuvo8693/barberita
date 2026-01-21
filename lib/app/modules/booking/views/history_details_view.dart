@@ -1,3 +1,4 @@
+import 'package:barberita/app/data/user_info.dart';
 import 'package:barberita/app/modules/booking/controllers/booking_status_controller.dart';
 import 'package:barberita/app/modules/booking/widgets/review_history_card.dart';
 import 'package:barberita/app/modules/booking_management/controllers/booking_management_controller.dart';
@@ -21,7 +22,9 @@ class HistoryDetailsView extends StatefulWidget {
 }
 
 class _HistoryDetailsViewState extends State<HistoryDetailsView> {
-  final BookingStatusController _bookingStatusController = Get.put(BookingStatusController());
+  final BookingStatusController _bookingStatusController = Get.put(
+    BookingStatusController(),
+  );
 
   String _userRole = '';
   bool _isLoading = true;
@@ -56,9 +59,12 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
 
   @override
   Widget build(BuildContext context) {
+    String? userRole = UserData().userRole;
+    String? myId = UserData().myId;
     return Scaffold(
       body: Obx(() {
-        List<BookingDetailsData>? bookingDataList = _bookingStatusController.bookingDetailsModel.value.data ?? [];
+        List<BookingDetailsData>? bookingDataList =
+            _bookingStatusController.bookingDetailsModel.value.data ?? [];
         if (_bookingStatusController.isLoadingService.value) {
           return const Center(child: CustomPageLoading());
         } else if (bookingDataList.isEmpty) {
@@ -70,18 +76,33 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
         bool completed = bookingDetailsData.status == 'completed';
         return BookingManagementWidget(
           userRole: _userRole,
+          bookingDetailsData: bookingDetailsData,
           isReviewHistoryPageActive: true,
           isOrderInPending: pending,
           isOrderCompleted: completed,
           markAsDoneTap: () {
-            if(accepted){
-               Get.toNamed(Routes.FEEDBACK);
-            }else{
-              Get.snackbar('Failed to mark as done', 'Seems that your order is not accepted yet');
+
+            if (accepted) {
+              Get.toNamed(
+                Routes.FEEDBACK,
+                arguments: {
+                  'barberId': bookingDetailsData.customerId,
+                  'customerId': bookingDetailsData.customerId,
+                  'myId': myId,
+                  'bookingGroupId': bookingDetailsData.orderId,
+                },
+              );
+            } else {
+              Get.snackbar(
+                'Failed to mark as done',
+                'Seems that your order is not accepted yet',
+              );
             }
           },
           booking: BookingData(
-            userId: _userRole=='customer'? bookingDetailsData.barberId??'': bookingDetailsData.customerId??'',
+            userId: _userRole == 'customer'
+                ? bookingDetailsData.barberId ?? ''
+                : bookingDetailsData.customerId ?? '',
             name: bookingDetailsData.name ?? '',
             service: 'Hair Cut',
             address: bookingDetailsData.address ?? '',
@@ -90,13 +111,15 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
             rating: bookingDetailsData.avgRating?.toStringAsFixed(1) ?? '',
             imageUrl: '',
             orderId: bookingDetailsData.orderId ?? '',
-            items: bookingDetailsData.services?.map((serviceItem) {
+            items:
+                bookingDetailsData.services?.map((serviceItem) {
                   return OrderItem(
                     name: serviceItem.name ?? '',
                     price: serviceItem.price ?? 0,
                     quantity: 0,
                   );
-                }).toList() ?? [],
+                }).toList() ??
+                [],
             serviceFee: 0,
             subtotal: 0,
             total: bookingDetailsData.totalPrice ?? 0,
@@ -104,9 +127,7 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
               BookingStatus(
                 title: 'Booking Placed',
                 timestamp: '',
-                isCompleted: pending || accepted || completed
-                    ? true
-                    : false,
+                isCompleted: pending || accepted || completed ? true : false,
               ),
               BookingStatus(
                 title: 'In progress',

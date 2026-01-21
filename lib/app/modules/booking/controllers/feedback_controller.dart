@@ -21,12 +21,13 @@ class FeedbackController extends GetxController {
      final bookingGroupId  = Get.arguments['bookingGroupId'] ?? '';
      final myId  = Get.arguments['myId'] ?? '';
      final barberId  = Get.arguments['barberId'] ?? '';
-    String token = await PrefsHelper.getString('token');
+     final customerId  = Get.arguments['customerId'] ?? '';
+     String token = await PrefsHelper.getString('token');
 
 
     final body = {
       "bookingGroupId" : bookingGroupId,
-      "customerId" : myId,
+      "customerId" : customerId,
       "barberId": barberId,
       "rating" : selectedRating,
       "comment" : commentCtrl.text
@@ -46,6 +47,7 @@ class FeedbackController extends GetxController {
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
+        await getFeedback();
         callBack?.call();
       } else {
         Get.snackbar('Failed', response.message!);
@@ -58,10 +60,16 @@ class FeedbackController extends GetxController {
     }
 
   }
+   clearData(){
+     selectedRating = 0;
+     commentCtrl.clear();
+   }
 
  /// ================== get review ========================
+
  Rx<FeedbackResponseModel> feedbackResponseModel = Rx(FeedbackResponseModel()) ;
   var isLoadingFeedback = false.obs;
+
   Future<void> getFeedback({VoidCallback? callBack}) async {
     //{'bookingGroupId':bookingGroupId,'myId':myId,'barberId':barberId}
      final bookingGroupId  = Get.arguments['bookingGroupId'] ?? '';

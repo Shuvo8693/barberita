@@ -6,12 +6,14 @@ class UserData {
   UserData._internal();
 
   String? userRole;
+  String? myId;
   Map<String, dynamic>? userData;
 
   Future<void> initialize() async {
     var result = await getPayloadValue();
     userRole = result["userRole"];
     userData = result;
+    myId = result["id"];
   }
 }
 

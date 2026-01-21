@@ -1,7 +1,9 @@
+import 'package:barberita/app/data/user_info.dart';
 import 'package:barberita/app/modules/booking/controllers/booking_status_controller.dart';
 import 'package:barberita/app/modules/booking/controllers/feedback_controller.dart';
 import 'package:barberita/app/modules/booking/widgets/review_history_card.dart';
 import 'package:barberita/app/modules/booking_management/controllers/booking_management_controller.dart';
+import 'package:barberita/app/modules/booking_management/model/booking_details_model.dart';
 import 'package:barberita/app/modules/booking_management/widgets/order_rejection_dialouge.dart';
 import 'package:barberita/app/routes/app_pages.dart';
 import 'package:barberita/common/app_text_style/google_app_style.dart';
@@ -20,6 +22,7 @@ import 'order_details_card.dart';
 
 class BookingManagementWidget extends StatefulWidget {
   final BookingData booking;
+  final BookingDetailsData? bookingDetailsData;
   final String userRole;
   final bool isReviewHistoryPageActive;
   final bool isOrderCompleted;
@@ -31,6 +34,7 @@ class BookingManagementWidget extends StatefulWidget {
     super.key,
     required this.booking,
     required this.userRole,
+    this.bookingDetailsData,
     this.isReviewHistoryPageActive = false,
     this.markAsDoneTap,
     this.isOrderCompleted = false,
@@ -43,7 +47,7 @@ class BookingManagementWidget extends StatefulWidget {
 }
 
 class _BookingManagementWidgetState extends State<BookingManagementWidget> {
-  final _feedbackController = Get.put(FeedbackController());
+  final FeedbackController  _feedbackController = Get.put(FeedbackController());
   @override
   void initState() {
     super.initState();
@@ -57,6 +61,8 @@ class _BookingManagementWidgetState extends State<BookingManagementWidget> {
   }
   @override
   Widget build(BuildContext context) {
+    String? userRole = UserData().userRole;
+    String? myId = UserData().myId;
     return Scaffold(
       appBar: CustomAppBar(title: 'Booking Management'),
       body: SafeArea(
@@ -87,7 +93,7 @@ class _BookingManagementWidgetState extends State<BookingManagementWidget> {
                             ? _buildOrderConfirmation(context,
                                 orderId: widget.booking.orderId) : SizedBox.shrink(),
                       ],
-                      SizedBox(height: 32.h),
+                      SizedBox(height: 12.h),
                       /// =================> Review Section <==================
                       if (widget.isReviewHistoryPageActive)
                         Obx((){
@@ -111,7 +117,15 @@ class _BookingManagementWidgetState extends State<BookingManagementWidget> {
                                   const Spacer(),
                                   TextButton(
                                     onPressed: () {
-                                      Get.toNamed(Routes.FEEDBACK);
+                                      Get.toNamed(
+                                        Routes.FEEDBACK,
+                                        arguments: {
+                                          'barberId': widget.bookingDetailsData?.barberId,
+                                          'customerId': widget.bookingDetailsData?.customerId,
+                                          'myId': myId,
+                                          'bookingGroupId':widget.bookingDetailsData?.orderId,
+                                        },
+                                      );
                                     },
                                     child: Text(
                                       'Add Review',
@@ -122,8 +136,13 @@ class _BookingManagementWidgetState extends State<BookingManagementWidget> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 8.h),
-                              ReviewHistoryCard(feedbackData: feedbackData,),
+                              if(feedbackData!=null)
+                              Wrap(
+                                children: [
+                                  SizedBox(height: 8.h),
+                                  ReviewHistoryCard(feedbackData: feedbackData,),
+                                ],
+                              ),
                               SizedBox(height: 16.h),
                             ],
                           );

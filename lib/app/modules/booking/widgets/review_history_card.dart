@@ -16,6 +16,7 @@ class ReviewHistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String? userRole = UserData().userRole;
+    String? myId = UserData().myId;
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -49,61 +50,74 @@ class ReviewHistoryCard extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    if(feedbackData?.reviewInfo?.rating != null)
-                    Row(
-                      children: [
-                        Icon(Icons.star, color: Colors.amber, size: 16.sp),
-                        SizedBox(width: 4.w),
-                        Text(feedbackData?.reviewInfo?.rating?.toStringAsFixed(1)??'',
-                          style: GoogleFontStyles.h6(
-                            color: Colors.white.withOpacity(0.7),
+                    if (feedbackData?.reviewInfo?.rating != null)
+                      Row(
+                        children: [
+                          Icon(Icons.star, color: Colors.amber, size: 16.sp),
+                          SizedBox(width: 4.w),
+                          Text(
+                            feedbackData?.reviewInfo?.rating?.toStringAsFixed(
+                                  1,
+                                ) ??
+                                '',
+                            style: GoogleFontStyles.h6(
+                              color: Colors.white.withOpacity(0.7),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
                   ],
                 ),
               ),
 
-              // Edit Button
-              if(feedbackData?.reviewInfo?.comment!=null)
-              GestureDetector(
-                onTap: () {
-                  // Handle edit review
-                  Get.toNamed(Routes.FEEDBACK);
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 6.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF55493E),
-                    borderRadius: BorderRadius.circular(6.r),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.edit, color: Colors.white, size: 14.sp),
-                      SizedBox(width: 4.w),
-                      Text(
-                        'Edit',
-                        style: GoogleFontStyles.h6(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
+              //======= Edit Button ==============
+              if (feedbackData?.reviewInfo?.comment != null)
+                GestureDetector(
+                  onTap: () {
+                    // Handle edit review
+                    Get.toNamed(
+                      Routes.FEEDBACK,
+                      arguments: {
+                        'barberId': feedbackData?.reviewInfo?.barberId,
+                        'customerId': feedbackData?.reviewInfo?.customerId,
+                        'myId': myId,
+                        'bookingGroupId':feedbackData?.reviewInfo?.bookingGroupId,
+                      },
+                    );
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 6.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF55493E),
+                      borderRadius: BorderRadius.circular(6.r),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.edit, color: Colors.white, size: 14.sp),
+                        SizedBox(width: 4.w),
+                        Text(
+                          'Edit',
+                          style: GoogleFontStyles.h6(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
 
           SizedBox(height: 16.h),
 
           // Review Text
-          Text( feedbackData?.reviewInfo?.comment ??'',
+          Text(
+            feedbackData?.reviewInfo?.comment ?? '',
             style: GoogleFontStyles.h6(
               color: Colors.white.withOpacity(0.8),
               height: 1.5,
