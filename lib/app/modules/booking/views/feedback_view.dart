@@ -18,7 +18,17 @@ class FeedbackView extends StatefulWidget {
 
 class _FeedbackViewState extends State<FeedbackView> {
  final FeedbackController _feedbackController = Get.put(FeedbackController());
-
+ bool isUpdateReview = false;
+  @override
+  void initState() {
+    super.initState();
+    getFeedbackArguments();
+  }
+getFeedbackArguments(){
+ bool isReviewUpdate = Get.arguments['isUpdateReview']??false;
+ isUpdateReview = isReviewUpdate;
+ setState(() {});
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -161,26 +171,41 @@ class _FeedbackViewState extends State<FeedbackView> {
               const Spacer(),
 
               // Submit Button
-              CustomButton(
-                onTap: () async {
-                  if (_feedbackController.selectedRating > 0) {
-                   await _feedbackController.postReview(callBack: (){
-                     _submitFeedback();
-                     setState(() {
-                       _feedbackController.selectedRating = 0;
-                       _feedbackController.commentCtrl.clear();
-                     });
-                   });
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please select a rating'),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
-                },
-                text: 'Submit',
+              Obx((){
+                 return CustomButton(
+                   loading:isUpdateReview?_feedbackController.isLoadingUpdateReview.value: _feedbackController.isLoadingPostReview.value,
+                   onTap: () async {
+                     if (_feedbackController.selectedRating > 0) {
+                       if(isUpdateReview){
+                         await _feedbackController.updateReview(callBack: (){
+                           _submitFeedback();
+                           setState(() {
+                             _feedbackController.selectedRating = 0;
+                             _feedbackController.commentCtrl.clear();
+                           });
+                         });
+                       }else{
+                         await _feedbackController.postReview(callBack: (){
+                           _submitFeedback();
+                           setState(() {
+                             _feedbackController.selectedRating = 0;
+                             _feedbackController.commentCtrl.clear();
+                           });
+                         });
+                       }
+                     } else {
+                       ScaffoldMessenger.of(context).showSnackBar(
+                         const SnackBar(
+                           content: Text('Please select a rating'),
+                           backgroundColor: Colors.red,
+                         ),
+                       );
+                     }
+                   },
+                   text: 'Submit',
+                 );
+                }
+
               ),
 
               SizedBox(height: 16.h),
@@ -190,6 +215,10 @@ class _FeedbackViewState extends State<FeedbackView> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
+                    setState(() {
+                      _feedbackController.selectedRating = 0;
+                      _feedbackController.commentCtrl.clear();
+                    });
                   },
                   child: Text(
                     'Skip',
@@ -218,7 +247,7 @@ class _FeedbackViewState extends State<FeedbackView> {
         title: Text(
           'Thank You!', style: GoogleFontStyles.h4(color: Colors.white)),
         content: Text(
-          'Your feedback has been submitted successfully.\nRating: ${_feedbackController.selectedRating}/5',
+          'Your feedback has been submitted successfully.',
           style: GoogleFontStyles.h5(color: Colors.white.withOpacity(0.8)),
         ),
         actions: [

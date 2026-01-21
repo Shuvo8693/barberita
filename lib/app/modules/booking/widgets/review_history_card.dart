@@ -78,9 +78,9 @@ class ReviewHistoryCard extends StatelessWidget {
                     Get.toNamed(
                       Routes.FEEDBACK,
                       arguments: {
-                        'barberId': feedbackData?.reviewInfo?.barberId,
-                        'customerId': feedbackData?.reviewInfo?.customerId,
+                        'reviewId': feedbackData?.reviewInfo?.id,
                         'myId': myId,
+                        'isUpdateReview': true,
                         'bookingGroupId':feedbackData?.reviewInfo?.bookingGroupId,
                       },
                     );
@@ -125,13 +125,13 @@ class ReviewHistoryCard extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           // Review Date
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              '1 days ago',
-              style: GoogleFontStyles.h6(color: Colors.white.withOpacity(0.5)),
-            ),
-          ),
+          // Align(
+          //   alignment: Alignment.centerRight,
+          //   child: Text(
+          //     '1 days ago',
+          //     style: GoogleFontStyles.h6(color: Colors.white.withOpacity(0.5)),
+          //   ),
+          // ),
         ],
       ),
     );

@@ -33,6 +33,7 @@ class FeedbackData {
 }
 
 class ReviewInfo {
+  String? id;
   String? barberId;
   String? customerId;
   String? bookingGroupId;
@@ -43,6 +44,7 @@ class ReviewInfo {
   String? updatedAt;
 
   ReviewInfo({
+    this.id,
     this.barberId,
     this.customerId,
     this.bookingGroupId,
@@ -55,6 +57,7 @@ class ReviewInfo {
 
   factory ReviewInfo.fromMap(Map<String, dynamic> map) {
     return ReviewInfo(
+      id: map['_id'],
       barberId: map['barberId'],
       customerId: map['customerId'],
       bookingGroupId: map['bookingGroupId'],

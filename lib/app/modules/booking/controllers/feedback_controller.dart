@@ -12,7 +12,7 @@ class FeedbackController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller.instance;
   int selectedRating = 0;
   final TextEditingController commentCtrl = TextEditingController();
-  var isLoadingBookingStatus = false.obs;
+  var isLoadingPostReview = false.obs;
 
 
 
@@ -39,7 +39,7 @@ class FeedbackController extends GetxController {
     _networkCaller.addResponseInterceptor(LoggingInterceptor());
 
     try {
-      isLoadingBookingStatus.value = true;
+      isLoadingPostReview.value = true;
       final response = await _networkCaller.post<Map<String, dynamic>>(
         endpoint:ApiConstants.addReviewUrl,
         body: body,
@@ -56,14 +56,51 @@ class FeedbackController extends GetxController {
       print(e);
       throw NetworkException('$e');
     } finally {
-      isLoadingBookingStatus.value = false;
+      isLoadingPostReview.value = false;
     }
 
   }
-   clearData(){
-     selectedRating = 0;
-     commentCtrl.clear();
-   }
+
+/// ==================== update review =======================
+  var isLoadingUpdateReview = false.obs;
+    Future<void> updateReview({VoidCallback? callBack}) async {
+     final bookingGroupId  = Get.arguments['bookingGroupId'] ?? '';
+     final reviewId  = Get.arguments['reviewId'] ?? '';
+     String token = await PrefsHelper.getString('token');
+
+
+    final body = {
+      "rating" : selectedRating,
+      "comment" : commentCtrl.text
+    };
+
+    _networkCaller.clearInterceptors();
+    _networkCaller.addRequestInterceptor(ContentTypeInterceptor());
+    _networkCaller.addRequestInterceptor(AuthInterceptor(token: token));
+    _networkCaller.addResponseInterceptor(LoggingInterceptor());
+
+    try {
+      isLoadingUpdateReview.value = true;
+      final response = await _networkCaller.put<Map<String, dynamic>>(
+        endpoint:ApiConstants.editReviewUrl(reviewId: reviewId),
+        body: body,
+        timeout: Duration(seconds: 15),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+      if (response.isSuccess && response.data != null) {
+        await getFeedback();
+        callBack?.call();
+      } else {
+        Get.snackbar('Failed', response.message!);
+      }
+    } catch (e) {
+      print(e);
+      throw NetworkException('$e');
+    } finally {
+      isLoadingUpdateReview.value = false;
+    }
+
+  }
 
  /// ================== get review ========================
 
