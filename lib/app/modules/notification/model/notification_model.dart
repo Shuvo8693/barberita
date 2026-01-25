@@ -70,6 +70,7 @@ class NotificationItems {
   final String? msg;
         String? status;
   final String? bookingId;
+  final bool isUnread;
   final String? createdAt;
   final String? updatedAt;
 
@@ -79,6 +80,7 @@ class NotificationItems {
     this.barberName,
     this.quantity,
     this.msg,
+    this.isUnread = false,
     this.status,
     this.bookingId,
     this.createdAt,
@@ -90,6 +92,7 @@ class NotificationItems {
       id: json['_id'] as String?,
       customerName : json['customerName'] as String?,
       barberName: json['barberName'] as String?,
+      isUnread: json['isReadable'] as bool? ?? false,
       quantity : json['quantity'] as int?,
       msg: json['msg'] as String?,
       status: json['status'] as String?,

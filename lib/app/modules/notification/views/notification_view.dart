@@ -88,6 +88,7 @@ class _NotificationViewState extends State<NotificationView> {
               child: NotificationItem(
                 icon: Icons.notifications_outlined,
                 title: notificationItem.msg ?? "Notification",
+                isRead: notificationItem.isUnread,
                 time: DateAgeFormation.formatAge(DateTime.parse(notificationItem.createdAt??'')),
                 notificationItems: notificationItem,
                 index: index,

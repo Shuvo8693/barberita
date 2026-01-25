@@ -26,6 +26,7 @@ class BookingManagementWidget extends StatefulWidget {
   final String userRole;
   final bool isReviewHistoryPageActive;
   final bool isOrderCompleted;
+  final bool isOrderCancel;
   final bool isOrderInPending;
   final bool isLoadingMarkAsDone;
   final VoidCallback? markAsDoneTap;
@@ -38,6 +39,7 @@ class BookingManagementWidget extends StatefulWidget {
     this.isReviewHistoryPageActive = false,
     this.markAsDoneTap,
     this.isOrderCompleted = false,
+    this.isOrderCancel = false,
     this.isLoadingMarkAsDone = false,
     this.isOrderInPending = false,
   });
@@ -140,7 +142,7 @@ class _BookingManagementWidgetState extends State<BookingManagementWidget> {
                               Wrap(
                                 children: [
                                   SizedBox(height: 8.h),
-                                  ReviewHistoryCard(feedbackData: feedbackData,),
+                                  ReviewHistoryCard(feedbackData: feedbackData),
                                 ],
                               ),
                               SizedBox(height: 16.h),
@@ -154,7 +156,7 @@ class _BookingManagementWidgetState extends State<BookingManagementWidget> {
                 ),
               ),
             ),
-            if (widget.userRole == 'customer' && !widget.isOrderCompleted)
+            if (widget.userRole == 'customer' && !widget.isOrderCompleted && !widget.isOrderCancel)
               Container(
                 padding: EdgeInsets.all(12.sp),
                 child: CustomButton(

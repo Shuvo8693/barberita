@@ -75,7 +75,7 @@ class BookingManagementController extends GetxController {
         fromJson: (json) => json as Map<String, dynamic>,
       );
       if (response.isSuccess && response.data != null) {
-         Get.toNamed(Routes.FEEDBACK,arguments:{'bookingGroupId':bookingGroupId,'myId':myId,'barberId':barberId});
+         Get.toNamed(Routes.FEEDBACK,arguments:{'bookingGroupId':bookingGroupId,'customerId':myId,'barberId':barberId});
          Get.snackbar('Successfully', response.message??'Mark as done need barber confirmation');
       } else {
         Get.snackbar('Failed', response.message!);

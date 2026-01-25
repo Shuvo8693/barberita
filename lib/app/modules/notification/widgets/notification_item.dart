@@ -13,7 +13,7 @@ class NotificationItem extends StatefulWidget {
   final IconData icon;
   final String title;
   final String time;
-  final bool isUnread;
+  final bool isRead;
   final bool isMarkAsDone;
   final NotificationItems notificationItems;
   final int index;
@@ -23,7 +23,7 @@ class NotificationItem extends StatefulWidget {
     required this.icon,
     required this.title,
     required this.time,
-    this.isUnread = false,
+    this.isRead = false,
     this.isMarkAsDone = false,
     required this.notificationItems,
     required this.index,
@@ -65,11 +65,12 @@ class _NotificationItemState extends State<NotificationItem> {
         children: [
           Row(
             children: [
+
               Container(
                 width: 40.w,
                 height: 40.h,
                 decoration: BoxDecoration(
-                  color: Colors.grey[800],
+                  color: widget.isRead? Colors.grey[800] : Colors.blue,
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Icon(widget.icon, color: Colors.white70, size: 20.sp),
@@ -118,15 +119,15 @@ class _NotificationItemState extends State<NotificationItem> {
                 ),
               ),
 
-              if (widget.isUnread)
-                Container(
-                  width: 8.w,
-                  height: 8.h,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    shape: BoxShape.circle,
-                  ),
-                ),
+              // if (!widget.isRead)
+              //   Container(
+              //     width: 8.w,
+              //     height: 8.h,
+              //     decoration: BoxDecoration(
+              //       color: Colors.blue,
+              //       shape: BoxShape.circle,
+              //     ),
+              //   ),
             ],
           ),
           if (widget.notificationItems.status != null &&

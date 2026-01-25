@@ -130,10 +130,11 @@ class FeedbackController extends GetxController {
       );
       if (response.isSuccess && response.data != null) {
         feedbackResponseModel.value = FeedbackResponseModel.fromMap(response.data!);
+        print(feedbackResponseModel.value);
         callBack?.call();
       } else {
         if(!Get.isSnackbarOpen){
-          Get.snackbar('Failed', response.message!);
+          // Get.snackbar('Failed', response.message!);
         }
       }
     } catch (e) {

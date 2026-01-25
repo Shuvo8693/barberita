@@ -38,137 +38,77 @@ getFeedbackArguments(){
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 40.h),
-              // Service Info Card
-              // Container(
-              //   padding: EdgeInsets.all(16.w),
-              //   decoration: BoxDecoration(
-              //     color: Colors.transparent,
-              //     borderRadius: BorderRadius.circular(12.r),
-              //     border: Border.all(
-              //       color: Colors.white.withOpacity(0.3),
-              //       width: 1,
-              //     ),
-              //   ),
-              //   child: Row(
-              //     children: [
-              //       // Service Image
-              //       Container(
-              //         width: 50.w,
-              //         height: 50.h,
-              //         decoration: BoxDecoration(
-              //           color: const Color(0xFF2C2C2E),
-              //           borderRadius: BorderRadius.circular(8.r),
-              //         ),
-              //         child: widget.serviceImage != null
-              //             ? ClipRRect(
-              //           borderRadius: BorderRadius.circular(8.r),
-              //           child: Image.asset(
-              //             widget.serviceImage!,
-              //             fit: BoxFit.cover,
-              //           ),
-              //         )
-              //             : Icon(
-              //           Icons.content_cut,
-              //           color: Colors.white.withOpacity(0.7),
-              //           size: 24.sp,
-              //         ),
-              //       ),
-              //
-              //       SizedBox(width: 16.w),
-              //
-              //       // Service Details
-              //       Expanded(
-              //         child: Column(
-              //           crossAxisAlignment: CrossAxisAlignment.start,
-              //           children: [
-              //             Text(
-              //               widget.serviceName,
-              //               style: GoogleFontStyles.h5(
-              //                 color: Colors.white,
-              //                 fontWeight: FontWeight.w600,
-              //               ),
-              //             ),
-              //             SizedBox(height: 4.h),
-              //             Text(
-              //               widget.serviceDescription,
-              //               style: GoogleFontStyles.h6(
-              //                 color: Colors.white.withOpacity(0.7),
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              //
-              // SizedBox(height: 40.h),
-
-              // Feedback Section
-              Container(
-                padding: EdgeInsets.all(24.w),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2C2C2E),
-                  borderRadius: BorderRadius.circular(16.r),
-                ),
-                child: Column(
-                  children: [
-                    // Title
-                    Text(
-                      'Tell us your feedback',
-                      style: GoogleFontStyles.h4(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(height: 20.h),
-                    // Star Rating
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(5, (index) {
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _feedbackController.selectedRating = index + 1;
-                            });
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 4.w),
-                            child: Icon(
-                              Icons.star,
-                              size: 40.sp,
-                              color: index < _feedbackController.selectedRating
-                                  ? Colors.amber
-                                  : Colors.white.withOpacity(0.3),
+              SizedBox(height: 30.h),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(24.w),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF2C2C2E),
+                          borderRadius: BorderRadius.circular(16.r),
+                        ),
+                        child: Column(
+                          children: [
+                            // Title
+                            Text(
+                              'Tell us your feedback',
+                              style: GoogleFontStyles.h4(
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                        );
-                      }),
-                    ),
-                    SizedBox(height: 20.h),
-                    // Description
-                    Text(
-                      'Let us know how you feel about the Barber\'s\nHair cut and service',
-                      textAlign: TextAlign.center,
-                      style: GoogleFontStyles.h6(
-                        color: Colors.white.withOpacity(0.7),
-                        height: 1.4,
+                            SizedBox(height: 20.h),
+                            // Star Rating
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(5, (index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _feedbackController.selectedRating = index + 1;
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 4.w),
+                                    child: Icon(
+                                      Icons.star,
+                                      size: 40.sp,
+                                      color: index < _feedbackController.selectedRating
+                                          ? Colors.amber
+                                          : Colors.white.withOpacity(0.3),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ),
+                            SizedBox(height: 20.h),
+                            // Description
+                            Text(
+                              'Let us know how you feel about the Barber\'s\nHair cut and service',
+                              textAlign: TextAlign.center,
+                              style: GoogleFontStyles.h6(
+                                color: Colors.white.withOpacity(0.7),
+                                height: 1.4,
+                              ),
+                            ),
+
+                            SizedBox(height: 20.h),
+
+                            // Feedback Text Field
+                            CustomTextField(controller: _feedbackController.commentCtrl,
+                              maxLines: 5,
+                              hintText: 'comments here ...',
+                              fillColor: Colors.transparent,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-
-                    SizedBox(height: 24.h),
-
-                    // Feedback Text Field
-                    CustomTextField(controller: _feedbackController.commentCtrl,
-                      maxLines: 5,
-                      hintText: 'comments here ...',
-                      fillColor: Colors.transparent,
-                    )
-                  ],
+                    ],
+                  ),
                 ),
               ),
 
-              const Spacer(),
 
               // Submit Button
               Obx((){
@@ -230,7 +170,7 @@ getFeedbackArguments(){
                 ),
               ),
 
-              SizedBox(height: 20.h),
+              SizedBox(height: 6.h),
             ],
           ),
         ),
@@ -265,11 +205,5 @@ getFeedbackArguments(){
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _feedbackController.dispose();
-    super.dispose();
   }
 }

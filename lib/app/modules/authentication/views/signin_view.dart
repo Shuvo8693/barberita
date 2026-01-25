@@ -13,7 +13,6 @@ import 'package:barberita/common/widgets/custom_phone_field.dart';
 import 'package:barberita/common/widgets/custom_textbutton_with_icon.dart';
 import 'package:barberita/common/widgets/dont_have_an_account.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:barberita/common/app_color/app_colors.dart';
 import 'package:barberita/common/widgets/custom_button.dart';
@@ -21,7 +20,6 @@ import 'package:barberita/common/widgets/custom_text_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../../../common/app_images/app_svg.dart';
 
 class SignInView extends StatefulWidget {
   const SignInView({super.key});

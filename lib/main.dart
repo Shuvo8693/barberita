@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import 'app/data/user_info.dart';
 import 'app/routes/app_pages.dart';
 import 'common/app_constant/app_constant.dart';
 import 'common/controller/theme_controller.dart';
@@ -13,7 +14,7 @@ import 'common/themes/dark_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(ThemeController());
-
+  await UserData().initialize();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
