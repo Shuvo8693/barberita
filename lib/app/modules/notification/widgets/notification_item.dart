@@ -100,8 +100,7 @@ class _NotificationItemState extends State<NotificationItem> {
                           onTap: () {
                             if (widget.notificationItems.bookingId != null) {
                               Get.toNamed(Routes.BOOKING_MANAGEMENT, arguments: {
-                                  'bookingGroupId':
-                                      widget.notificationItems.bookingId,
+                                  'bookingGroupId': widget.notificationItems.bookingId,
                                 },
                               );
                             }
